@@ -37,19 +37,19 @@ Hettinga83_UpperNI,83,Hettinga et al.,2012,Upper part of North Interlake,2004,20
 Hettinga83_LowerNI,83,Hettinga et al.,2012,Lower part of North Interlake,2004,2009,400000,0.74,0.93,,,,Unconfirmed,lambda assumes male + female (combined + separate estimates given)
 McLoughlin86_SK1,86,McLoughlin et al. ,2019,SK1,2014,2018,1500000,0.895,1,0.195,,0.933,Unconfirmed,
 Hervieux87_Bitscho,87,Hervieux et al,2013,Bitscho,2008,2012,NA,0.776,0.842,0.171,,,Unconfirmed,
-Hervieux87_Chinchaga,87,Hervieux et al,2013,Chinchaga BC ,2002,2012,NA,0.831,0.887,0.134,,,Unconfirmed,from fig 4  - a bit illegible
-Hervieux87_ColdLakesAB,87,Hervieux et al,2013,Cold Lakes Air Force - Alberta,1999,2012,NA,0.814,0.855,0.1,,,Unconfirmed,from fig 4  - a bit illegible
-Hervieux87_CaribouMountains,87,Hervieux et al,2013,Caribou Mountains,1995,2012,NA,0.858,0.92,0.144,,,Unconfirmed,from fig 4  - a bit illegible
-Hervieux87_ESAR,87,Hervieux et al,2013,Eastern Side Athabasca River,1994,2012,NA,0.853,0.916,0.147,,,Unconfirmed,from fig 4  - a bit illegible
-Hervieux87_LittleSmoky,87,Hervieux et al,2013,Little Smoky,2000,2012,NA,0.901,0.97,0.153,,,Unconfirmed,from fig 4 - a bit illegible
-Hervieux87_RedEarth,87,Hervieux et al,2013,Red Earth,1995,2012,NA,0.819,0.884,0.157,,,Unconfirmed,from fig 4  - a bit illegible
-Hervieux87_Richardson,87,Hervieux et al,2013,Richardson,2009,2012,NA,0.903,0.984,0.179,,,Unconfirmed,from fig 4  - a bit illegible
-Hervieux87_WSAR,87,Hervieux et al,2013,Western Side Athabasca River,1994,2012,NA,0.849,0.933,0.198,,,Unconfirmed,from fig 4  - a bit illegible
-Hervieux87_Yates,87,Hervieux et al,2013,Yates,2007,2012,NA,0.907,1.001,0.206,,,Unconfirmed,from fig 4  - a bit illegible
-Hervieux87_Narraway,87,Hervieux et al,2013,Narraway,2007,2012,NA,0.856,0.915,0.136,,,Unconfirmed,from fig 4  - a bit illegible
-Hervieux87_ALaPeche,87,Hervieux et al,2013,A La Peche,1998,2012,NA,0.864,0.939,0.173,,,Unconfirmed,from from fig 4  - a bit illegible
-Hervieux87_ColdLakesSK,87,Hervieux et al,2013,Cold Lake Air Force - Saskatchewan,1998,,4000000,0.866,0.92,0.126,,,Unconfirmed,digitized from McLoughlin90
-Hervieux87_RedRock,87,Hervieux et al,2013,Red Rock,1998,2012,NA,0.817,0.892,0.184,,,Unconfirmed,from fig 4  - a bit illegible
+Hervieux87_Chinchaga,87,Hervieux et al,2013,Chinchaga BC ,2002,2012,NA,0.831,0.887,0.134,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2. 
+Hervieux87_ColdLakesAB,87,Hervieux et al,2013,Cold Lakes Air Force - Alberta,1999,2012,NA,0.814,0.855,0.1,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2. 
+Hervieux87_CaribouMountains,87,Hervieux et al,2013,Caribou Mountains,1995,2012,NA,0.858,0.92,0.144,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2. 
+Hervieux87_ESAR,87,Hervieux et al,2013,Eastern Side Athabasca River,1994,2012,NA,0.853,0.916,0.147,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2. 
+Hervieux87_LittleSmoky,87,Hervieux et al,2013,Little Smoky,2000,2012,NA,0.901,0.97,0.153,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2. 
+Hervieux87_RedEarth,87,Hervieux et al,2013,Red Earth,1995,2012,NA,0.819,0.884,0.157,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2. 
+Hervieux87_Richardson,87,Hervieux et al,2013,Richardson,2009,2012,NA,0.903,0.984,0.179,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2. 
+Hervieux87_WSAR,87,Hervieux et al,2013,Western Side Athabasca River,1994,2012,NA,0.849,0.933,0.198,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2. 
+Hervieux87_Yates,87,Hervieux et al,2013,Yates,2007,2012,NA,0.907,1.001,0.206,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2. 
+Hervieux87_Narraway,87,Hervieux et al,2013,Narraway,2007,2012,NA,0.856,0.915,0.136,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2. 
+Hervieux87_ALaPeche,87,Hervieux et al,2013,A La Peche,1998,2012,NA,0.864,0.939,0.173,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2. 
+Hervieux87_ColdLakesSK,87,Hervieux et al,2013,Cold Lake Air Force - Saskatchewan,1998,,4000000,0.866,0.92,0.126,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2. 
+Hervieux87_RedRock,87,Hervieux et al,2013,Red Rock,1998,2012,NA,0.817,0.892,0.184,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2. 
 Courtois91_Manic,91,Courtois et al. ,2007,Manic,1998,2001,1500000,0.75,,0.333,,,Unconfirmed,
 Courtois91_Manou,91,Courtois et al. ,2007,Manou,1998,2001,1500000,0.87,,0.209,,,Unconfirmed,
 Courtois91_Pipmu,91,Courtois et al. ,2007,Pipmu,1998,2001,1500000,0.82,,0.382,,,Unconfirmed,
@@ -59,8 +59,8 @@ Rudolph98_Nottaway,98,Rudolph et al.,2017,Nottaway Range - some dipsy doodles I 
 Rudolph98_Assinica,98,Rudolph et al.,2017,Assinica,2004,2013,1500000,0.885,1.015,0.243,,,Unconfirmed,table 3 assinica is listed twice? With different values for survival… 
 Rudolph98_Temiscamie,98,Rudolph et al.,2017,Temiscamie,2004,2013,1500000,0.854,0.949,0.1845,,,Unconfirmed,
 Mahoney101_CornerBrooks,101,Mahoney and Virgl,2003,Corner Brooks ,1994,1997,200000,0.88,,0.24,,0.96,Unconfirmed,has annual rates too
-Fryxell103_Nakima,103,Fryxell et al.,2020,Kinloch ,2010,2014,1500000,0.76,,,,,Unconfirmed,must confirm whether 2014 is end date or 2013
-Fryxell103_PickleLake,103,Fryxell et al.,2020,Nipigon,2010,2014,1500000,0.9,,,,,Unconfirmed,
+Fryxell103_Nakima,103,Fryxell et al.,2020,Kinloch ,2010,2014,1500000,0.76,,,,,No,must confirm whether 2014 is end date or 2013
+Fryxell103_PickleLake,103,Fryxell et al.,2020,Nipigon,2010,2014,1500000,0.9,,,,,No,
 Brown112_Wabowden,112,Brown et al.,2000,Wabowden ,1995,1997,700000,0.9,1.19,0.65,,,Unconfirmed,
 Seip113_WellsGray,113,Seip,1992,Wells Gray ,1984,1989,500000,0.92,0.754,0.29,0.08,0.94,Yes,Digitized liberally from figure 9. Calf cow reported in October and June and is complicated
 Seip113_Quesnel,113,Seip,1992,Quesnel Lake,1984,1989,500000,0.71,1.04,0.181,0.29,0.94,Yes,"Digitized from Seip 1992 Wildlife Bulletin report. Calf:cow is the sum of total column in table 1 (ie with wolves, without, and reduced wolves)"
