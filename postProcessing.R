@@ -13,25 +13,35 @@ RangePolys <- terra::vect("GIS/Digitized_Caribou_StudyAreas.shp")
 caribouDF <- fread("data/Range_Polygon_Data.csv")
 
 
-#####auxiliary datasets  - LCC, fire, harvest - to give context to LandTrendR
-#GIS data - these NFI datasets are enormous hence the hardcoded path. We could download and unzip, but its > 100 GB
+#####auxiliary datasets ####  
+# fire, harvest, and landcover - to give context to LandTrendR
+#GIS data - these NFI datasets are enormous hence the hardcoded path.
 #they all live here https://opendata.nfis.org/mapserver/nfis-change_eng.html
-C2Charvest <- terra::rast("C:/Ian/Data/C2C/CA_harvest_year_1985_2015.tif")
-C2Cfire <- NULL
+
+harvest <- terra::rast("C:/Ian/Data/C2C/CA_harvest_year_1985_2015.tif")
+# https://opendata.nfis.org/downloads/forest_change/CA_forest_harvest_mask_year_1985_2015.zip
+fire <- NULL
+# https://opendata.nfis.org/downloads/forest_change/CA_forest_wildfire_year_DNBR_Magnitude_1985_2015.zip
+#we only need fire year - the dNBR is the largest file, as it is stored as a float. Beware of unzipping
+
+#citation for both: Hermosilla, T., M.A. Wulder, J.C. White, N.C. Coops, G.W. Hobart, L.B. Campbell, 2016. 
+#Mass data processing of time series Landsat imagery: pixels to data products for forest monitoring. 
+#International Journal of Digital Earth 9(11), 1035-1054.
+
+
 LCC <- rast("C:/Ian/Data/C2C/CA_forest_VLCE_2015/CA_forest_VLCE_2015.tif")
+#this is a similarly derived landcover file
+# https://opendata.nfis.org/downloads/forest_change/CA_forest_VLCE_2015.zip
+#cite: White, J.C., M.A. Wulder, T. Hermosilla, N.C. Coops, and G.W. Hobart. (2017). A nationwide annual characterization of 25 years of forest disturbance and recovery for Canada using Landsat time series. Remote Sensing of Environment. 192: 303-321. 
+
 #20 is water, 31 snow_ice, 32 rock rubble, 33 barren, 40 bryoids, 50 shrub, 80 wetland, 81 wetland-treed, 100 = herbs
 #210 coniferous, 220 broadleaf, 230 mixedwood
 
+####summarize data ####
+
 #aggregate the polygons to avoid multipolygons being counted multiple times
-
 RangePolys <- project(RangePolys, LCC)
-
 ###temporary subset 
-# test <- RangePolys[RangePolys$PolygonID == "Wittmer15_Purcells_South",]
-# testH <- crop(C2Charvest, test) %>% mask(., test)
-# testM <- crop(LCC, test) %>% mask(., test)
-# testLTD <- rast("C:/users/ieddy/Downloads/Culling115_FtNelson.tif")
-# LTDdt <- as.data.table(values(testLTD))
 
 #this will summarize the LandTrendR, harvest, and fire stats within each polygon
 summarizeData <- function(SAname, SA = RangePolys, dir = resultsDir, 
