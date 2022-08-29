@@ -2,9 +2,26 @@ library(terra)
 library(sf)
 library(data.table)
 library(magrittr) # for piping - I am still using R v4.02 like a chump
+library(googledrive)
+library(purrr)
+library(parallel)
 
 #location of LandTrendR result directory
+
 resultsDir <- "outputs"
+resultFile <- file.path(resultsDir, "Caribou_LandTrendR_Results.zip")
+
+#results are publicly accessible with link, think this is fine.. 
+if (FALSE) {
+  googledrive::drive_deauth()
+  googledrive::drive_download(file = 'https://drive.google.com/file/d/1e-g2JrWi46GwZ0VIynd1DmZLxqk-9WGB/view?usp=sharing',
+                       path = resultFile
+  utils::unzip(zipfile = resultFile, exdir = resultsDir)
+  #this was vastly easier than using googledrive tools, which fail due to API limits (I believe anyway)
+  #however I had to download and re-upload the original directory...which seems avoidable?
+}
+
+
 
 #caribou range polygons digitized from literature
 RangePolys <- terra::vect("GIS/Digitized_Caribou_StudyAreas.shp")
@@ -20,7 +37,7 @@ caribouDF <- fread("data/Range_Polygon_Data.csv")
 
 harvest <- terra::rast("C:/Ian/Data/C2C/CA_harvest_year_1985_2015.tif")
 # https://opendata.nfis.org/downloads/forest_change/CA_forest_harvest_mask_year_1985_2015.zip
-fire <- NULL
+fire <- terra::rast("C:/Ian/Data/C2C/CA_forest_wildfire_year_1985_2015.tif")
 # https://opendata.nfis.org/downloads/forest_change/CA_forest_wildfire_year_DNBR_Magnitude_1985_2015.zip
 #we only need fire year - the dNBR is the largest file, as it is stored as a float. Beware of unzipping
 
@@ -44,17 +61,24 @@ RangePolys <- project(RangePolys, LCC)
 ###temporary subset 
 
 #this will summarize the LandTrendR, harvest, and fire stats within each polygon
-summarizeData <- function(SAname, SA = RangePolys, dir = resultsDir, 
-                          harvest = NULL, fire = NULL, lcc = LCC) {
- 
- 
+#this function could be more efficient - I was trying unsuccessfuly to debug parallelization arguments
+summarizeData <- function(SAname, SA, LandTrendR, harvest, fire, lcc = LCC) {
+  print(SAname)
   SA <- SA[SA$PolygonID == SAname,] #crop the study area poly
   #get fire data
   lastYear <- unique(SA$Meas_Years) #make unique in case dissolve was missed?
   outputDT <- data.table("PolygonID" = SAname, lastYear = lastYear)
   
+  LandTrendR <- LandTrendR[[SAname]] %>%
+    subset(., subset = c("mag", "yod"))
+  
+  SA <- project(SA, LandTrendR)
+  SAcrop <- project(SA, lcc)
+  #I believe this will cut down object size for projecting
+  
   ####summarize the LCC data ####
-  lcc <- crop(lcc, SA) %>% mask(., SA)
+  lcc <- project(lcc, LandTrendR, method = "near") %>%
+    mask(., SA)
   lccVal <- data.table(values(lcc))
   names(lccVal) <- "lcc" #assigning it during creation is no longer working ?
   
@@ -63,67 +87,64 @@ summarizeData <- function(SAname, SA = RangePolys, dir = resultsDir,
   N <- lccVal[!is.na(lcc), .N]
   propForest <- forestPix/N
   propVeg <- vegPix/N
-  rm(lccVal)
+  rm(lccVal, vegPix, forestPix, lcc)
   outputDT[, c("Npixels", "propForest", "propVeg") := .(N, propForest, propVeg)]
   
   ####summarize the LandTrendR data####
-  LandTrendR <- file.path(dir, paste0(SAname, ".tif"))
-  if (file.exists(LandTrendR)) {
-    LandTrendR <- rast(LandTrendR)
-    
-    #six bands are the following:
-    #yod - year of disturbance
-    #mag - magnitude of disturbance, expressed as segment start - segment end value (delta)
-    #dur - duration of disturbance, expressed as subtraction of start year from end year
-    #preval - prechange event spectral value
-    #rate - the rate of spectral change
-    #csnr - I don't know but suspect it involves magnitude relative to rsme 
-    
-    if (!compareGeom(LandTrendR, lcc, stopOnError = FALSE)) {
-      #this is cropped but not masked - however we must reproject. Since 0 is no data, we must reclassify
-      LandTrendR <- terra::classify(LandTrendR, matrix(data = c(0, NA), ncol = 2))
-      LandTrendR <- project(LandTrendR, lcc)
-    }
-    LandTrendR <- mask(LandTrendR, SA) #no data and no change as same otherwise
-    LandTrendR <- as.data.table(values(LandTrendR)) #matrix to dt
-    nDisturbed <- nrow(LandTrendR[yod <= lastYear])
-    #I am unsure if non-forest is routinely classified as disturbed under LandTrendR
-    propDisturbed <- nDisturbed/N
-    meanMag <- mean(LandTrendR[mag > 0]$mag)
-    outputDT[, c("nDisturbed", "propDisturbed", "meanMag") := .(nDisturbed, propDisturbed, meanMag)]
-  }
   
-  ####optionally summarize the C2C datasets####
-  if (!is.null(harvest)) {
-    SAh <- terra::project(SA, harvest)
-    harvestSA <- crop(harvest, SAh) %>%
-      mask(., SAh)
-    harvested <- data.table(values(harvestSA)) 
-    names(harvested) <- "harvest"
-    propHarvested <- harvested[harvest <= lastYear & harvest > 0, .N]/N
-    outputDT[, propHarvest := propHarvested]
-    rm(harvestSA, harvested, SAh)
-    #this is the proportion of pixels that were harvested before or during
-    #the last year of caribou measurement
-  }
+  #six bands are the following:
+  #yod - year of disturbance
+  #mag - magnitude of disturbance, expressed as segment start - segment end value (delta)
+  #dur - duration of disturbance, expressed as subtraction of start year from end year
+  #preval - prechange event spectral value
+  #rate - the rate of spectral change
+  #csnr - I don't know but suspect it involves magnitude relative to rsme 
   
-  if (!is.null(fire)) {
-    #THIS NEEDS TO FOLLOW WHAT FIRE IS DOING - don't add 1900
-    SAf <- terra::project(SA, fire)
-    fireSA <- crop(fire, SAf) %>%
-      mask(fireSA, SAf)
-    fireVal <- values(fireSA) + 1900 #convert to real years
-    propFire <- length(fireVal[fireVal <= lastYear])/length(forestPix)
-    outputDT[propFire := propFire]
-    rm(fireSA, fireVal, SAf)
-    #this is the proportion of pixels that were burned before or during
-    #the last year of caribou measurement
-  }
+  LandTrendR <- mask(LandTrendR, SA)
+  LandTrendRdt <- as.data.table(values(LandTrendR))
+  nDisturbed <- nrow(LandTrendRdt[yod <= lastYear & yod > 0])
+  #I am unsure if non-forest is routinely classified as disturbed under LandTrendR
+  propDisturbed <- nDisturbed/N
+  meanMag <- mean(LandTrendRdt[yod <= lastYear & mag > 0]$mag)
+  outputDT[, c("nDisturbed", "propDisturbed", "meanMag") := .(nDisturbed, propDisturbed, meanMag)]
+
+  ####summarize the C2C harvest #####
+  harvest <- project(harvest, LandTrendR, method = "near") %>%
+    mask(., SA)
+  harvestDT <- data.table(values(harvest) + 1900) 
+  names(harvestDT) <- "harvested"
+  propHarvested <- harvestDT[harvested <= lastYear & harvested > 1900, .N]/N
+  outputDT[, propHarvest := propHarvested]
+  rm(harvest, harvestDT)
+  #this is the proportion of pixels that were harvested before or during
+  #the last year of caribou measurement
+  
+  fire <- project(fire, LandTrendR, method = "near") %>%
+    mask(., SA)
+  burnDT <- data.table(values(fire) + 1900) 
+  names(burnDT) <- "burned"
+  propBurned <- burnDT[burned <= lastYear & burned > 1900, .N]/N
+  outputDT[, propBurned := propBurned]
+  rm(fire, burnDT)
+  #this is the proportion of pixels that were burned before or during
+  #the last year of caribou measurement
+
   
   return(outputDT)
 }
 
-RangeSubset <- RangePolys$PolygonID[c(1, 5, 6, 9)]
+PolygonIDs <- unique(RangePolys$PolygonID)
 
-results <- rbindlist(lapply(RangeSubset, summarizeData, harvest = C2Charvest), fill = TRUE)
 
+LandTrendR <- file.path("outputs/Caribou_LandTrendR_Results", paste0(PolygonIDs, ".tif")) %>%
+  lapply(., rast)
+names(LandTrendR) <- PolygonIDs
+
+#I had some memory issues reprojecting (100+ GB RAM used!) so this approach was safest
+results <- rbindlist(lapply(PolygonIDs, summarizeData, 
+                   LandTrendR = LandTrendR, SA = RangePolys, harvest = harvest, fire = fire))
+#Red Earth is 22 
+write.csv(results, "outputs/Caribou_Range_Disturbance_Summary.csv")
+hist(results$propBurned)
+hist(results$propDisturbed)
+hist(results$propHarvest)
