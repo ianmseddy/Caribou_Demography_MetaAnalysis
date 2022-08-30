@@ -145,6 +145,4 @@ results <- rbindlist(lapply(PolygonIDs, summarizeData,
                    LandTrendR = LandTrendR, SA = RangePolys, harvest = harvest, fire = fire))
 #Red Earth is 22 
 write.csv(results, "outputs/Caribou_Range_Disturbance_Summary.csv")
-hist(results$propBurned)
-hist(results$propDisturbed)
-hist(results$propHarvest)
+
