@@ -83,11 +83,11 @@ summarizeData <- function(SAname, SA, LandTrendR, harvest, fire, lcc = LCC) {
   names(lccVal) <- "lcc" #assigning it during creation is no longer working ?
   
   forestPix <- lccVal[lcc %in% c(210, 220, 230), .N]
-  vegPix <- lccVal[lcc %in% c(210, 220, 230, 40, 50, 80, 81, 100), .N]
+  disturbablePix <- lccVal[lcc %in% c(210, 220, 230, 33, 40, 50, 80, 81, 100), .N]
   N <- lccVal[!is.na(lcc), .N]
   propForest <- forestPix/N
-  propVeg <- vegPix/N
-  rm(lccVal, vegPix, forestPix, lcc)
+  propVeg <- disturbablePix/N
+  rm(lccVal, disturbablePix, forestPix, lcc)
   outputDT[, c("Npixels", "propForest", "propVeg") := .(N, propForest, propVeg)]
   
   ####summarize the LandTrendR data####
@@ -135,7 +135,7 @@ summarizeData <- function(SAname, SA, LandTrendR, harvest, fire, lcc = LCC) {
 
 PolygonIDs <- unique(RangePolys$PolygonID)
 
-
+# load LandTrendR results. 
 LandTrendR <- file.path("outputs/Caribou_LandTrendR_Results", paste0(PolygonIDs, ".tif")) %>%
   lapply(., rast)
 names(LandTrendR) <- PolygonIDs
