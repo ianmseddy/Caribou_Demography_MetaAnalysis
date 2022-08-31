@@ -1,10 +1,11 @@
 library(terra)
 library(sf)
 library(data.table)
-library(magrittr) # for piping - I am still using R v4.02 like a chump
 library(googledrive)
 library(purrr)
-library(parallel)
+library(devtools)
+#devtools::install_github("PredictiveEcology/reproducible") #this is one of Eliot McIntire's repos for one-stop postProcessing
+library(reproducible) #run the above line if this fails
 
 #location of LandTrendR result directory
 
@@ -12,41 +13,66 @@ resultsDir <- "outputs"
 resultFile <- file.path(resultsDir, "Caribou_LandTrendR_Results.zip")
 
 #results are publicly accessible with link, think this is fine.. 
-if (FALSE) {
+if (!dir.exists(resultsFile)) {
   googledrive::drive_deauth()
   googledrive::drive_download(file = 'https://drive.google.com/file/d/1e-g2JrWi46GwZ0VIynd1DmZLxqk-9WGB/view?usp=sharing',
-                       path = resultFile
+                              path = resultFile)
   utils::unzip(zipfile = resultFile, exdir = resultsDir)
-  #this was vastly easier than using googledrive tools, which fail due to API limits (I believe anyway)
-  #however I had to download and re-upload the original directory...which seems avoidable?
+  #the above link is the re-hosted LandTrendR results (I moved from ian.eddy@nrcan to my gmail account, which has more storage)
+  #if more range polys are updated, we will have to do this step over again :( 
+  # I couldn't get the googledrive package to work, but we should be able to use it directly to get the data instead of re-hosting
 }
 
-
-
 #caribou range polygons digitized from literature
+if (!file.exists("GIS/Digitized_Caribou_StudyAreas.shp")) {
+  RangePolys <- prepInputs(url = "https://drive.google.com/file/d/18gFYdnALVJIaJAmQlNnHQENqARWlfEYG/view?usp=sharing", 
+                           destinationPath = "GIS",
+                           fun = "terra::vect")
+} else {
 RangePolys <- terra::vect("GIS/Digitized_Caribou_StudyAreas.shp")
+}
+# it was tedious ous to keep uploading the dataset as I edited it, so I prioritize local copy 
+
 
 #table with demographic data for each range
 caribouDF <- fread("data/Range_Polygon_Data.csv")
 
 
 #####auxiliary datasets ####  
-# fire, harvest, and landcover - to give context to LandTrendR
-#GIS data - these NFI datasets are enormous hence the hardcoded path.
+# fire, harvest, and landcover - to give context to LandTrendR.
 #they all live here https://opendata.nfis.org/mapserver/nfis-change_eng.html
 
-harvest <- terra::rast("C:/Ian/Data/C2C/CA_harvest_year_1985_2015.tif")
+# harvest <- terra::rast("C:/Ian/Data/C2C/CA_harvest_year_1985_2015.tif")
+if (file.exists("GIS/CA_forest_harvest_year_1985_2015.tif")) {
+  harvest <- rast("GIS/CA_harvest_year_1985_2015.tif")
+} else {
+  harvestFile <- "GIS/CA_forest_harvest_mask_year_1985_2015.zip"
+  download.file(url = "https://opendata.nfis.org/downloads/forest_change/CA_forest_harvest_mask_year_1985_2015.zip",
+                destfile = harvestFile)
+  utils::unzip(harvestFile, 
+               files = "CA_harvest_year_1985_2015.tif",
+               exdir = "GIS")
+  harvest <- rast("GIS/CA_harvest_year_1985_2015.tif")
+}
 # https://opendata.nfis.org/downloads/forest_change/CA_forest_harvest_mask_year_1985_2015.zip
-fire <- terra::rast("C:/Ian/Data/C2C/CA_forest_wildfire_year_1985_2015.tif")
+
+#this is the extracted year layer of a composite tif that is 90 GB. Url is given below
+fire <- prepInputs(url = "https://drive.google.com/file/d/1tZIYz8QEZdrXqgvw3l50RQpRZb7mfIYa/view?usp=sharing", 
+                   fun = "terra::rast", 
+                   destinationPath = "GIS")
 # https://opendata.nfis.org/downloads/forest_change/CA_forest_wildfire_year_DNBR_Magnitude_1985_2015.zip
-#we only need fire year - the dNBR is the largest file, as it is stored as a float. Beware of unzipping
+#we only need fire year - the dNBR is the largest file, as it is stored as a float. 
 
 #citation for both: Hermosilla, T., M.A. Wulder, J.C. White, N.C. Coops, G.W. Hobart, L.B. Campbell, 2016. 
 #Mass data processing of time series Landsat imagery: pixels to data products for forest monitoring. 
 #International Journal of Digital Earth 9(11), 1035-1054.
 
-
-LCC <- rast("C:/Ian/Data/C2C/CA_forest_VLCE_2015/CA_forest_VLCE_2015.tif")
+if (file.exists("GIS/CA_forest_VLCE_2015.tif")) {
+  LCC <- rast("GIS/CA_forest_VLCE_2015/CA_forest_VLCE_2015.tif")
+} else {
+  LCC <- prepInputs(url = "https://opendata.nfis.org/downloads/forest_change/CA_forest_VLCE_2015.zip", 
+                    destinationPath = "GIS")
+}
 #this is a similarly derived landcover file
 # https://opendata.nfis.org/downloads/forest_change/CA_forest_VLCE_2015.zip
 #cite: White, J.C., M.A. Wulder, T. Hermosilla, N.C. Coops, and G.W. Hobart. (2017). A nationwide annual characterization of 25 years of forest disturbance and recovery for Canada using Landsat time series. Remote Sensing of Environment. 192: 303-321. 

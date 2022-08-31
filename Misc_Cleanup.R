@@ -1,5 +1,5 @@
 library(data.table)
-setDTthreads(4)
+setDTthreads(4) 
 
 results <- data.table::fread("outputs/Caribou_Range_Disturbance_Summary.csv")
 rangePolyDT <- fread("data/Range_Polygon_Data.csv")
@@ -50,3 +50,4 @@ rangePolyDT[, CalfCow := as.numeric(CalfCow)]
 rangePolyDT[grep("Culling115", PolygonID), CalfCow := CalfCow/100]
 #still need to address the Ellington 2020 data
 #Pregnancy is a character due to asterisk on 79 - I believe it was the calving rate, not the pregnancy rate
+write.csv(rangePolyDT, "data/Range_Polygon_Data.csv")
