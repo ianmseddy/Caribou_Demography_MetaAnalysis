@@ -51,6 +51,8 @@ So I think including these repots would give us a much more robust dataset. Howe
 I also think searching for individual ranges might be fruitful (I tried this with Chilcotin, which is presently absent from our database, and almost immediately found a report by some consultants 
 with usable demographic data). In hindsight, this would be a great co-op project. 
 
+We could do a sensitivity analysis on the choice of remotely-sensed index - we use the default Normalized-Burn-Ratio, or the disturbance measure (we use largest magnitude, as opposed to 
+steepest - which is the magnitude/rate, but since rate is generally 1, it should have no). 
 
 Caribou_DemographicData_Worksheets.xlsx - Excel file used for the original lit review - I separated the sheets into CSVs inside the 'Data' folder
 Caribou_LandTrendR_R.Rproj  - the R project
@@ -60,6 +62,6 @@ GIS/ - stores all the GIS data I used - lots of temp files for digitizing, like 
 Misc_Cleanup.R - Dealt with some basic data cleaning and standardization of demographic parameters. Doesn't need to be run again, but it could be automated. 
 outputs/ - Contains the LandTrendR outputs (Caribou_LandTrendR_Results) and the geospatial analysis result (Caribou_Range_Disturbance_Summary.csv).
 This will eventually be joined with Range_Polygon_Data.csv on the PolygonID column to link CE with demographic variables 
-postProcessing.R - this ran teh 
+postProcessing.R - this runs the  
 
  
