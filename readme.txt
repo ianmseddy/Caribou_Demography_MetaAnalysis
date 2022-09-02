@@ -36,7 +36,6 @@ From experience, duration is almost always 1, consistent with fire or harvest, w
 last measurement year are selected, mean magnitude is calculated, and these two metrics are recorded. 
 The function returns a one-row data.table, so I just bind them all together after the iteration completes. 
 
-Some of this looping script is a bit clunky because I tried to parallelize it, unsuccessfully. 
 
 ####Outstanding Issues ####
 These are documented more in-depth in the Misc Notes google doc, but essentially - the Johnson 2015 ranges (5 mountain caribou) have incorrect dates and do not actually come from Johnson collar data, but 
@@ -52,7 +51,15 @@ So I think including these repots would give us a much more robust dataset. Howe
 I also think searching for individual ranges might be fruitful (I tried this with Chilcotin, which is presently absent from our database, and almost immediately found a report by some consultants 
 with usable demographic data). In hindsight, this would be a great co-op project. 
 
- 
 
- 
+Caribou_DemographicData_Worksheets.xlsx - Excel file used for the original lit review - I separated the sheets into CSVs inside the 'Data' folder
+Caribou_LandTrendR_R.Rproj  - the R project
+CaribouStudyAreas.kmz - I saved the range polygons as KMZs for Google Earth, but it might be missing a few (e.g. Mahoney_Buchans). 
+data/ - this contains the demographic data, Range_Polygon_Data.csv, as well as lit review notes and some one-off worksheets used to populate the Range Polygon data. 
+GIS/ - stores all the GIS data I used - lots of temp files for digitizing, like Provincial lakes and roads, that I gitignored. It also houses the CE layers used in the analysis
+Misc_Cleanup.R - Dealt with some basic data cleaning and standardization of demographic parameters. Doesn't need to be run again, but it could be automated. 
+outputs/ - Contains the LandTrendR outputs (Caribou_LandTrendR_Results) and the geospatial analysis result (Caribou_Range_Disturbance_Summary.csv).
+This will eventually be joined with Range_Polygon_Data.csv on the PolygonID column to link CE with demographic variables 
+postProcessing.R - this ran teh 
+
  
