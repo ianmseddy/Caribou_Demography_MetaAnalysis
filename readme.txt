@@ -45,6 +45,7 @@ And the Mahoney et al paper needs to have 4 of 6 polygons removed, and the demog
 
 
 #### Literature Review, Lingering Thoughts####
+Literature lives in this google drive folder https://drive.google.com/file/d/1cArw3XK0LnVS27P7wcTN6JxxpiZcamxX/view?usp=sharing
 I think the elephant in the room is whether to include more gray literature - as at the moment we have already done so for BC (Seip reports for Boreal caribou) and SK (The SK1 paper is a University report). 
 Additionally, one of the BC mountain caribou papers (Johnson 2015) is incorrectly cited, and is actually using data from a government report by Seip (that I did not manage to find). 
 So I think including these repots would give us a much more robust dataset. However, we would need to devise some kind of structured approach to searching gray literature.
