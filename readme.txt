@@ -48,12 +48,12 @@ And the Mahoney et al paper needs to have 4 of 6 polygons removed, and the demog
 Literature lives in this google drive folder https://drive.google.com/file/d/1cArw3XK0LnVS27P7wcTN6JxxpiZcamxX/view?usp=sharing
 I think the elephant in the room is whether to include more gray literature - as at the moment we have already done so for BC (Seip reports for Boreal caribou) and SK (The SK1 paper is a University report). 
 Additionally, one of the BC mountain caribou papers (Johnson 2015) is incorrectly cited, and is actually using data from a government report by Seip (that I did not manage to find). 
-So I think including these repots would give us a much more robust dataset. However, we would need to devise some kind of structured approach to searching gray literature.
+Including these reports would give us a much more robust dataset. However, we would need to devise some kind of structured approach to searching gray literature.
 I also think searching for individual ranges might be fruitful (I tried this with Chilcotin, which is presently absent from our database, and almost immediately found a report by some consultants 
 with usable demographic data). In hindsight, this would be a great co-op project. 
 
 We could do a sensitivity analysis on the choice of remotely-sensed index - we use the default Normalized-Burn-Ratio, or the disturbance measure (we use largest magnitude, as opposed to 
-steepest - which is the magnitude/rate, but since rate is generally 1, it should have no). 
+steepest - which is the magnitude/rate, but since rate is generally 1, it should have no effect). 
 
 Caribou_DemographicData_Worksheets.xlsx - Excel file used for the original lit review - I separated the sheets into CSVs inside the 'Data' folder
 Caribou_LandTrendR_R.Rproj  - the R project
@@ -63,6 +63,6 @@ GIS/ - stores all the GIS data I used - lots of temp files for digitizing, like 
 Misc_Cleanup.R - Dealt with some basic data cleaning and standardization of demographic parameters. Doesn't need to be run again, but it could be automated. 
 outputs/ - Contains the LandTrendR outputs (Caribou_LandTrendR_Results) and the geospatial analysis result (Caribou_Range_Disturbance_Summary.csv).
 This will eventually be joined with Range_Polygon_Data.csv on the PolygonID column to link CE with demographic variables 
-postProcessing.R - this runs the  
+postProcessing.R - this executes the GIS operations to calculate disturbance rates in each polygon, and outputs it as a data.table ("outputs/Caribou_Disturbance_Summary.scv")  
 
  

@@ -10,17 +10,15 @@ library(reproducible) #run the above line if this fails
 #location of LandTrendR result directory
 
 resultsDir <- "outputs"
-resultFile <- file.path(resultsDir, "Caribou_LandTrendR_Results.zip")
+resultFile <- file.path(resultsDir, "Caribou_LandTrendR_Results")
 
 #results are publicly accessible with link, think this is fine.. 
-if (!dir.exists(resultsFile)) {
+if (!dir.exists(resultFile)) {
+  zipPath <- paste0(resultFile, ".zip")
   googledrive::drive_deauth()
   googledrive::drive_download(file = 'https://drive.google.com/file/d/1e-g2JrWi46GwZ0VIynd1DmZLxqk-9WGB/view?usp=sharing',
                               path = resultFile)
   utils::unzip(zipfile = resultFile, exdir = resultsDir)
-  #the above link is the re-hosted LandTrendR results (I moved from ian.eddy@nrcan to my gmail account, which has more storage)
-  #if more range polys are updated, we will have to do this step over again :( 
-  # I couldn't get the googledrive package to work, but we should be able to use it directly to get the data instead of re-hosting
 }
 
 #caribou range polygons digitized from literature
