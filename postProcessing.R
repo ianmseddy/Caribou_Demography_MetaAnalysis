@@ -4,7 +4,6 @@ library(data.table)
 library(googledrive)
 library(purrr)
 library(devtools)
-#devtools::install_github("PredictiveEcology/reproducible") #this is one of Eliot McIntire's repos for one-stop postProcessing
 library(reproducible) #run the above line if this fails
 
 #location of LandTrendR result directory
@@ -22,6 +21,8 @@ if (!dir.exists(resultFile)) {
 }
 
 #caribou range polygons digitized from literature
+#TODO: correct some errant author fields, e.g. Dalerum et al. is missing the period in 'al.',
+#then re-host this file 
 if (!file.exists("GIS/Digitized_Caribou_StudyAreas.shp")) {
   RangePolys <- prepInputs(url = "https://drive.google.com/file/d/18gFYdnALVJIaJAmQlNnHQENqARWlfEYG/view?usp=sharing", 
                            destinationPath = "GIS",

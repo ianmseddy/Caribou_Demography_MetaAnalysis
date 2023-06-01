@@ -14,6 +14,11 @@ rangePolyDT[PolygonID == "Dalerum67_CaribouMountains", CalfCow := mean(CBM$V2)/1
 rangePolyDT[PolygonID == "Dalerum67_RedEarth", CalfCow := mean(RedEarth$V2)/100]
 rangePolyDT[PolygonID == "Dalerum67_ESAR", CalfCow := mean(ESAR$V2)/100]
 
+rangePolyDT[PolygonID == "Dalerum67_CaribouMountains", Author = "Dalerum et al."]
+rangePolyDT[PolygonID == "Dalerum67_RedEarth", Author = "Dalerum et al."]
+rangePolyDT[PolygonID == "Dalerum67_ESAR", Author = "Dalerum et al."]
+
+
 #note the years though as calfcow is earlier
 rangePolyDT[grep("Dalerum67", PolygonID), Note := "FSR and CalfCow derived from interpretation. Note FSM and CalfCow years are not identical"]
 

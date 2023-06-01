@@ -9,7 +9,7 @@ files as an "asset" to GEE, and ensure it is called 'aoi'. This shouldn't be har
 The script will subset the polygons one at a time, corresponding to the 'i' variable. This is annoying because I mananged to run it for every polygon at once in a Map call and it didn't take much time, 
 but the bottleneck was that I couldn't export multiple images simultaneously. So instead I run one at a time (you can set up multiple runs, but it seems to take longer to export). 
 However, there are duplicates in the list owing to multi-polygons, so you may want to expand the list in the console to ensure new runs aren't needless duplicates. 
-Otherwise, the LandTrendR algorithm is unchanged from the defaults (it runs on the NRB spectral index, it calculates change based on the largest magnitude disturbance, 
+Otherwise, the LandTrendR algorithm is unchanged from the defaults (it runs on the NBR spectral index, it calculates change based on the largest magnitude disturbance, 
 and it masks out snow/ice/water using the USGS-provided QC layer). You could optionally run it to select "gains" instead of losses, or to track disturbance as the 'steepest slope', 
 but neither seemed relevant to this project. 
 
