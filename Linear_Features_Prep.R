@@ -66,6 +66,7 @@ prepOutputs <- function(infile, cropFile, outputName){
 #harvest year
 #TODO: figure this out 
 harvestYear <- rast("C:/Ian/Data/C2C/CA_harvest_year_1985_2015.tif")
+terra::NAflag(harvestYear) <- 0
 
 #####Manitoba####
 MB <- RangePolygons[RangePolygons$Province == "MB",]
@@ -145,29 +146,37 @@ SKPoly <- RangePolygons[RangePolygons$Province == "SK",]$PolygonID
 sapply(unique(SK$PolygonID), SaskatchewanGISprep)
 rm(SK, SKosmrail, SKosmroad, SKroads)
 
-SK <- RangePolygons[RangePolygons$Province == "SK",]
-SKroads <- vect("GIS/Linear_Features/SK/ROADSEG/ROADSEG.shp")
-SKosmroad <- vect("GIS/Linear_features/SK/saskatchewan-latest-free.shp/gis_osm_roads_free_1.shp")
-SKosmrail <- vect("GIS/Linear_features/SK/saskatchewan-latest-free.shp/gis_osm_railways_free_1.shp")
-
 ####Ontario####
-OntarioGISprep <- function(PolyID, RangeSA = RangePolygons, roads = ONroads, NRNroads = NRNall, 
-                                osmroad = ONosmroad, osmrail = ONosmrail, power = NRN_powerlines, 
-                                pipe = NRN_pipelines, communication = NRN_cmnlines, 
-                                seismic = seismicLines){
+ON <- RangePolygons[RangePolygons$Province == "ON",]
+ONmnrf <- vect("GIS/Linear_Features/ON/MNRRDSEG/LIO-2023-04-20/MNRF_ROAD_SEGMENT.shp")
+ONroads <- vect("GIS/Linear_features/ON/nrn_rrn_on_shp_en/NRN_ON_12_0_ROADSEG.shp")
+
+#The OSM data for Ontario is limited and unlikely to be useful
+OntarioGISprep <- function(PolyID, RangeSA = RangePolygons, roads = ONroads, 
+                           NRNroads = NRNall, forestRoads = ONmnrf, power = NRN_powerlines, 
+                           pipe = NRN_pipelines, communication = NRN_cmnlines, 
+                           seismic = seismicLines){
   outDir <- file.path("GIS/Linear_Features/RangeSA_Digitization", PolyID)
   if (!dir.exists(outDir)){
     dir.create(outDir)
   }
   RangeSA <- RangeSA[RangeSA$PolygonID == PolyID]
+  
+  MeasureYear <- unique(RangeSA$Meas_Years)
+  roads$CREDATE_year <- as.numeric(stringr::str_sub(roads$CREDATE, start = 1, end = 4)) #hopefully no na?  
+  roads_subset <- roads[roads$CREDATE_year <= MeasureYear]
+  forestRoads_subset <- forestRoads[forestRoads$YR_CONST <= MeasureYear]
+  
   prepOutputs(NRNroads, RangeSA, file.path(outDir, paste0(PolyID, "_NRNroads.shp")))
-  prepOutputs(roads, RangeSA, file.path(outDir, paste0(PolyID, "_ONroads_2010.shp")))
+  prepOutputs(roads, RangeSA, file.path(outDir, paste0(PolyID, "_ONroads_all.shp")))
   prepOutputs(power, RangeSA, outputName = file.path(outDir, paste0(PolyID, "_powerlines.shp")))
   prepOutputs(pipe, RangeSA, file.path(outDir, paste0(PolyID, "_pipelines.shp")))
   prepOutputs(NRN_cmnlines,RangeSA, file.path(outDir, paste0(PolyID, "_commlines.shp")))
   prepOutputs(seismic, RangeSA, file.path(outDir, paste0(PolyID, "_pulse_seismic.shp")))
-  prepOutputs(osmroad, RangeSA, file.path(outDir, paste0(PolyID, "_osm_roads.shp")))
-  prepOutputs(osmrail, RangeSA, file.path(outDir, paste0(PolyID, "_osm_rail.shp")))
+  prepOutputs(forestRoads, RangeSA, file.path(outDir, paste0(PolyID, "_mnrf_roads_all.shp")))
+  prepOutputs(forestRoads_subset, RangeSA, file.path(outDir, paste0(PolyID, "_mnrf_roads_subset.shp")))
+  prepOutputs(roads_subset, RangeSA, file.path(outDir, paste0(PolyID, "_ONroads_subset.shp")))
+  
   
   temp <- rast(paste0("outputs/Caribou_LandTrendR_Results/", PolyID,".tif"))
   temp <- temp$yod
@@ -177,7 +186,5 @@ OntarioGISprep <- function(PolyID, RangeSA = RangePolygons, roads = ONroads, NRN
   
 }
 
-ONPoly <- RangePolygons[RangePolygons$Province == "ON",]$PolygonID
-
 sapply(unique(ON$PolygonID), OntarioGISprep)
-rm(ON, ONosmrail, ONosmroad, ONroads)
+rm(ON, ONroads, ONmnrf)
