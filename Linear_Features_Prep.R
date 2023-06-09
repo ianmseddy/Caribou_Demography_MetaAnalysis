@@ -52,13 +52,13 @@ prepOutputs <- function(infile, cropFile, outputName){
   if (class(infile) %in% "SpatVector"){
     out <- postProcess(infile, cropTo = cropFile, projectTo = cropFile)
     if (nrow(out) > 0){
-      writeVector(out, filename = outputName)
+      writeVector(out, filename = outputName, overwrite = TRUE)
     }
   } else {
     out <- postProcess(infile, cropTo = cropFile, projectTo = cropFile, 
                        maskTo = cropFile, res = c(30, 30), method = "near")
     if (any(!is.na(out[]))){
-      writeRaster(out, filename = outputName)
+      writeRaster(out, filename = outputName, overwrite = TRUE)
     }
   }
 }
@@ -162,19 +162,20 @@ OntarioGISprep <- function(PolyID, RangeSA = RangePolygons, roads = ONroads,
   }
   RangeSA <- RangeSA[RangeSA$PolygonID == PolyID]
   
+  
   MeasureYear <- unique(RangeSA$Meas_Years)
   roads$CREDATE_year <- as.numeric(stringr::str_sub(roads$CREDATE, start = 1, end = 4)) #hopefully no na?  
   roads_subset <- roads[roads$CREDATE_year <= MeasureYear]
   forestRoads_subset <- forestRoads[forestRoads$YR_CONST <= MeasureYear]
   
   prepOutputs(NRNroads, RangeSA, file.path(outDir, paste0(PolyID, "_NRNroads.shp")))
-  prepOutputs(roads, RangeSA, file.path(outDir, paste0(PolyID, "_ONroads_all.shp")))
   prepOutputs(power, RangeSA, outputName = file.path(outDir, paste0(PolyID, "_powerlines.shp")))
   prepOutputs(pipe, RangeSA, file.path(outDir, paste0(PolyID, "_pipelines.shp")))
   prepOutputs(NRN_cmnlines,RangeSA, file.path(outDir, paste0(PolyID, "_commlines.shp")))
   prepOutputs(seismic, RangeSA, file.path(outDir, paste0(PolyID, "_pulse_seismic.shp")))
   prepOutputs(forestRoads, RangeSA, file.path(outDir, paste0(PolyID, "_mnrf_roads_all.shp")))
   prepOutputs(forestRoads_subset, RangeSA, file.path(outDir, paste0(PolyID, "_mnrf_roads_subset.shp")))
+  prepOutputs(roads, RangeSA, file.path(outDir, paste0(PolyID, "_ONroads_all.shp")))
   prepOutputs(roads_subset, RangeSA, file.path(outDir, paste0(PolyID, "_ONroads_subset.shp")))
   
   
@@ -186,5 +187,82 @@ OntarioGISprep <- function(PolyID, RangeSA = RangePolygons, roads = ONroads,
   
 }
 
-sapply(unique(ON$PolygonID), OntarioGISprep)
-rm(ON, ONroads, ONmnrf)
+sapply(c("Walker64_Nakina", "Walker64_PickleLake"), OntarioGISprep)
+rm(ONroads, ONmnrf)
+gc()
+
+#the Ontario MNRF roads and the ORN are often (but not always) counting the same road. 
+# will try to buffer the ORN by 30 metres and take the difference with MNRF
+sapply(unique(ON$PolygonID), function(PolyID, RangeSA = RangePolygons){
+  outDir <- file.path("GIS/Linear_Features/RangeSA_Digitization", PolyID)
+  RangeSA <- RangeSA[RangeSA$PolygonID == PolyID]
+  forestRoads_subset <- vect(file.path(outDir, paste0(PolyID, "_mnrf_roads_subset.shp")))
+  roads_subset <- vect(file.path(outDir, paste0(PolyID, "_ONroads_subset.shp")))
+  roads_subset <- terra::buffer(roads_subset, width = 30, joinstyle = "bevel", capstyle = "flat")
+  forestRoads_crop <- erase(forestRoads_subset, roads_subset)
+  writeVector(forestRoads_crop, file.path(outDir, paste0(PolyID, "_mnrf_roads_subset.shp")), 
+              overwrite = TRUE)
+})
+
+####British Columbia ####
+BC <- RangePolygons[RangePolygons$Province == "BC",]
+BCresRoads <- vect("GIS/Linear_Features/BC/BCGW_7113060B_1685383327761_7348/DRA_DGTL_ROAD_ATLAS_MPAR_SP/DRA_MPAR_line.shp")
+#BCRoads #ensure that these are not already included in BCresRoads
+BCpower <- vect("GIS/Linear_features/BC/canvec_50K_BC_Res_MGT_shp/canvec_50K_BC_Res_MGT/power_line_1.shp")
+BCpipe <- vect("GIS/Linear_features/BC/canvec_50K_BC_Res_MGT_shp/canvec_50K_BC_Res_MGT/pipeline_1.shp")
+#at first glance the BC pipelines appears to capture stuff pulse is missing, but they overlap hugely. 
+BCcomlines <- vect("GIS/Linear_features/BC/canvec_50K_BC_Res_MGT_shp/canvec_50K_BC_Res_MGT/communication_line_1.shp")
+#The OSM data for BC is limited and unlikely to be useful
+BCGISprep <- function(PolyID, RangeSA = RangePolygons, roads = BCroads, 
+                           NRNroads = NRNall, forestRoads = BCresRoads, power = BCtransmission, 
+                           pipe = BCpipelines, communication = BCcomlines, 
+                           seismic = seismicLines){
+  outDir <- file.path("GIS/Linear_Features/RangeSA_Digitization", PolyID)
+  if (!dir.exists(outDir)){
+    dir.create(outDir)
+  }
+  RangeSA <- RangeSA[RangeSA$PolygonID == PolyID]
+  
+  
+  MeasureYear <- unique(RangeSA$Meas_Years)
+  roads$CREDATE_year <- as.numeric(stringr::str_sub(roads$CREDATE, start = 1, end = 4)) #hopefully no na?  
+  roads_subset <- roads[roads$CREDATE_year <= MeasureYear]
+  forestRoads_subset <- forestRoads[forestRoads$YR_CONST <= MeasureYear]
+  
+  prepOutputs(NRNroads, RangeSA, file.path(outDir, paste0(PolyID, "_NRNroads.shp")))
+  prepOutputs(power, RangeSA, outputName = file.path(outDir, paste0(PolyID, "_powerlines.shp")))
+  prepOutputs(pipe, RangeSA, file.path(outDir, paste0(PolyID, "_pipelines.shp")))
+  prepOutputs(NRN_cmnlines,RangeSA, file.path(outDir, paste0(PolyID, "_commlines.shp")))
+  prepOutputs(seismic, RangeSA, file.path(outDir, paste0(PolyID, "_pulse_seismic.shp")))
+  prepOutputs(forestRoads, RangeSA, file.path(outDir, paste0(PolyID, "_mnrf_roads_all.shp")))
+  prepOutputs(forestRoads_subset, RangeSA, file.path(outDir, paste0(PolyID, "_mnrf_roads_subset.shp")))
+  prepOutputs(roads, RangeSA, file.path(outDir, paste0(PolyID, "_ONroads_all.shp")))
+  prepOutputs(roads_subset, RangeSA, file.path(outDir, paste0(PolyID, "_ONroads_subset.shp")))
+  
+  
+  temp <- rast(paste0("outputs/Caribou_LandTrendR_Results/", PolyID,".tif"))
+  temp <- temp$yod
+  temp[temp == 0] <- NA
+  prepOutputs(temp, RangeSA, file.path(outDir, paste0(PolyID,"_LandTrendR_yod.tif")))  
+  prepOutputs(harvestYear, RangeSA, file.path(outDir, paste0(PolyID, "_harvestYear.tif")))
+  
+}
+
+sapply(unique(BC$PolygonID)), BCGISprep)
+rm(BCroads, BCresRoads)
+gc()
+
+#the BC MNRF roads and the ORN are often (but not always) counting the same road. 
+# will try to buffer the ORN by 30 metres and take the difference with MNRF
+sapply(unique(ON$PolygonID), function(PolyID, RangeSA = RangePolygons){
+  outDir <- file.path("GIS/Linear_Features/RangeSA_Digitization", PolyID)
+  RangeSA <- RangeSA[RangeSA$PolygonID == PolyID]
+  forestRoads_subset <- vect(file.path(outDir, paste0(PolyID, "_mnrf_roads_subset.shp")))
+  roads_subset <- vect(file.path(outDir, paste0(PolyID, "_ONroads_subset.shp")))
+  roads_subset <- terra::buffer(roads_subset, width = 30, joinstyle = "bevel", capstyle = "flat")
+  forestRoads_crop <- erase(forestRoads_subset, roads_subset)
+  writeVector(forestRoads_crop, file.path(outDir, paste0(PolyID, "_mnrf_roads_subset.shp")), 
+              overwrite = TRUE)
+})
+
+
