@@ -1,12 +1,13 @@
-﻿Jurisidction,Dataset Name,Source,Date Field,Date Field Type,Notes
-BC,Digital Road Atlas,https://catalogue.data.gov.bc.ca/dataset/digital-road-atlas-dra-master-partially-attributed-roads,Yes,Capture date,
-BC,Transmission Lines,https://catalogue.data.gov.bc.ca/dataset/bc-transmission-lines,Yes,Source Date,
-AB,Road Network File 2010,https://www12.statcan.gc.ca/census-recensement/2011/geo/RNF-FRR/files-fichiers/grnf048r10a_e.zip,No,NA,
-AB,Powerline,https://geospatial.alberta.ca/titan/rest/services/utility/access_utility/MapServer/15,No,NA,
-ON,MNRF Road Segments,https://www.gisapplication.lrc.gov.on.ca/fmedatadownload/Packages/MNRRDSEG.zip,Yes,Year constructed,"see ""Year Constructed Modifier"" column"
-ON,Ontario Road Network Road Net Element,https://www.gisapplication.lrc.gov.on.ca/fmedatadownload/Packages/ORNELEM.zip,No,NA,date should be pretty close to time period (2013)
-Canada,"Mines, Energy, and Communication Networks in Canada - CanVec Series - Resources Management Features",https://ftp.maps.canada.ca/pub/nrcan_rncan/vector/canvec/fgdb/Res_MGT/,yes,date min and date max,
-Canada,National Road Network,https://open.canada.ca/data/en/dataset/3d282116-e556-400c-9306-ca1a3cada77f,No,NA,"Archived products for 2001, 2006, 2011, 2016, and 2021 exist (for 2001, to avoid e00 format, use https://abacus.library.ubc.ca/file.xhtml?fileId=66694&version=1.0)"
-QC,AQ-Reseau Plus,https://www.donneesquebec.ca/recherche/dataset/adresses-quebec/resource/0d5df103-f856-4183-9a15-eb06fce9c8bf,No,NA,
-SK,ROADSEG,https://geohub.saskatchewan.ca/datasets/saskatchewan::roadseg/explore,Yes,creation date,"Combination of rural roads, . Must read metadata about CREDATE and REVDATE"
-MB,Road Network File 2010,https://open.canada.ca/data/en/dataset/8d0f0896-218b-4191-bd0a-449e9a886762,No,NA,seems to have more roads than the StatsCan national dataset. 
+Jurisidction	Dataset Name	Source	Date Field	Date Field Type	Notes
+BC	Digital Road Atlas	https://catalogue.data.gov.bc.ca/dataset/digital-road-atlas-dra-master-partially-attributed-roads	Yes	Capture date	
+BC	Legacy 2D Seismic Line	https://data-bc-er.opendata.arcgis.com/datasets/a459395468de493da9f6952cae09e9be/about	Yes	Imagery date	"the date is unreliable and is based on TRIM. However all data is pre-2006, which is before nearly all BC study areas"
+BC	Transmission Lines	https://catalogue.data.gov.bc.ca/dataset/bc-transmission-lines	Yes	Source Date	
+AB	Road Network File 2010	https://www12.statcan.gc.ca/census-recensement/2011/geo/RNF-FRR/files-fichiers/grnf048r10a_e.zip	No	NA	
+AB	Powerline	https://geospatial.alberta.ca/titan/rest/services/utility/access_utility/MapServer/15	No	NA	
+ON	MNRF Road Segments	https://www.gisapplication.lrc.gov.on.ca/fmedatadownload/Packages/MNRRDSEG.zip	Yes	Year constructed	"see ""Year Constructed Modifier"" column"
+ON	Ontario Road Network Road Net Element	https://www.gisapplication.lrc.gov.on.ca/fmedatadownload/Packages/ORNELEM.zip	No	NA	date should be pretty close to time period (2013)
+Canada	"Mines, Energy, and Communication Networks in Canada - CanVec Series - Resources Management Features"	https://ftp.maps.canada.ca/pub/nrcan_rncan/vector/canvec/fgdb/Res_MGT/	yes	date min and date max	
+Canada	National Road Network	https://open.canada.ca/data/en/dataset/3d282116-e556-400c-9306-ca1a3cada77f	No	NA	"Archived products for 2001, 2006, 2011, 2016, and 2021 exist (for 2001, to avoid e00 format, use https://abacus.library.ubc.ca/file.xhtml?fileId=66694&version=1.0)"
+QC	AQ-Reseau Plus	https://www.donneesquebec.ca/recherche/dataset/adresses-quebec/resource/0d5df103-f856-4183-9a15-eb06fce9c8bf	No	NA	
+SK	ROADSEG	https://geohub.saskatchewan.ca/datasets/saskatchewan::roadseg/explore	Yes	creation date	"Combination of rural roads, . Must read metadata about CREDATE and REVDATE"
+MB	Road Network File 2010	https://open.canada.ca/data/en/dataset/8d0f0896-218b-4191-bd0a-449e9a886762	No	NA	seems to have more roads than the StatsCan national dataset. 
