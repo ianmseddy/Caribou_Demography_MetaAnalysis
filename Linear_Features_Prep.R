@@ -227,7 +227,7 @@ BCGISprep <- function(PolyID, RangeSA = RangePolygons, roads = BCRoads,
   roads$year <- as.numeric(substr(roads$CPTRDATE, start = 1, stop = 4)) 
   roads_subset <- roads[roads$year <= MeasureYear]
   seismic$year <- as.numeric(substr(seismic$DATE_SHOT, start = 1, stop = 4))
-  seismic_subset <- seismic[year <= MeasureYear]
+  seismic_subset <- seismic[seismic$year <= MeasureYear]
   
   
   prepOutputs(NRNroads, RangeSA, file.path(outDir, paste0(PolyID, "_NRNroads.shp")))
@@ -238,7 +238,7 @@ BCGISprep <- function(PolyID, RangeSA = RangePolygons, roads = BCRoads,
   prepOutputs(seismic_subset, RangeSA, file.path(outDir, paste0(PolyID, "_pulse_seismic_sub.shp")))
   prepOutputs(roads, RangeSA, file.path(outDir, paste0(PolyID, "_BCroads_all.shp")))
   prepOutputs(roads_subset, RangeSA, file.path(outDir, paste0(PolyID, "_BCroads_subset.shp")))
-  prepOutputs(BCseismic, RangeSA, file.path(outDir, paste0("PolyID", "_BCOGC_seismic.shp")))
+  prepOutputs(BCseismic, RangeSA, file.path(outDir, paste0(PolyID, "_BCOGC_seismic.shp")))
 
   temp <- rast(paste0("outputs/Caribou_LandTrendR_Results/", PolyID,".tif"))
   temp <- temp$yod
@@ -249,7 +249,7 @@ BCGISprep <- function(PolyID, RangeSA = RangePolygons, roads = BCRoads,
 }
 
 sapply(unique(BC$PolygonID), BCGISprep)
-rm(BCroads, BCresRoads)
+rm(BCroads, BCresRoads, BCseismic)
 gc()
 
 
