@@ -21,17 +21,9 @@ if (!dir.exists(resultFile)) {
 }
 
 #caribou range polygons digitized from literature
-#TODO: correct some errant author fields, e.g. Dalerum et al. is missing the period in 'al.',
-#then re-host this file 
-if (!file.exists("GIS/Digitized_Caribou_StudyAreas.shp")) {
-  RangePolys <- prepInputs(url = "https://drive.google.com/file/d/18gFYdnALVJIaJAmQlNnHQENqARWlfEYG/view?usp=sharing", 
-                           destinationPath = "GIS",
-                           fun = "terra::vect")
-} else {
-RangePolys <- terra::vect("GIS/Digitized_Caribou_StudyAreas.shp")
-}
-# it was tedious ous to keep uploading the dataset as I edited it, so I prioritize local copy 
-
+RangePolys <- prepInputs(url = "https://drive.google.com/file/d/18gFYdnALVJIaJAmQlNnHQENqARWlfEYG/view?usp=sharing", 
+                         destinationPath = "GIS",
+                         fun = "terra::vect")
 
 #table with demographic data for each range
 caribouDF <- fread("data/Range_Polygon_Data.csv")
@@ -42,36 +34,30 @@ caribouDF <- fread("data/Range_Polygon_Data.csv")
 #they all live here https://opendata.nfis.org/mapserver/nfis-change_eng.html
 
 # harvest <- terra::rast("C:/Ian/Data/C2C/CA_harvest_year_1985_2015.tif")
-if (file.exists("GIS/CA_forest_harvest_year_1985_2015.tif")) {
-  harvest <- rast("GIS/CA_harvest_year_1985_2015.tif")
-} else {
-  harvestFile <- "GIS/CA_forest_harvest_mask_year_1985_2015.zip"
-  download.file(url = "https://opendata.nfis.org/downloads/forest_change/CA_forest_harvest_mask_year_1985_2015.zip",
+harvestFile <- "GIS/CA_forest_harvest_mask_year_1985_2015.zip"
+download.file(url = "https://opendata.nfis.org/downloads/forest_change/CA_forest_harvest_mask_year_1985_2015.zip",
                 destfile = harvestFile)
-  utils::unzip(harvestFile, 
+utils::unzip(harvestFile, 
                files = "CA_harvest_year_1985_2015.tif",
                exdir = "GIS")
-  harvest <- rast("GIS/CA_harvest_year_1985_2015.tif")
-}
+harvest <- rast("GIS/CA_harvest_year_1985_2015.tif")
 # https://opendata.nfis.org/downloads/forest_change/CA_forest_harvest_mask_year_1985_2015.zip
 
-#this is the extracted year layer of a composite tif that is 90 GB. Url is given below
+#this is the extracted year layer of a composite image that is 90 GB. URL is given below
 fire <- prepInputs(url = "https://drive.google.com/file/d/1tZIYz8QEZdrXqgvw3l50RQpRZb7mfIYa/view?usp=sharing", 
                    fun = "terra::rast", 
                    destinationPath = "GIS")
 # https://opendata.nfis.org/downloads/forest_change/CA_forest_wildfire_year_DNBR_Magnitude_1985_2015.zip
-#we only need fire year - the dNBR is the largest file, as it is stored as a float. 
+#we only need fire year - an integer -  the delta NBR is a float, which causes the file size. 
 
 #citation for both: Hermosilla, T., M.A. Wulder, J.C. White, N.C. Coops, G.W. Hobart, L.B. Campbell, 2016. 
 #Mass data processing of time series Landsat imagery: pixels to data products for forest monitoring. 
 #International Journal of Digital Earth 9(11), 1035-1054.
 
-if (file.exists("GIS/CA_forest_VLCE_2015.tif")) {
-  LCC <- rast("GIS/CA_forest_VLCE_2015/CA_forest_VLCE_2015.tif")
-} else {
-  LCC <- prepInputs(url = "https://opendata.nfis.org/downloads/forest_change/CA_forest_VLCE_2015.zip", 
-                    destinationPath = "GIS")
-}
+LCC <- prepInputs(url = "https://opendata.nfis.org/downloads/forest_change/CA_forest_VLCE_2015.zip", 
+                  destinationPath = "GIS", 
+                  fun = "terra::rast")
+
 #this is a similarly derived landcover file
 # https://opendata.nfis.org/downloads/forest_change/CA_forest_VLCE_2015.zip
 #cite: White, J.C., M.A. Wulder, T. Hermosilla, N.C. Coops, and G.W. Hobart. (2017). A nationwide annual characterization of 25 years of forest disturbance and recovery for Canada using Landsat time series. Remote Sensing of Environment. 192: 303-321. 
@@ -128,10 +114,11 @@ summarizeData <- function(SAname, SA, LandTrendR, harvest, fire, lcc = LCC) {
   LandTrendR <- mask(LandTrendR, SA)
   LandTrendRdt <- as.data.table(values(LandTrendR))
   nDisturbed <- nrow(LandTrendRdt[yod <= lastYear & yod > 0])
-  #I am unsure if non-forest is routinely classified as disturbed under LandTrendR
+  #TODO: assess how disturbed non-forest performs under LandTrendR
   propDisturbed <- nDisturbed/N
+  totalPropDisturbed <- nrow(LandTrendRdt[yod > 0])/N
   meanMag <- mean(LandTrendRdt[yod <= lastYear & mag > 0]$mag)
-  outputDT[, c("nDisturbed", "propDisturbed", "meanMag") := .(nDisturbed, propDisturbed, meanMag)]
+  outputDT[, c("nDisturbed", "propDisturbed", "meanMag", "propDisturbed_85to20") := .(nDisturbed, propDisturbed, meanMag)]
 
   ####summarize the C2C harvest #####
   harvest <- project(harvest, LandTrendR, method = "near") %>%
@@ -139,7 +126,9 @@ summarizeData <- function(SAname, SA, LandTrendR, harvest, fire, lcc = LCC) {
   harvestDT <- data.table(values(harvest) + 1900) 
   names(harvestDT) <- "harvested"
   propHarvested <- harvestDT[harvested <= lastYear & harvested > 1900, .N]/N
+  totalPropHarvest <- nrow(harvestDT[harvested > 1900])/N
   outputDT[, propHarvest := propHarvested]
+  outputDT[, propHarvest_85to15 := totalPropHarvest]
   rm(harvest, harvestDT)
   #this is the proportion of pixels that were harvested before or during
   #the last year of caribou measurement
