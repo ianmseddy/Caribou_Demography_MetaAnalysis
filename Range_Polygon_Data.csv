@@ -36,7 +36,7 @@
 35,35,Hettinga83_UpperNI,83,Hettinga et al.,2012,Upper part of North Interlake,2004,2009,400000,0.74,0.87,,NA,,No,lambda assumes male + female (combined + separate estimates given)
 36,36,Hettinga83_LowerNI,83,Hettinga et al.,2012,Lower part of North Interlake,2004,2009,400000,0.74,0.93,,NA,,No,lambda assumes male + female (combined + separate estimates given)
 37,37,McLoughlin86_SK1,86,McLoughlin et al.,2019,SK1,2014,2018,1500000,0.895,1,0.195,NA,0.933,Unconfirmed,
-38,38,Hervieux87_Bitscho,87,Hervieux et al.,2013,Bitscho,2008,2012,NA,0.776,0.842,0.171,NA,,Unconfirmed,
+38,38,Hervieux87_Bistcho,87,Hervieux et al.,2013,Bitscho,2008,2012,NA,0.776,0.842,0.171,NA,,Unconfirmed,
 39,39,Hervieux87_Chinchaga,87,Hervieux et al.,2013,Chinchaga BC,2002,2012,NA,0.831,0.887,0.134,NA,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2.
 40,40,Hervieux87_ColdLakeAB,87,Hervieux et al.,2013,Cold Lakes Air Force - Alberta,1999,2012,NA,0.814,0.855,0.1,NA,,Unconfirmed,Digitized from 'Declines in Woodland Caribou' by McLoughlin et al (2003). The starting and ending years are an estimate based on fig 4 and table 2.
 41,41,Hervieux87_CaribouMountains,87,Hervieux et al.,2013,Caribou Mountains,1995,2012,NA,0.858,0.92,0.144,NA,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2.
