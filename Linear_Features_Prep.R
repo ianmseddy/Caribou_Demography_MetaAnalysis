@@ -3,6 +3,8 @@ library(data.table)
 library(magrittr)
 library(reproducible)
 library(sf)
+
+#this is GIS preparation for the study areas that require some digitizing
 RangePolygons <- vect("GIS/Digitized_Caribou_StudyAreas.shp")
 RangePolygons <- terra::makeValid(RangePolygons)
 ####building one NRN vector representing 2001:2021
@@ -253,4 +255,50 @@ rm(BCroads, BCresRoads, BCseismic)
 gc()
 
 
+
+##Alberta
+AB <- RangePolygons[RangePolygons$Province == "AB",]
+ABMIdata <- "GIS/Linear_Features/AB/HFI2014_LinearFeatures_v2.gdb/HFI2014_LinearFeatures_v2.gdb/"
+ABMI_roads <- vect(ABMIdata, layer = "o03_Road_Centerlines_HFI2014v2")
+ABMI_powerlines <- vect(ABMIdata, layer = "o13_TransmissionLines_Centerlines_HFI2014v2")
+ABMI_seismic <- vect(ABMIdata, layer = "o20_SeismicLines_Centerlines_HFI2014v2")
+ABMI_rail <- vect(ABMIdata, layer = "o04_Rail_Centerlines_HFI2014v2")
+#ABMI pipelines weren't publically available
+
+#I believe ABMI is superior to every other dataset - except that Pulse has information re: year
+ABGISprep <- function(PolyID, RangeSA = RangePolygons, roads = ABMI_roads, 
+                      power = ABMI_powerlines, pipe = NRN_pipelines,
+                      rail = ABMI_rail, seismic = seismicLines, seismic_ABMI = ABMI_seismic) {
+  outDir <- file.path("GIS/Linear_Features/RangeSA_Digitization", PolyID)
+  if (!dir.exists(outDir)){
+    dir.create(outDir)
+  }
+  RangeSA <- RangeSA[RangeSA$PolygonID == PolyID]
+  
+  MeasureYear <- unique(RangeSA$Meas_Years)
+  seismic$year <- as.numeric(substr(seismic$DATE_SHOT, start = 1, stop = 4))
+  seismic_preYear <- seismic[seismic$year <= MeasureYear]
+  seismic_postYear <- seismic[seismic$year > MeasureYear]
+  NoLowImpact <- seismic_ABMI[seismic_ABMI$FEATURE_TYPE != "LOW-IMPACT-SEISMIC",]
+
+  prepOutputs(rail, RangeSA, outputName = file.path(outDir, paste0(PolyID, "_ABMI_rail.shp")))
+  prepOutputs(power, RangeSA, outputName = file.path(outDir, paste0(PolyID, "_ABMI_powerlines.shp")))
+  prepOutputs(pipe, RangeSA, file.path(outDir, paste0(PolyID, "_pipelines.shp")))
+  prepOutputs(seismic_preYear, RangeSA, file.path(outDir, paste0(PolyID, "_pulse_seismic_preYear.shp")))
+  prepOutputs(seismic_postYear, RangeSA, file.path(outDir, paste0(PolyID, "_pulse_seismic_postYear.shp")))
+  prepOutputs(roads, RangeSA, file.path(outDir, paste0(PolyID, "_ABMI_roads.shp")))
+  prepOutputs(seismic_ABMI, RangeSA, file.path(outDir, paste0(PolyID, "_ABMI_seismic.shp")))
+  prepOutputs(NoLowImpact, RangeSA, file.path(outDir, paste0(PolyID, "_ABMI_seismic_NoLowImpact.shp")))
+  
+  temp <- rast(paste0("outputs/Caribou_LandTrendR_Results/", PolyID,".tif"))
+  temp <- temp$yod
+  temp[temp == 0] <- NA
+  prepOutputs(temp, RangeSA, file.path(outDir, paste0(PolyID,"_LandTrendR_yod.tif")))  
+  prepOutputs(harvestYear, RangeSA, file.path(outDir, paste0(PolyID, "_harvestYear.tif")))
+  
+}
+
+sapply(unique(AB$PolygonID), ABGISprep)
+rm(ABMI_powerlines, ABMI_rail, ABMIdata, ABMI_roads, ABMI_seismic)
+gc()
 
