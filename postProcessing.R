@@ -34,13 +34,12 @@ caribouDF <- fread("data/Range_Polygon_Data.csv")
 #they all live here https://opendata.nfis.org/mapserver/nfis-change_eng.html
 
 # harvest <- terra::rast("C:/Ian/Data/C2C/CA_harvest_year_1985_2015.tif")
-harvestFile <- "GIS/CA_forest_harvest_mask_year_1985_2015.zip"
-download.file(url = "https://opendata.nfis.org/downloads/forest_change/CA_forest_harvest_mask_year_1985_2015.zip",
-                destfile = harvestFile)
-utils::unzip(harvestFile, 
-               files = "CA_harvest_year_1985_2015.tif",
-               exdir = "GIS")
-harvest <- rast("GIS/CA_harvest_year_1985_2015.tif")
+harvestFile <- "CA_forest_harvest_mask_year_1985_2015.zip"
+#this is now workign with new prepInputs - but unzipping is slow. 
+prepInputs(url = "https://opendata.nfis.org/downloads/forest_change/CA_forest_harvest_mask_year_1985_2015.zip",
+           targetFile = "CA_harvest_year_1985_2015.tif", 
+           destinationPath = "GIS",
+           fun = "terra::rast")
 # https://opendata.nfis.org/downloads/forest_change/CA_forest_harvest_mask_year_1985_2015.zip
 
 #this is the extracted year layer of a composite image that is 90 GB. URL is given below
@@ -64,9 +63,9 @@ LCC <- prepInputs(url = "https://opendata.nfis.org/downloads/forest_change/CA_fo
 
 #20 is water, 31 snow_ice, 32 rock rubble, 33 barren, 40 bryoids, 50 shrub, 80 wetland, 81 wetland-treed, 100 = herbs
 #210 coniferous, 220 broadleaf, 230 mixedwood
+#we exclude water, snow/ice and rock/rubble in calculating habitat
 
 ####summarize data ####
-
 #aggregate the polygons to avoid multipolygons being counted multiple times
 RangePolys <- project(RangePolys, LCC)
 ###temporary subset 
@@ -142,8 +141,6 @@ summarizeData <- function(SAname, SA, LandTrendR, harvest, fire, lcc = LCC) {
   rm(fire, burnDT)
   #this is the proportion of pixels that were burned before or during
   #the last year of caribou measurement
-
-  
   return(outputDT)
 }
 
