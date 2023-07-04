@@ -34,12 +34,12 @@ caribouDF <- fread("data/Range_Polygon_Data.csv")
 #they all live here https://opendata.nfis.org/mapserver/nfis-change_eng.html
 
 # harvest <- terra::rast("C:/Ian/Data/C2C/CA_harvest_year_1985_2015.tif")
-harvestFile <- "CA_forest_harvest_mask_year_1985_2015.zip"
-#this is now workign with new prepInputs - but unzipping is slow. 
-prepInputs(url = "https://opendata.nfis.org/downloads/forest_change/CA_forest_harvest_mask_year_1985_2015.zip",
-           targetFile = "CA_harvest_year_1985_2015.tif", 
-           destinationPath = "GIS",
-           fun = "terra::rast")
+#this is now working with new prepInputs - but unzipping is slow. 
+#the new unzip is needlessly extracting the CA_forest_harvest_mask, which is 30 GB
+harvest <- prepInputs(url = "https://opendata.nfis.org/downloads/forest_change/CA_forest_harvest_mask_year_1985_2015.zip",
+                          targetFile = "CA_harvest_year_1985_2015.tif", 
+                          destinationPath = "GIS",
+                          fun = "terra::rast")
 # https://opendata.nfis.org/downloads/forest_change/CA_forest_harvest_mask_year_1985_2015.zip
 
 #this is the extracted year layer of a composite image that is 90 GB. URL is given below
@@ -55,6 +55,7 @@ fire <- prepInputs(url = "https://drive.google.com/file/d/1tZIYz8QEZdrXqgvw3l50R
 
 LCC <- prepInputs(url = "https://opendata.nfis.org/downloads/forest_change/CA_forest_VLCE_2015.zip", 
                   destinationPath = "GIS", 
+                  targetFile = "CA_forest_VLCE_2015.tif",
                   fun = "terra::rast")
 
 #this is a similarly derived landcover file
@@ -71,7 +72,7 @@ RangePolys <- project(RangePolys, LCC)
 ###temporary subset 
 
 #this will summarize the LandTrendR, harvest, and fire stats within each polygon
-#this function could be more efficient - I was trying unsuccessfuly to debug parallelization arguments
+#the disturbance rates must be adjusted to account for available habitat
 summarizeData <- function(SAname, SA, LandTrendR, harvest, fire, lcc = LCC) {
   print(SAname)
   SA <- SA[SA$PolygonID == SAname,] #crop the study area poly
@@ -95,10 +96,10 @@ summarizeData <- function(SAname, SA, LandTrendR, harvest, fire, lcc = LCC) {
   forestPix <- lccVal[lcc %in% c(210, 220, 230), .N]
   disturbablePix <- lccVal[lcc %in% c(210, 220, 230, 33, 40, 50, 80, 81, 100), .N]
   N <- lccVal[!is.na(lcc), .N]
-  propForest <- forestPix/N
-  propVeg <- disturbablePix/N
+  pctForest <- forestPix/N * 100
+  pctVeg <- disturbablePix/N * 100
   rm(lccVal, disturbablePix, forestPix, lcc)
-  outputDT[, c("Npixels", "propForest", "propVeg") := .(N, propForest, propVeg)]
+  outputDT[, c("Npixels", "pctForest", "pctVeg") := .(N, pctForest, pctVeg)]
   
   ####summarize the LandTrendR data####
   
@@ -114,32 +115,39 @@ summarizeData <- function(SAname, SA, LandTrendR, harvest, fire, lcc = LCC) {
   LandTrendRdt <- as.data.table(values(LandTrendR))
   nDisturbed <- nrow(LandTrendRdt[yod <= lastYear & yod > 0])
   #TODO: assess how disturbed non-forest performs under LandTrendR
-  propDisturbed <- nDisturbed/N
-  totalPropDisturbed <- nrow(LandTrendRdt[yod > 0])/N
+  pctDisturbed <- nDisturbed/N * 100
+  totalPctDisturbed <- nrow(LandTrendRdt[yod > 0])/N * 100
   meanMag <- mean(LandTrendRdt[yod <= lastYear & mag > 0]$mag)
-  outputDT[, c("nDisturbed", "propDisturbed", "meanMag", "propDisturbed_85to20") := .(nDisturbed, propDisturbed, meanMag)]
-
+  outputDT[, c("nDisturbed", "pctDisturbed", "meanMag", "pctDisturbed_86to19") := 
+             .(nDisturbed, pctDisturbed, meanMag, totalPctDisturbed)]
+  #the earliest LandTrendR detects change is 1986 because it requires a base year
+  outputDT[, pctDisturbedYr := pctDisturbed/c(lastYear - 1985)]
+  
   ####summarize the C2C harvest #####
   harvest <- project(harvest, LandTrendR, method = "near") %>%
     mask(., SA)
   harvestDT <- data.table(values(harvest) + 1900) 
   names(harvestDT) <- "harvested"
-  propHarvested <- harvestDT[harvested <= lastYear & harvested > 1900, .N]/N
-  totalPropHarvest <- nrow(harvestDT[harvested > 1900])/N
-  outputDT[, propHarvest := propHarvested]
-  outputDT[, propHarvest_85to15 := totalPropHarvest]
+  pctHarvested <- harvestDT[harvested <= lastYear & harvested > 1900, .N]/N * 100
+  totalPctHarvest <- nrow(harvestDT[harvested > 1900])/N * 100
+  #the pctortion harvested from 1985 to last year of study
+  outputDT[, pctHarvest := pctHarvested]
+  #the total pctortion harvested 1985-2015
+  outputDT[, pctHarvest_85to15 := totalPctHarvest]
+  #the annual pctortion harvested (based on year of study, not 1985-2015) 
+  outputDT[, pctHarvestYr := pctHarvest/c(lastYear - 1984)]
   rm(harvest, harvestDT)
-  #this is the proportion of pixels that were harvested before or during
+  #this is the pctortion of pixels that were harvested before or during
   #the last year of caribou measurement
   
   fire <- project(fire, LandTrendR, method = "near") %>%
     mask(., SA)
   burnDT <- data.table(values(fire) + 1900) 
   names(burnDT) <- "burned"
-  propBurned <- burnDT[burned <= lastYear & burned > 1900, .N]/N
-  outputDT[, propBurned := propBurned]
+  outputDT[, pctBurned := burnDT[burned <= lastYear & burned > 1900, .N]/N * 100]
+  outputDT[, pctBrnYr := pctBurned/c(lastYear - 1984)]
   rm(fire, burnDT)
-  #this is the proportion of pixels that were burned before or during
+  #this is the pctortion of pixels that were burned before or during
   #the last year of caribou measurement
   return(outputDT)
 }
@@ -154,6 +162,6 @@ names(LandTrendR) <- PolygonIDs
 #I had some memory issues reprojecting (100+ GB RAM used!) so this approach was safest
 results <- rbindlist(lapply(PolygonIDs, summarizeData, 
                    LandTrendR = LandTrendR, SA = RangePolys, harvest = harvest, fire = fire))
-#Red Earth is 22 
-write.csv(results, "outputs/Caribou_Range_Disturbance_Summary.csv")
 
+write.csv(results, "outputs/Caribou_Range_Disturbance_Summary.csv")
+results

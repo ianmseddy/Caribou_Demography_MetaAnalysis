@@ -9,8 +9,9 @@ Canada <- prepInputs(url = paste0("https://www12.statcan.gc.ca/census-recensemen
                                   "geo/bound-limit/files-fichiers/2016/lpr_000b16a_e.zip"),
                      destinationPath = "GIS",
                      fun = "st_read")
+#actually since the polygons are equal area... use somethign else
 Canada <- st_transform(Canada, st_crs(rangePolys))
-Canada <- st_crop(Canada, y = st_bbox(st_buffer(rangePolys, 20000)))
+Canada <- st_crop(Canada, y = st_bbox(st_buffer(rangePolys, 30000)))
 #multiplying the bbox doesn't work because both ys are positive
 
 rangeData_postGIS <- fread("outputs/Caribou_Range_Disturbance_Summary.csv")
@@ -67,7 +68,7 @@ out4 <- ggplot(rangePolys1) +
   geom_sf(data = Canada, show.legend = FALSE) +
   geom_sf(data = rangePolys1, aes(fill = Meas_Years), alpha = 0.5) + 
   scale_fill_continuous(type = "viridis") + 
-  labs(fill = "latest \nmeasurement year") + 
+  labs(fill = "last year\n of study") + 
   guides(colour = guide_legend(override.aes = list(alpha = 1))) + 
   theme_bw() + 
   theme(legend.text=element_text(size=rel(1.2)), 
