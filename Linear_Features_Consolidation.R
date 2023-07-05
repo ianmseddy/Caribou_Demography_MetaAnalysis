@@ -1,11 +1,21 @@
-#merging linear features - 
-#we use a 50m buffer to remove linear features that fall within the same area, to avoid overcounting
-#and to eliminate duplicate features when present (e.g. some roads are contained in both of Ontario's
-#road layers)
-consolidateLines <- function(lineFiles, buffDist = 50,
-                             patternsToDrop = NULL, maskPoly) {
+library(terra)
+RangePolygons <- vect("GIS/Digitized_Caribou_StudyAreas.shp")
+RangePolygons <- terra::makeValid(RangePolygons)
+outputPath <- "outputs/linear_features"
+if (!dir.exists(outputPath)){dir.create(outputPath)}
+####merging linear features#### 
+# use buffer to eliminate duplicate features when presen; decide which to include in advance
+# e.g. some roads are contained in both of Ontario's road layers.
+# this script exists to consolidate lines into a final layer for each study area
+#TODO: calculate length/area and median-distance-to-line
+consolidateLines <- function(polygonID, outputDir = outputPath,
+                             maskPoly = RangePolygons, patternsToDrop = NULL) {
+  #retrieve the specific polygon for masking
+  maskPoly <- maskPoly[maskPoly$PolygonID == polygonID]
+  inputDir <- file.path("GIS/Linear_features/RangeSA_Digitization", polygonID)
+    lineFiles <- list.files(inputDir, pattern = ".shp", full.names = TRUE)
   
-  #for recording the type of line file
+  #for recording the type of line file - in case... 
   for (i in patternsToDrop){
     lineFiles <- lineFiles[grep(lineFiles, pattern = i, invert = TRUE)]
   }
@@ -23,9 +33,9 @@ consolidateLines <- function(lineFiles, buffDist = 50,
   lineFiles <- lapply(lineFiles, "[", c("class"))
   lineFile <- do.call(rbind, lineFiles)
   lineFile$length <- terra::perim(lineFile)
-  return(lineFile)
+  outputFilename <- paste0(outputDir, "/", polygonID, "_linear_features.shp")
+  writeVector(lineFile, filename = outputFilename)
 }
-
 
 #helper function to assign some  consistent class attributes 
 guessClass <- function(x){
@@ -37,4 +47,15 @@ guessClass <- function(x){
   }
   return(theClass)
 }
-#still need to add some random point sampling to get median distance to linear feature 
+
+PolygonIDs <- unique(RangePolygons[RangePolygons$Province == "BC",]$PolygonID) #unique b/c of multipolygons
+lapply(PolygonIDs, consolidateLines, patternsToDrop = c("pulse", "NRN", "all"))
+# 'all' is the road file unfiltered by construction date
+
+test <- list.files("GIS/Linear_features/RangeSA_Digitization/Culling115_Chinchaga",
+                   pattern = ".shp", full.names = TRUE)
+chinchaga <- RangePolys[RangePolys$PolygonID == "Culling115_Chinchaga",]
+testLines <- consolidateLines(lineFiles = test, patternsToDrop = c("pulse", "NRN", "all"),
+                              maskPoly = chinchaga)
+
+
