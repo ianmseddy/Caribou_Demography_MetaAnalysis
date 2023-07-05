@@ -19,9 +19,8 @@ landscapeStats <- fread("outputs/Caribou_Range_Disturbance_Summary.csv")
 landscapeStats[, V1 := NULL]
 
 RangePolygons <- dplyr::left_join(RangePolygons, landscapeStats, "PolygonID")
-demographicData <- fread("Range_Polygon_Data.csv")
-demographicData[, c("V1", "Note") := NULL]
-demographicData[, CalfCow := as.numeric(CalfCow)] #TODO correct this properly
+demographicData <- fread("data/Range_Polygon_Data.csv")
+demographicData[, Note := NULL]
 demographicData[CalfCow > 1.5, CalfCow := CalfCow/100]
 demographicData[, c("DocID", "Author") := NULL] #some authors were mismatched due to periods at end of et al
 
@@ -83,57 +82,25 @@ makeMapGG(stat = "pctBrnYr", adjustCol = "pctVeg",
           fillLab = "burn rate \n(% of habitat/year) \n1985 - time of study",
           outputFilename = "figures/pctBrnAdj_gg.png")
 
-#demographic 
 makeMapGG(stat = "pctVeg", fillLab = 'potential habitat \nin polygon (%)',
           outputFilename = "figures/pctVeg_gg.png")
+#demographic 
+makeMapGG(stat = "Lambda", fillLab = "λ",
+          outputFilename = "figures/Lambda_gg.png")
 
-out5 <- ggplot(RangePolygons) + 
-  geom_sf(data = Canada, show.legend = FALSE) +
-  geom_sf(data = RangePolygons, aes(fill = as.numeric(Lambda)), alpha = 0.5) + 
-  scale_fill_continuous(type = "viridis") + 
-  labs(fill = "lambda") + 
-  guides(colour = guide_legend(override.aes = list(alpha = 1))) + 
-  theme_bw() + 
-  theme(legend.text=element_text(size=rel(1.2)), 
-        legend.title=element_text(size=rel(1.2)))
-ggsave(plot = out5, filename = "figures/Lambda_gg.png", 
-       device = "png", , height = 6, width = 15)
+RangePolygons$CalfCow <- as.numeric(RangePolygons$CalfCow)
+makeMapGG(stat = "CalfCow", fillLab = "Calf:Cow",
+          outputFilename = "figures/CalfCow_gg.png")
 
-out6 <- ggplot(RangePolygons) + 
-  geom_sf(data = Canada, show.legend = FALSE) +
-  geom_sf(data = RangePolygons, aes(fill = as.numeric(CalfCow)), alpha = 0.5) + 
-  scale_fill_continuous(type = "viridis") + 
-  labs(fill = "Calf:Cow") + 
-  guides(colour = guide_legend(override.aes = list(alpha = 1))) + 
-  theme_bw() + 
-  theme(legend.text=element_text(size=rel(1.2)), 
-        legend.title=element_text(size=rel(1.2)))
-ggsave(plot = out6, filename = "figures/CalfCow_gg.png", 
-       device = "png", , height = 6, width = 15)
+RangePolygons$AdultFemaleSurvivalRate <- as.numeric(RangePolygons$AdultFemaleSurvivalRate)
+makeMapGG(stat = "AdultFemaleSurvivalRate", 
+          fillLab = "Adult Female \nSurvival Rate", 
+          outputFilename = "figures/AdultFemaleSurvivalRate_gg.png")
 
-out7 <- ggplot(RangePolygons) + 
-  geom_sf(data = Canada, show.legend = FALSE) +
-  geom_sf(data = RangePolygons, aes(fill = as.numeric(AdultFemaleSurvivalRate)), alpha = 0.5) + 
-  scale_fill_continuous(type = "viridis") + 
-  labs(fill = "Adult Female \nSurvival Rate") + 
-  guides(colour = guide_legend(override.aes = list(alpha = 1))) + 
-  theme_bw() + 
-  theme(legend.text=element_text(size=rel(1.2)), 
-        legend.title=element_text(size=rel(1.2)))
-ggsave(plot = out7, filename = "figures/AdultFemaleSurvivalRate_gg.png", 
-       device = "png", , height = 6, width = 15)
+makeMapGG(stat = "Pregnancy", fillLab = "Pregnacy rate", 
+          outputFilename = "figures/Pregnancy_gg.png")
 
-out8 <- ggplot(RangePolygons) + 
-  geom_sf(data = Canada, show.legend = FALSE) +
-  geom_sf(data = RangePolygons, aes(fill = as.numeric(meanMag)), alpha = 0.5) + 
-  scale_fill_continuous(type = "viridis") + 
-  labs(fill = "Mean Disturbance \nMagnitude") +
-  guides(colour = guide_legend(override.aes = list(alpha = 1))) + 
-  theme_bw() + 
-  theme(legend.text=element_text(size=rel(1.2)), 
-        legend.title=element_text(size=rel(1.2)))
-ggsave(plot = out8, filename = "figures/meanMag_gg.png", 
-       device = "png", height = 6, width = 15)
+
 
 outputTable <- as.data.table(RangePolygons) 
 outputTable <- outputTable[, .(DocID, PolygonID, Province, 
