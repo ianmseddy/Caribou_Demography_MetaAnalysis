@@ -57,42 +57,24 @@ makeMapGG <- function(df = RangePolygons, CA = Canada, stat, adjustCol = NULL,
 
 
 ###harvest rate
-makeMapGG(stat = "pctHarvestYr", 
-          fillLab = "harvest rate (%/year) \n1985 - time of study",
-          outputFilename = "figures/pctHarvestYr_gg.png")
-
 makeMapGG(stat = "pctHarvestYr", adjustCol = "pctVeg", 
-          fillLab = "harvest rate \n(% of habitat/year) \n1985 - time of study",
+          fillLab = "harvest rate \n(%/year) \n1985 - study period",
           outputFilename = "figures/pctHarvestYrAdj_gg.png")
-#to discuss with Eric - but we should probably adjust for the amount of habitat
-makeMapGG(stat = "pctDisturbedYr",
-          fillLab = "disturbance rate (%/year): \n1985 - time of study",
-          outputFilename = "figures/pctDistYr_gg.png")
 
 makeMapGG(stat = "pctDisturbedYr", adjustCol = "pctVeg", 
-          fillLab = "disturbance rate \n(% of habitat/year) \n1985 - time of study",
+          fillLab = "disturbance rate \n(% /year) \n1985 - study period",
           outputFilename = "figures/pctDistYrAdj_gg.png")
 
-#burn
-makeMapGG(stat = "pctBrnYr",
-          fillLab = "burn rate (%/year): \n1985 - time of study",
-          outputFilename = "figures/pctBrnYr_gg.png")
-
 makeMapGG(stat = "pctBrnYr", adjustCol = "pctVeg", 
-          fillLab = "burn rate \n(% of habitat/year) \n1985 - time of study",
+          fillLab = "burn rate \n(%/year) \n1985 - study period",
           outputFilename = "figures/pctBrnAdj_gg.png")
-
-makeMapGG(stat = "pctVeg", fillLab = 'potential habitat \nin polygon (%)',
-          outputFilename = "figures/pctVeg_gg.png")
 #demographic 
 makeMapGG(stat = "Lambda", fillLab = "λ",
           outputFilename = "figures/Lambda_gg.png")
 
-RangePolygons$CalfCow <- as.numeric(RangePolygons$CalfCow)
 makeMapGG(stat = "CalfCow", fillLab = "Calf:Cow",
           outputFilename = "figures/CalfCow_gg.png")
 
-RangePolygons$AdultFemaleSurvivalRate <- as.numeric(RangePolygons$AdultFemaleSurvivalRate)
 makeMapGG(stat = "AdultFemaleSurvivalRate", 
           fillLab = "Adult Female \nSurvival Rate", 
           outputFilename = "figures/AdultFemaleSurvivalRate_gg.png")
