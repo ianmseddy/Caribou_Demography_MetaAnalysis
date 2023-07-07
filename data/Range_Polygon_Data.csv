@@ -1,5 +1,5 @@
 PolygonID,DocID,Author,Publication_Year,RangeDescription,First_Measurement_Year,Last_Measurement_Year,Digitization_Scale,AdultFemaleSurvivalRate,Lambda,CalfCow,Mortality,Calf survival,Pregnancy,Predator_Control,Note
-Wittmer15_Purcells_South,15,Wittmer et al.,2005,Purcells South,1993,1998,1500000,0.67,0.82,0.89,NA,,0.88,Unconfirmed,"for all Wittmer, female survival is the corrected estimate from 2010 paper - viability of mountain caribou…"
+Wittmer15_Purcells_South,15,Wittmer et al.,2005,Purcells South,1993,1998,1500000,0.67,0.82,0.89,NA,,0.88,Unconfirmed,"for all Wittmer, female survival is the corrected estimate from 2010 paper - viability of mountain caribouï¿½"
 Wittmer15_Nakusp,15,Wittmer et al.,2005,Nakusp,1995,2000,1500000,0.85,0.92,0.9,NA,,,Unconfirmed,
 Wittmer15_FrisbyBoulder,15,Wittmer et al.,2005,Frisby Boulder,1994,2004,1500000,0.9,0.96,0.77,NA,,,Unconfirmed,
 Wittmer15_ColumbiaSouth,15,Wittmer et al.,2005,Columbia South,1992,2004,1500000,0.86,0.96,0.86,NA,,0.94,Unconfirmed,
@@ -26,11 +26,11 @@ Dalerum67_CaribouMountains,67,Dalerum et al.,2007,Caribou Mountains,1995,2001,30
 Gullickson71_SouthNahanni,71,Gullickson and Manseau,2000,South Nahanni Yukon and NWT,1995,1998,1250000,0.889,NA,0.209,0.111,,0.72,Unconfirmed,"Formula presents survival rates for 1, 2 and 3 years. I calculated one year survival for years 1, 2, 3, and averaged (21/24 w/ 3 deaths, 18/21 w/ 3 deaths, 16/18  w/ 2 deaths))"
 StuartSmith79_ESAR,79,Stuart-Smith et al.,1997,Eastern Side Athabasca River,1991,1994,800000,0.907,0.92,0.159,NA,0.219,,Unconfirmed,"They only partially report parameters by study area. Surivval rate is for all animals - but females died at a lower rate (5%/year vs 14%/year, with 9/65 caribou male).  Calfcow is average of two years. Lambda, pregnancy and calf-survival is for both polygons"
 StuartSmith79_WSAR,79,Stuart-Smith et al.,1997,Western Side Athabasca River,1991,1994,800000,0.849,0.92,0.2515,NA,0.219,,Unconfirmed,"They only partially report parameters by study area. Surivval rate is for all animals - but females died at a lower rate (5%/year vs 14%/year, with 9/65 caribou male).   Calfcow is average of two years. Lambda, pregnancy and calf-survival is for both polygons"
-Mahoney80_LaPoile,80,Mahoney et al.,1998,Lapoile,1986,1992,2000000,NA,NA,NA,NA,,,Unconfirmed,population estimates but methods varied…
+Mahoney80_LaPoile,80,Mahoney et al.,1998,Lapoile,1986,1992,2000000,NA,NA,NA,NA,,,Unconfirmed,population estimates but methods variedï¿½
 Mahoney80_GreyRiver,80,Mahoney et al.,1998,Grey River,1987,1987,2000000,NA,NA,NA,NA,,,Unconfirmed,no remeasurement. Delete?
 Mahoney80_SandyLake,80,Mahoney et al.,1998,Sandy Lake,1987,1987,2000000,NA,NA,NA,NA,,,Unconfirmed,no remeasurement. Delete?
 Mahoney80_PotHill,80,Mahoney et al.,1998,Pot Hill,1987,1987,2000000,NA,NA,NA,NA,,,Unconfirmed,no remeasurement. Delete?
-Mahoney80_MiddleRidge,80,Mahoney et al.,1998,Middle Ridge,1985,1995,2000000,NA,NA,NA,NA,,,Unconfirmed,population estimates but methods varied…
+Mahoney80_MiddleRidge,80,Mahoney et al.,1998,Middle Ridge,1985,1995,2000000,NA,NA,NA,NA,,,Unconfirmed,population estimates but methods variedï¿½
 Mahoney80_Gaff,80,Mahoney et al.,1998,Gaff Topsails,1989,1989,2000000,NA,NA,NA,NA,,,Unconfirmed,no remeasurement. Delete?
 Hettinga83_UpperNI,83,Hettinga et al.,2012,Upper part of North Interlake,2004,2009,400000,0.74,0.87,NA,NA,NA,NA,Unconfirmed,lambda assumes male + female (combined + separate estimates given)
 Hettinga83_LowerNI,83,Hettinga et al.,2012,Lower part of North Interlake,2004,2009,400000,0.74,0.93,NA,NA,NA,NA,Unconfirmed,lambda assumes male + female (combined + separate estimates given)
@@ -55,7 +55,7 @@ Courtois91_Pipmu,91,Courtois et al.,2007,Pipmu,1998,2001,1500000,0.82,NA,0.382,N
 Pinard96_GrandsJardins,96,Pinard et al.,2011,Reintroduced to Grands Jardins,2004,2006,800000,NA,NA,NA,NA,,0.79,Unconfirmed,"*calving rate? Same as pregnancy rate? Also has calf survival (0.46) and of 30 female caribou, 2 died before calving period. "
 Courtois97_Manicougan,97,Courtois et al.,2008,Manicougan - unsure if this is a herd or the area,1999,2005,400000,0.848,NA,0.517688052,NA,,,Unconfirmed,
 Rudolph98_Nottaway,98,Rudolph et al.,2017,Nottaway Range - some dipsy doodles I ignored,2004,2013,1500000,0.854,0.968,0.226,NA,,,Unconfirmed,table 3 is a bit bizarre. Check with Eric. Survival rate is unclear whether female or all
-Rudolph98_Assinica,98,Rudolph et al.,2017,Assinica,2004,2013,1500000,0.885,1.015,0.243,NA,,,Unconfirmed,table 3 assinica is listed twice? With different values for survival…
+Rudolph98_Assinica,98,Rudolph et al.,2017,Assinica,2004,2013,1500000,0.885,1.015,0.243,NA,,,Unconfirmed,table 3 assinica is listed twice? With different values for survivalï¿½
 Rudolph98_Temiscamie,98,Rudolph et al.,2017,Temiscamie,2004,2013,1500000,0.854,0.949,0.1845,NA,,,Unconfirmed,
 Mahoney101_CornerBrooks,101,Mahoney and Virgl,2003,Corner Brooks,1994,1997,200000,0.88,NA,0.24,NA,,0.96,Unconfirmed,has annual rates too
 Fryxell103_Nakima,103,Fryxell et al.,2020,Kinloch,2010,2014,1500000,0.76,NA,NA,NA,,,No,must confirm whether 2014 is end date or 2013
@@ -63,11 +63,11 @@ Fryxell103_PickleLake,103,Fryxell et al.,2020,Nipigon,2010,2014,1500000,0.9,NA,N
 Brown112_Wabowden,112,Brown et al.,2000,Wabowden,1995,1997,700000,0.9,1.19,0.65,NA,,,Unconfirmed,
 Seip113_WellsGray,113,Seip,1992,Wells Gray,1984,1989,500000,0.92,0.754,0.29,0.08,,0.94,Yes,Digitized liberally from figure 9. Calf cow reported in October and June and is complicated
 Seip113_Quesnel,113,Seip,1992,Quesnel Lake,1984,1989,500000,0.71,1.04,0.181,0.29,,0.94,Yes,"Digitized from Seip 1992 Wildlife Bulletin report. Calf:cow is the sum of total column in table 1 (ie with wolves, without, and reduced wolves)"
-Rettie92_ClarkeLake,92,Rettie and Messier,1998,Clarke Lake,1993,1996,1000000,0.8,0.923,0.33,NA,,,Unconfirmed,"earliest measurements seem to vary between 1992 (pregnancy), 1993 (survival) and 1994 (calf:cow). Ian calculated lambda - SD is very large and lambda not sig diff from 1"
-Rettie92_NemeibenLake,92,Rettie and Messier,1998,Nemeiben Lake,1994,1996,1000000,0.79,0.852,0.18,NA,,,Unconfirmed,
-Rettie92_MossyRiver,92,Rettie and Messier,1998,Mossy River,1994,1996,1000000,1,1.116,0.24,NA,,,Unconfirmed,
-Rettie92_MontrealLake,92,Rettie and Messier,1998,Montreal Lake,1993,1996,1000000,0.78,0.914,0.37,NA,,,Unconfirmed,"earliest measurements seem to vary between 1992 (pregnancy), 1993 (survival) and 1994 (calf:cow)"
-Rettie92_WeyakwinLake,92,Rettie and Messier,1998,Weyakwin Lake,1994,1996,1000000,0.87,0.98,0.31,NA,,,Unconfirmed,
+Rettie92_ClarkeLake,92,Rettie and Messier,1998,Clarke Lake,1993,1996,1000000,0.8,0.923,0.33,NA,,0.94,Unconfirmed,"earliest measurements seem to vary between 1992 (pregnancy), 1993 (survival) and 1994 (calf:cow). Ian calculated lambda - SD is very large and lambda not sig diff from 1"
+Rettie92_NemeibenLake,92,Rettie and Messier,1998,Nemeiben Lake,1994,1996,1000000,0.79,0.852,0.18,NA,,0.94,Unconfirmed,
+Rettie92_MossyRiver,92,Rettie and Messier,1998,Mossy River,1994,1996,1000000,1,1.116,0.24,NA,,0.94,Unconfirmed,
+Rettie92_MontrealLake,92,Rettie and Messier,1998,Montreal Lake,1993,1996,1000000,0.78,0.914,0.37,NA,,0.94,Unconfirmed,"earliest measurements seem to vary between 1992 (pregnancy), 1993 (survival) and 1994 (calf:cow)"
+Rettie92_WeyakwinLake,92,Rettie and Messier,1998,Weyakwin Lake,1994,1996,1000000,0.87,0.98,0.31,NA,,0.94,Unconfirmed,
 Gustine40_BesaProphet,40,Gustine et al.,2010,Greater Besa-Prophet area of Muskwa-Kechika,2001,2002,200000,NA,NA,NA,NA,,0.917,Unconfirmed,
 Culling115_Chinchaga,115,Culling and Culling,2013,Chinchaga BC,2004,2013,NA,NA,NA,0.117,NA,,,Unconfirmed,"this does not include Alberta portion. With Alberta, ratio is 33.3, much higher!"
 Culling115_SS,115,Culling and Culling,2013,Snake-Sahtaneh,2004,2013,NA,NA,NA,0.242,NA,,,Unconfirmed,2004 measurement is from separate report but yields population change
