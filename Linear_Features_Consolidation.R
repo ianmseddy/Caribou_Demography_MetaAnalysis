@@ -1,6 +1,5 @@
 library(terra)
 RangePolygons <- vect("GIS/Digitized_Caribou_StudyAreas.shp")
-RangePolygons <- terra::makeValid(RangePolygons)
 outputPath <- "outputs/linear_features"
 if (!dir.exists(outputPath)){dir.create(outputPath)}
 ####merging linear features#### 
@@ -10,11 +9,13 @@ if (!dir.exists(outputPath)){dir.create(outputPath)}
 #TODO: calculate length/area and median-distance-to-line
 consolidateLines <- function(polygonID, outputDir = outputPath,
                              maskPoly = RangePolygons, patternsToDrop = NULL) {
+  
   #retrieve the specific polygon for masking
   maskPoly <- maskPoly[maskPoly$PolygonID == polygonID]
   inputDir <- file.path("GIS/Linear_features/RangeSA_Digitization", polygonID)
-    lineFiles <- list.files(inputDir, pattern = ".shp", full.names = TRUE)
+  lineFiles <- list.files(inputDir, pattern = ".shp", full.names = TRUE)
   
+  if (length(lineFiles) > 0){
   #for recording the type of line file - in case... 
   for (i in patternsToDrop){
     lineFiles <- lineFiles[grep(lineFiles, pattern = i, invert = TRUE)]
@@ -34,7 +35,10 @@ consolidateLines <- function(polygonID, outputDir = outputPath,
   lineFile <- do.call(rbind, lineFiles)
   lineFile$length <- terra::perim(lineFile)
   outputFilename <- paste0(outputDir, "/", polygonID, "_linear_features.shp")
-  writeVector(lineFile, filename = outputFilename)
+  writeVector(lineFile, filename = outputFilename, overwrite = TRUE)
+  } else {
+    message("no line files for ", polygonID)
+  }
 }
 
 #helper function to assign some  consistent class attributes 
@@ -48,14 +52,10 @@ guessClass <- function(x){
   return(theClass)
 }
 
-PolygonIDs <- unique(RangePolygons[RangePolygons$Province == "BC",]$PolygonID) #unique b/c of multipolygons
+PolygonIDs <- unique(RangePolygons[grep("Wittmer117", RangePolygons$PolygonID),]$PolygonID) #unique b/c of multipolygons
 lapply(PolygonIDs, consolidateLines, patternsToDrop = c("pulse", "NRN", "all"))
 # 'all' is the road file unfiltered by construction date
 
-test <- list.files("GIS/Linear_features/RangeSA_Digitization/Culling115_Chinchaga",
-                   pattern = ".shp", full.names = TRUE)
-chinchaga <- RangePolys[RangePolys$PolygonID == "Culling115_Chinchaga",]
-testLines <- consolidateLines(lineFiles = test, patternsToDrop = c("pulse", "NRN", "all"),
-                              maskPoly = chinchaga)
+
 
 
