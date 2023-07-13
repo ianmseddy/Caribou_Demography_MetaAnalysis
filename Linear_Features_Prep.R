@@ -255,7 +255,7 @@ gc()
 
 
 
-##Alberta
+####Alberta####
 AB <- RangePolygons[RangePolygons$Province == "AB",]
 ABMIdata <- "GIS/Linear_Features/AB/HFI2014_LinearFeatures_v2.gdb/HFI2014_LinearFeatures_v2.gdb/"
 ABMI_roads <- vect(ABMIdata, layer = "o03_Road_Centerlines_HFI2014v2")
