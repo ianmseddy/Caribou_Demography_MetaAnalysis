@@ -51,7 +51,7 @@ NRN_cmnlines <- vect("GIS/Linear_Features/CA/canvec_50K_CA_Res_MGT_shp/canvec_50
 #load pulse seismic lines
 seismicLines <- vect("GIS/Linear_Features/CA/PULSE_2D_WEB/PULSE_2D_WEB.shp")
 
-#utility function that will crop and write 
+#utility function to crop and write 
 prepOutputs <- function(infile, cropFile, outputName){
   if (class(infile) %in% "SpatVector"){
     out <- postProcess(infile, cropTo = cropFile, projectTo = cropFile)
@@ -68,8 +68,7 @@ prepOutputs <- function(infile, cropFile, outputName){
 }
 
 #harvest year
-#TODO: this data should already exist in the GIS subdirectory but you were lazy about it
-harvestYear <- rast("C:/Ian/Data/C2C/CA_harvest_year_1985_2015.tif")
+harvestYear <- rast("GIS/CA_harvest_year_1985_2015.tif")
 terra::NAflag(harvestYear) <- 0
 
 #####Manitoba####
@@ -251,7 +250,7 @@ BCGISprep <- function(PolyID, RangeSA = RangePolygons, roads = BCRoads,
 }
 
 sapply(unique(BC$PolygonID), BCGISprep)
-rm(BCroads, BCresRoads, BCseismic)
+rm(BCroads,BCseismic)
 gc()
 
 
