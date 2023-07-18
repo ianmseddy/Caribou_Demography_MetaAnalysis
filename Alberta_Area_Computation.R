@@ -1,19 +1,13 @@
-##mosaic of OrbView3
-
-
+####for calculating the proportion of the older Alberta study areas covered by OrbView3 imagery
 library(terra)
+library(sf)# at the moment combining geometries is easier in SF
+library(magrittr)
 rs <- list.files("GIS/Linear_Features/RS imagery/Dalerum_StuartSmith", 
-                 recursive = TRUE, pattern = "3v05", full.names = TRUE) |>
-  lapply(rast)
-polys <- lapply(rs, rast) |>
-  lapply(terra::ext) |>
-  lapply(vect)
-polys <- lapply(polys, terra::`crs<-`, value = crs(rs[[1]]))
-first <- combineGeoms(polys[[1]], polys[[2]], dissolve = TRUE)
-second <- combineGeoms(polys[[3]], polys[[4]], dissolve = TRUE)
-polys <- combineGeoms(first, second, dissolve = TRUE)
-
-#get StuartSmith and Dalerum polygons
+                 recursive = TRUE, pattern = "aoi.shp", full.names = TRUE) |>
+  lapply(sf::st_read) %>%
+  do.call(rbind, .) %>%
+  st_union(by_feature = FALSE) %>%
+  vect()
 
 rangePolys <- vect("GIS/Digitized_Caribou_StudyAreas.shp")
 polyIDs <- c("StuartSmith79_WSAR", "StuartSmith79_ESAR", 

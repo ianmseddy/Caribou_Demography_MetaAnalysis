@@ -6,7 +6,6 @@ library(sf)
 
 #this is GIS preparation for the study areas that require some digitizing
 RangePolygons <- vect("GIS/Digitized_Caribou_StudyAreas.shp")
-RangePolygons <- terra::makeValid(RangePolygons)
 ####building one NRN vector representing 2001:2021
 
 if (!file.exists("GIS/Linear_Features/CA/NRN/combinedNRN.shp")) {
@@ -36,7 +35,8 @@ if (!file.exists("GIS/Linear_Features/CA/NRN/combinedNRN.shp")) {
                        year = 2016)
   NRN2021 <- recrop("GIS/Linear_Features/CA/NRN/2021/lrnf000r21a_e/lrnf000r21a_e.shp", year = 2021)
   NRNall <- rbind(NRN2001, NRN2006, NRN2011, NRN2016, NRN2021)
-  writeVector(NRNall, filename = "GIS/Linear_Features/CA/NRN/combinedNRN.shp", overwrite =)
+  
+  writeVector(NRNall, filename = "GIS/Linear_Features/CA/NRN/combinedNRN.shp", overwrite = TRUE)
   rm(NRN2001, NRN2006, NRN2011, NRN2016, NRN2021, NRNall)
   gc()
 }
@@ -301,3 +301,26 @@ sapply(unique(AB$PolygonID), ABGISprep)
 rm(ABMI_powerlines, ABMI_rail, ABMIdata, ABMI_roads, ABMI_seismic)
 gc()
 
+
+
+library(googledrive)
+####source digitized files ####
+#linear features in SK and MB study areas were digtiized by Brooke Bourbeau
+#these get added to the folder above so they can be consolidated into one layer
+SAproper <- unique(RangePolygons[RangePolygons$Province %in% c("SK", "MB")]$PolygonID)
+DigitizedLineDir <- googledrive::drive_get(path = "https://drive.google.com/drive/folders/13Fv-rurk6rqKLspx-DXBbh3FWyLALgCr")
+#eventually we can assume all study areas are present, and remove the grepping
+SAsInDrive <- drive_ls(DigitizedLineDir)
+whichToGet <- sapply(SAproper, grep, x = SAsInDrive$name)
+ToDownload <- names(unlist(whichToGet))
+options(googledrive_quiet = TRUE)
+lapply(ToDownload, FUN = function(SA) {
+  SAfolder <- SAsInDrive[grep(SA, SAsInDrive$name),]
+  shapefiles <- drive_ls(SAfolder)
+  for (i in 1:nrow(shapefiles)){
+    drive_download(shapefiles[i, ], 
+                   path  = file.path("GIS/Linear_Features/RangeSA_Digitization",
+                                     SA, shapefiles[i, ]$name), 
+                   overwrite = TRUE)
+  }
+})
