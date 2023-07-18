@@ -78,10 +78,15 @@ LCC <- rast("GIS/CA_forest_VLCE_2015.tif")
 #for distance - lines that are closer together than 30 metres are effectively the same line
 LengthToArea <- function(PolygonID, lcc = LCC, RangePoly = RangePolygons, outDir = outputPath) {
   RangePoly <- RangePoly[RangePoly$PolygonID == PolygonID,]
-  RangePoly <- project(RangePoly, crs(lcc))
-  lcc <- crop(lcc, RangePoly) |>
-    mask(RangePoly) |>
-    subst(from = c(20, 31, 32), to = NA)
+  RangePolyTemp <- project(RangePoly, crs(lcc))
+  
+  lccFile <- file.path(outDir, paste0(PolygonID, "_lcc.tif"))
+  lcc <- crop(lcc, RangePolyTemp)
+  lcc <- project(lcc, y = crs(RangePoly), res = c(30, 30), method = "near") 
+  lcc <- mask(lcc, mask = RangePoly) |>
+    trim()
+  lcc <- subst(lcc, from = c(20, 31, 32), to = NA)
+  writeRaster(lcc, lccFile, overwrite = TRUE)
   
   LineFile <- file.path(outDir, paste0(PolygonID, "_linear_features.shp"))
   if (!file.exists(LineFile)){
@@ -91,37 +96,30 @@ LengthToArea <- function(PolygonID, lcc = LCC, RangePoly = RangePolygons, outDir
   }
   
   Lines <- vect(LineFile)
-  Lines <- mask(Lines, RangePoly)
-  #put lcc in lonlat for later distance calculation
-  lcc <- project(lcc, y = crs(Lines), method = "near")
+  
   RangeAreaKm <- terra::expanse(lcc, transform = TRUE, unit = "km") #true by default
-
+  
   LineDF <- as.data.table(Lines) #this is in metres
   LineDF <- LineDF[, .(length = sum(length)), .(class)]  
   LineDF[, PolygonID := PolygonID]
   LineDF[, mPerKm2 := length/RangeAreaKm$area]
   #to calculate the mean minimum distance to a line 
   
+  LineRasFile <- tempfile(fileext = ".tif")
+  Lines <- project(Lines, lcc)
   LineRas <- rasterize(Lines, y = lcc)
-  # LineRas[!is.na(lcc) & is.na(LineRas)] <- 0
-  # LineRas[is.na(lcc)] <- NA
+  #this is required for whitebox
+  LineRas[is.na(LineRas) & !is.na(lcc)] <- 0
+  writeRaster(LineRas, LineRasFile, overwrite = TRUE)
   
-  sys1 <- Sys.time()
+  outFile <- file.path(outDir, paste0(PolygonID, "_linear_distance.tif"))
   
-  d2l <- terra::distance(x = LineRas, unit = "m")
-  sys2 <- Sys.time()
-  browser()
-  d2l <- terra::mask(d2l, lcc)
-  plot(d2l)
-  mean(as.vector(d2l), na.rm = TRUE)
-    
+  whitebox::wbt_euclidean_distance(input = LineRasFile, 
+                                   output = outFile)
+  
+  return(LineDF)
 }
 
-LengthToArea(PolygonID = PolygonIDs[1])
-#minimum distance to lines
-#this is easy - 
-#1. rasterize the study area polygon, 
-#2. use terra::distance, which will rasterize lines, and compute distance for every cell
-#3. I don't think we need to sample, but we could? anyway distance returned in metres - take mean
+LineDfs <- lapply(PolygonIDs, LengthToArea)
 
 
