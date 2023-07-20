@@ -1,12 +1,19 @@
 library(terra)
 library(data.table)
-setDTthreads(2) 
+library(sf)
+library(whitebox)
+setDTthreads(2)
 
+
+LCC <- rast("GIS/CA_forest_VLCE_2015.tif")
 RangePolygons <- vect("GIS/Digitized_Caribou_StudyAreas.shp")
 outputPath <- "outputs/linear_features"
 if (!dir.exists(outputPath)){dir.create(outputPath)}
 ####merging linear features#### 
-# use buffer to eliminate duplicate features when presen; decide which to include in advance
+# use patternsToDrop to avoid double and triple-counting some linear features. 
+# multiple road/seismic line datasets may be present
+# so far the NRN ones have proved mostly useless (in the fewareas where they were helpful in SK/MB, 
+# Brooke duplicated these segments in her digitized layer )
 # e.g. some roads are contained in both of Ontario's road layers.
 # this script exists to consolidate lines into a final layer for each study area
 consolidateLines <- function(polygonID, outputDir = outputPath,
@@ -65,11 +72,11 @@ guessClass <- function(x){
 
 ######test out the consolidation#####
 
-PolygonIDs <- unique(RangePolygons[grep("BC", RangePolygons$Province),]$PolygonID) #unique b/c of multipolygons
-lapply(PolygonIDs, consolidateLines, patternsToDrop = c("pulse", "NRN", "all"))
-
+# BCPolygonIDs <- unique(RangePolygons[RangePolygons$Province == "BC"),]$PolygonID) #unique b/c of multipolygons
+# lapply(BCPolygonIDs, consolidateLines, patternsToDrop = c("pulse", "NRN", "all"))
+ABPolygonIDs <- unique(RangePolygons[RangePolygons$Province == "AB"]$PolygonID)
+lapply(ABPolygonIDs, consolidateLines, patternsToDrop = "pulse")
 # 'all' is the road file unfiltered by construction date
-LCC <- rast("GIS/CA_forest_VLCE_2015.tif")
 #this may be faster to do with the cropped polygon... v. slow 
 
 #calculate length/area
@@ -121,5 +128,6 @@ LengthToArea <- function(PolygonID, lcc = LCC, RangePoly = RangePolygons, outDir
 }
 
 LineDfs <- lapply(PolygonIDs, LengthToArea)
+#LineDfs are scaled by area and can be plotted (or merged - possibly write them to disk?)
 
 
