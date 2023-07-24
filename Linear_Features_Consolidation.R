@@ -2,6 +2,7 @@ library(terra)
 library(data.table)
 library(sf)
 library(whitebox)
+whitebox::wbt_init(exe_path = "../WhiteboxTools_win_amd64/WBT/whitebox_tools.exe")
 setDTthreads(2)
 
 
@@ -127,7 +128,9 @@ LengthToArea <- function(PolygonID, lcc = LCC, RangePoly = RangePolygons, outDir
   return(LineDF)
 }
 
-LineDfs <- lapply(PolygonIDs, LengthToArea)
+BCLineDf <- lapply(BCPolygonIDs, LengthToArea)
+ABLineDf <- lapply(ABPolygonIDs, LengthToArea)
+fwrite(ABLineDF, "outputs/linear_feature_stats/AB_LengthArea.csv")
 #LineDfs are scaled by area and can be plotted (or merged - possibly write them to disk?)
 
 
