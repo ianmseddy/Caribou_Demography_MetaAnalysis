@@ -73,7 +73,7 @@ guessClass <- function(x){
 
 ######test out the consolidation#####
 
-# BCPolygonIDs <- unique(RangePolygons[RangePolygons$Province == "BC"),]$PolygonID) #unique b/c of multipolygons
+BCPolygonIDs <- unique(RangePolygons[RangePolygons$Province == "BC",]$PolygonID) #unique b/c of multipolygons
 # lapply(BCPolygonIDs, consolidateLines, patternsToDrop = c("pulse", "NRN", "all"))
 ABPolygonIDs <- unique(RangePolygons[RangePolygons$Province == "AB"]$PolygonID)
 lapply(ABPolygonIDs, consolidateLines, patternsToDrop = "pulse")
@@ -124,13 +124,15 @@ LengthToArea <- function(PolygonID, lcc = LCC, RangePoly = RangePolygons, outDir
   
   whitebox::wbt_euclidean_distance(input = LineRasFile, 
                                    output = outFile)
+  fwrite(LineDF, outDir, paste0(PolygonID, "_linear_stats.csv"))
   
   return(LineDF)
 }
 
-BCLineDf <- lapply(BCPolygonIDs, LengthToArea)
-ABLineDf <- lapply(ABPolygonIDs, LengthToArea)
+BCLineDf <- rbindlist(lapply(BCPolygonIDs, LengthToArea))
+ABLineDf <- rbindlist(lapply(ABPolygonIDs, LengthToArea))
 fwrite(ABLineDF, "outputs/linear_feature_stats/AB_LengthArea.csv")
 #LineDfs are scaled by area and can be plotted (or merged - possibly write them to disk?)
+BCLineDf <- rbindlist(BClineDF)
 
 
