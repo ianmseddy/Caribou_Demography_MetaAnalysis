@@ -1,89 +1,89 @@
-PolygonID,DocID,Author,Publication_Year,RangeDescription,First_Measurement_Year,Last_Measurement_Year,Digitization_Scale,AdultFemaleSurvivalRate,Lambda,CalfCow,Mortality,Calf survival,Pregnancy,Predator_Control,Note
-Wittmer15_Purcells_South,15,Wittmer et al.,2007,Purcells South,1993,1998,1500000,0.55,0.82,0.121115707,NA,NA,0.88,Unconfirmed,"Decided to use the 2005 instead of the corrected 2007 female survival, as this is more consistent with lamdba. For CalfCow, assume 50:50 gender ratio, as only %calf is given. So at 10% calf, the ratio is 10% to 45%. "
-Wittmer15_Nakusp,15,Wittmer et al.,2007,Nakusp,1995,2000,1500000,0.85,0.92,0.226675573,NA,NA,NA,Unconfirmed,"Decided to use the 2005 instead of the corrected 2007 female survival, as this is more consistent with lamdba. For CalfCow, assume 50:50 gender ratio, as only %calf is given"
-Wittmer15_FrisbyBoulder,15,Wittmer et al.,2007,Frisby Boulder,1994,2004,1500000,0.9,0.96,0.610966057,NA,NA,NA,Unconfirmed,"Decided to use the 2005 instead of the corrected 2007 female survival, as this is more consistent with lamdba. For CalfCow, assume 50:50 gender ratio, as only %calf is given"
-Wittmer15_ColumbiaSouth,15,Wittmer et al.,2007,Columbia South,1992,2004,1500000,0.85,0.96,0.33535731,NA,NA,0.94,Unconfirmed,"Decided to use the 2005 instead of the corrected 2007 female survival, as this is more consistent with lamdba. For CalfCow, assume 50:50 gender ratio, as only %calf is given"
-Wittmer15_ColumbiaNorth,15,Wittmer et al.,2007,Columbia North,1992,2004,1500000,0.81,0.92,0.27014756,NA,NA,0.88,Unconfirmed,"Decided to use the 2005 instead of the corrected 2007 female survival, as this is more consistent with lamdba. For CalfCow, assume 50:50 gender ratio, as only %calf is given"
-Wittmer15_Groundhog,15,Wittmer et al.,2007,Groundhog,1997,2004,1500000,0.78,0.92,0.333722287,NA,NA,NA,Unconfirmed,"Decided to use the 2005 instead of the corrected 2007 female survival, as this is more consistent with lamdba. For CalfCow, assume 50:50 gender ratio, as only %calf is given"
-Wittmer15_WellsGray,15,Wittmer et al.,2007,Wells Gray,1994,2004,1500000,0.84,0.92,0.457002457,NA,NA,0.98,Unconfirmed,"Decided to use the 2005 instead of the corrected 2007 female survival, as this is more consistent with lamdba. For CalfCow, assume 50:50 gender ratio, as only %calf is given"
-Wittmer15_Barkerville,15,Wittmer et al.,2007,Barkerville,1993,2004,1500000,0.88,1.03,0.351834431,NA,NA,0.89,Unconfirmed,"Decided to use the 2005 instead of the corrected 2007 female survival, as this is more consistent with lamdba. For CalfCow, assume 50:50 gender ratio, as only %calf is given"
-Wittmer15_NorthCaribooMtn,15,Wittmer et al.,2007,North Cariboo Mtn,1988,1991,1500000,0.91,1,0.213123824,NA,NA,NA,Unconfirmed,"Decided to use the 2005 instead of the corrected 2007 female survival, as this is more consistent with lamdba. For CalfCow, assume 50:50 gender ratio, as only %calf is given"
-Wittmer15_HartRanges,15,Wittmer et al.,2007,Hart,1988,2004,1500000,0.96,0.99,0.306539038,NA,NA,NA,Unconfirmed,Measured in 1988-1991 and then 2004 - but given as one estimate
-Ellington26_NP,26,Ellington et al.,2020,Northern Peninsula,1979,2013,750000,NA,NA,NA,NA,,,Unconfirmed,
-Ellington26_LP,26,Ellington et al.,2020,La Poile,1979,2013,750000,NA,NA,NA,NA,,,Unconfirmed,
-Ellington26_MR,26,Ellington et al.,2020,Middle Ridge,1979,2013,750000,NA,NA,NA,NA,,,Unconfirmed,
-Johnson32_Quintette,32,Johnson et al.,2015,Quintette,1990,2012,600000,NA,0.9,NA,NA,NA,NA,Unconfirmed,
-Johnson32_Narraway,32,Johnson et al.,2015,Narraway,1990,2012,600000,NA,0.913,NA,NA,NA,NA,Unconfirmed,
-Johnson32_Bear,32,Johnson et al.,2015,Bearhole-Redwillow,1990,2012,600000,NA,0.812,NA,NA,NA,NA,Unconfirmed,
-Johnson32_BurntPine,32,Johnson et al.,2015,Burnt Pine,1990,2012,600000,NA,0.624,NA,NA,NA,NA,Unconfirmed,
-Johnson32_Moberly,32,Johnson et al.,2015,Moberly,1990,2012,600000,NA,0.873,NA,NA,NA,NA,Unconfirmed,
-Walker64_PickleLake,64,Walker et al.,2021,Kinloch,2010,2013,2000000,NA,NA,NA,NA,,0.92,Unconfirmed,"This is the same data as Fryxel et al 2020, but with one added study area. "
-Walker64_Nakina,64,Walker et al.,2021,Nipigon,2010,2013,2000000,NA,NA,NA,NA,,0.82,Unconfirmed,Also has neonatal mortality and parturition rate
-Walker64_Cochrane,64,Walker et al.,2021,Kesagami,2010,2013,2000000,NA,NA,NA,NA,,0.85,Unconfirmed,
-Dalerum67_ESAR,67,Dalerum et al.,2007,East Side Athabasca River,1993,2001,3000000,0.88489,NA,0.202971429,NA,NA,NA,Unconfirmed,FSR and CalfCow derived from interpretation. Note FSM and CalfCow years are not identical
-Dalerum67_RedEarth,67,Dalerum et al.,2007,Red Earth,1995,2001,3000000,0.86043,NA,0.203428571,NA,NA,NA,Unconfirmed,FSR and CalfCow derived from interpretation. Note FSM and CalfCow years are not identical
-Dalerum67_CaribouMountains,67,Dalerum et al.,2007,Caribou Mountains,1995,2001,3000000,0.90065,NA,0.123414286,NA,NA,NA,Unconfirmed,FSR and CalfCow derived from interpretation. Note FSM and CalfCow years are not identical
-Gullickson71_SouthNahanni,71,Gullickson and Manseau,2000,South Nahanni Yukon and NWT,1995,1998,1250000,0.889,NA,0.209,0.111,,0.72,Unconfirmed,"Formula presents survival rates for 1, 2 and 3 years. I calculated one year survival for years 1, 2, 3, and averaged (21/24 w/ 3 deaths, 18/21 w/ 3 deaths, 16/18  w/ 2 deaths))"
-StuartSmith79_ESAR,79,Stuart-Smith et al.,1997,Eastern Side Athabasca River,1991,1994,800000,0.907,0.92,0.159,NA,0.219,,Unconfirmed,"They only partially report parameters by study area. Surivval rate is for all animals - but females died at a lower rate (5%/year vs 14%/year, with 9/65 caribou male).  Calfcow is average of two years. Lambda, pregnancy and calf-survival is for both polygons"
-StuartSmith79_WSAR,79,Stuart-Smith et al.,1997,Western Side Athabasca River,1991,1994,800000,0.849,0.92,0.2515,NA,0.219,,Unconfirmed,"They only partially report parameters by study area. Surivval rate is for all animals - but females died at a lower rate (5%/year vs 14%/year, with 9/65 caribou male).   Calfcow is average of two years. Lambda, pregnancy and calf-survival is for both polygons"
-Mahoney80_LaPoile,80,Mahoney et al.,1998,Lapoile,1986,1992,2000000,NA,NA,NA,NA,,,Unconfirmed,population estimates but methods varied�
-Mahoney80_GreyRiver,80,Mahoney et al.,1998,Grey River,1987,1987,2000000,NA,NA,NA,NA,,,Unconfirmed,no remeasurement. Delete?
-Mahoney80_SandyLake,80,Mahoney et al.,1998,Sandy Lake,1987,1987,2000000,NA,NA,NA,NA,,,Unconfirmed,no remeasurement. Delete?
-Mahoney80_PotHill,80,Mahoney et al.,1998,Pot Hill,1987,1987,2000000,NA,NA,NA,NA,,,Unconfirmed,no remeasurement. Delete?
-Mahoney80_MiddleRidge,80,Mahoney et al.,1998,Middle Ridge,1985,1995,2000000,NA,NA,NA,NA,,,Unconfirmed,population estimates but methods varied�
-Mahoney80_Gaff,80,Mahoney et al.,1998,Gaff Topsails,1989,1989,2000000,NA,NA,NA,NA,,,Unconfirmed,no remeasurement. Delete?
-Hettinga83_UpperNI,83,Hettinga et al.,2012,Upper part of North Interlake,2004,2009,400000,0.74,0.87,NA,NA,NA,NA,Unconfirmed,lambda assumes male + female (combined + separate estimates given)
-Hettinga83_LowerNI,83,Hettinga et al.,2012,Lower part of North Interlake,2004,2009,400000,0.74,0.93,NA,NA,NA,NA,Unconfirmed,lambda assumes male + female (combined + separate estimates given)
-McLoughlin86_SK1,86,McLoughlin et al.,2019,SK1,2014,2018,1500000,0.895,1,0.195,NA,,0.933,Unconfirmed,
-Hervieux87_Bistcho,87,Hervieux et al,2013,Bistcho,2008,2012,NA,0.776,0.842,0.171,NA,,,Unconfirmed,
-Hervieux87_Chinchaga,87,Hervieux et al,2013,Chinchaga BC,2002,2012,NA,0.831,0.887,0.134,NA,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2.
-Hervieux87_ColdLakeAB,87,Hervieux et al,2013,Cold Lakes Air Force - Alberta,1999,2012,NA,0.814,0.855,0.1,NA,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2.
-Hervieux87_CaribouMountains,87,Hervieux et al,2013,Caribou Mountains,1995,2012,NA,0.858,0.92,0.144,NA,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2.
-Hervieux87_ESAR,87,Hervieux et al,2013,Eastern Side Athabasca River,1994,2012,NA,0.853,0.916,0.147,NA,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2.
-Hervieux87_LittleSmoky,87,Hervieux et al,2013,Little Smoky,2000,2012,NA,0.901,0.97,0.153,NA,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2.
-Hervieux87_RedEarth,87,Hervieux et al,2013,Red Earth,1995,2012,NA,0.819,0.884,0.157,NA,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2.
-Hervieux87_Richardson,87,Hervieux et al,2013,Richardson,2009,2012,NA,0.903,0.984,0.179,NA,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2.
-Hervieux87_WSAR,87,Hervieux et al,2013,Western Side Athabasca River,1994,2012,NA,0.849,0.933,0.198,NA,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2.
-Hervieux87_Yates,87,Hervieux et al,2013,Yates,2007,2012,NA,0.907,1.001,0.206,NA,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2.
-Hervieux87_Narraway,87,Hervieux et al,2013,Narraway,2007,2012,NA,0.856,0.915,0.136,NA,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2.
-Hervieux87_ALaPeche,87,Hervieux et al,2013,A La Peche,1998,2012,NA,0.864,0.939,0.173,NA,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2.
-Hervieux87_ColdLakeSK,87,Hervieux et al,2013,Cold Lake Air Force - Saskatchewan,1998,2012,4000000,0.866,0.92,0.126,NA,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2.
-Hervieux87_RedRock,87,Hervieux et al,2013,Red Rock,1998,2012,NA,0.817,0.892,0.184,NA,,,Unconfirmed,The starting and endign years are an estimate based on fig 4 and table 2.
-Courtois91_Manic,91,Courtois et al.,2007,Manic,1998,2001,1500000,0.75,NA,0.333,NA,,,Unconfirmed,
-Courtois91_Manou,91,Courtois et al.,2007,Manou,1998,2001,1500000,0.87,NA,0.209,NA,,,Unconfirmed,
-Courtois91_Pipmu,91,Courtois et al.,2007,Pipmu,1998,2001,1500000,0.82,NA,0.382,NA,,,Unconfirmed,
-Pinard96_GrandsJardins,96,Pinard et al.,2011,Reintroduced to Grands Jardins,2004,2006,800000,NA,NA,NA,NA,,0.79,Unconfirmed,"*calving rate? Same as pregnancy rate? Also has calf survival (0.46) and of 30 female caribou, 2 died before calving period. "
-Courtois97_Manicougan,97,Courtois et al.,2008,Manicougan - unsure if this is a herd or the area,1999,2005,400000,0.848,NA,0.517688052,NA,,,Unconfirmed,
-Rudolph98_Nottaway,98,Rudolph et al.,2017,Nottaway Range - some dipsy doodles I ignored,2004,2013,1500000,0.854,0.968,0.226,NA,,,Unconfirmed,table 3 is a bit bizarre. Check with Eric. Survival rate is unclear whether female or all
-Rudolph98_Assinica,98,Rudolph et al.,2017,Assinica,2004,2013,1500000,0.885,1.015,0.243,NA,,,Unconfirmed,table 3 assinica is listed twice? With different values for survival�
-Rudolph98_Temiscamie,98,Rudolph et al.,2017,Temiscamie,2004,2013,1500000,0.854,0.949,0.1845,NA,,,Unconfirmed,
-Mahoney101_CornerBrooks,101,Mahoney and Virgl,2003,Corner Brooks,1994,1997,200000,0.88,NA,0.24,NA,,0.96,Unconfirmed,has annual rates too
-Fryxell103_Nakima,103,Fryxell et al.,2020,Kinloch,2010,2014,1500000,0.76,NA,NA,NA,,,No,must confirm whether 2014 is end date or 2013
-Fryxell103_PickleLake,103,Fryxell et al.,2020,Nipigon,2010,2014,1500000,0.9,NA,NA,NA,,,No,
-Brown112_Wabowden,112,Brown et al.,2000,Wabowden,1995,1997,700000,0.9,1.19,0.65,NA,,,Unconfirmed,
-Seip113_WellsGray,113,Seip,1992,Wells Gray,1984,1989,500000,0.92,0.754,0.29,0.08,,0.94,Yes,Digitized liberally from figure 9. Calf cow reported in October and June and is complicated
-Seip113_Quesnel,113,Seip,1992,Quesnel Lake,1984,1989,500000,0.71,1.04,0.181,0.29,,0.94,Yes,"Digitized from Seip 1992 Wildlife Bulletin report. Calf:cow is the sum of total column in table 1 (ie with wolves, without, and reduced wolves)"
-Rettie92_ClarkeLake,92,Rettie and Messier,1998,Clarke Lake,1993,1996,1000000,0.8,0.923,0.33,NA,,0.94,Unconfirmed,"earliest measurements seem to vary between 1992 (pregnancy), 1993 (survival) and 1994 (calf:cow). Ian calculated lambda - SD is very large and lambda not sig diff from 1"
-Rettie92_NemeibenLake,92,Rettie and Messier,1998,Nemeiben Lake,1994,1996,1000000,0.79,0.852,0.18,NA,,0.94,Unconfirmed,
-Rettie92_MossyRiver,92,Rettie and Messier,1998,Mossy River,1994,1996,1000000,1,1.116,0.24,NA,,0.94,Unconfirmed,
-Rettie92_MontrealLake,92,Rettie and Messier,1998,Montreal Lake,1993,1996,1000000,0.78,0.914,0.37,NA,,0.94,Unconfirmed,"earliest measurements seem to vary between 1992 (pregnancy), 1993 (survival) and 1994 (calf:cow)"
-Rettie92_WeyakwinLake,92,Rettie and Messier,1998,Weyakwin Lake,1994,1996,1000000,0.87,0.98,0.31,NA,,0.94,Unconfirmed,
-Gustine40_BesaProphet,40,Gustine et al.,2010,Greater Besa-Prophet area of Muskwa-Kechika,2001,2002,200000,NA,NA,NA,NA,,0.917,Unconfirmed,
-Culling115_Chinchaga,115,Culling and Culling,2013,Chinchaga BC,2004,2013,NA,NA,NA,0.117,NA,,,Unconfirmed,"this does not include Alberta portion. With Alberta, ratio is 33.3, much higher!"
-Culling115_SS,115,Culling and Culling,2013,Snake-Sahtaneh,2004,2013,NA,NA,NA,0.242,NA,,,Unconfirmed,2004 measurement is from separate report but yields population change
-Culling115_Calendar,115,Culling and Culling,2013,Calendar BC,2004,2013,NA,NA,NA,0.348,NA,,,Unconfirmed,BC only. 2004 measurement is from separate report but yields population change
-Culling115_Maxhamish,115,Culling and Culling,2013,Maxhamish,2004,2013,NA,NA,NA,0.278,NA,,,Unconfirmed,2004 measurement is from separate report but yields population change
-Culling115_Prophet,115,Culling and Culling,2013,Prophet BC,2004,2013,NA,NA,NA,0.192,NA,,,Unconfirmed,2004 measurement is from separate report but yields population change
-Culling115_Parker,115,Culling and Culling,2013,Parker,2004,2013,NA,NA,NA,0.044,NA,,,Unconfirmed,2004 measurement is from separate report but yields population change
-Culling115_FtNelson,115,Culling and Culling,2013,Fort Nelson,2013,2013,NA,NA,NA,0,NA,,,Unconfirmed,"this was deemed to be a separate range after 2004, hence no earlier data"
-Frenette116_McGerrigle,116,Frenette,2017,McGerrigle,1988,2015,250000,0.86,NA,NA,NA,,,Yes,"calf:cow is available for all 3 polys combined, but it must be interpreted from figure 2.3. Appears  to be roughly 0.3,  interannual variance seems to increase over time. "
-Frenette116_Logan,116,Frenette,2017,Logan,1999,2015,250000,0.97,NA,NA,NA,,,Yes,"calf:cow is available for all 3 polys combined, but it must be interpreted from figure 2.3. Appears  to be roughly 0.3,  interannual variance seems to increase over time. "
-Frenette116_Albert,116,Frenette,2017,Albert,1988,2001,250000,0.87,NA,NA,NA,,,Yes,"calf:cow is available for all 3 polys combined, but it must be interpreted from figure 2.3. Appears  to be roughly 0.3,  interannual variance seems to increase over time. "
-Mahoney82_Buchans,82,Mahoney and Schaefer,2002,Buchans,1996,1999,300000,0.876,1.036,NA,NA,,,,"from page 960 - they calcualted finite rate-of-increase for period with radiocollar tracking, 1996-1999. Lambda is from e ^( <mean rate of increase from 1996-97, 97-98, 98-99). "
-Wittmer117_KinbasketSouth,117,Wittmer et al.,2005,Kinbasket South,1997,2002,1500000,NA,0.96,0.153084293,,,1,,calfcow from table 4 - assumes 50/50 sex ratio - formula is %calf/((100 - %calf) * 0.5)
-Wittmer117_PurcellsCentral,117,Wittmer et al.,2005,Purcells-Central,1995,2002,1500000,NA,0.88,0.025931929,,,0.84,,calfcow from table 4 - assumes 50/50 sex ratio - formula is %calf/((100 - %calf) * 0.5)
-Wittmer117_Duncan,117,Wittmer et al.,2005,Duncan,1996,2002,1500000,NA,0.86,0.337540907,,,1,,calfcow from table 4 - assumes 50/50 sex ratio - formula is %calf/((100 - %calf) * 0.5)
-Wittmer117_MonasheeSouth,117,Wittmer et al.,2005,Monashee South,1994,2002,1500000,NA,0.88,0.352941176,,,NA,,calfcow from table 4 - assumes 50/50 sex ratio - formula is %calf/((100 - %calf) * 0.5)
-Wittmer117_AllanCreek,117,Wittmer et al.,2005,Allan Creek,2004,2004,1500000,NA,NA,NA,,,,,only had one census at time of study (though7 collared animals). calfcow from table 4 - assumes 50/50 sex ratio - formula is %calf/((100 - %calf) * 0.5)
-Wittmer117_GeorgeMountain,117,Wittmer et al.,2005,George Mountain,1992,2002,1500000,NA,0.82,0,,,,,calfcow from table 4 - assumes 50/50 sex ratio - formula is %calf/((100 - %calf) * 0.5)
-Wittmer117_NarrowLake,117,Wittmer et al.,2005,Narrow Lake,1999,2002,1500000,NA,0.97,0.246433786,,,,,calfcow from table 4 - assumes 50/50 sex ratio - formula is %calf/((100 - %calf) * 0.5)
+PolygonID,DocID,Author,Publication_Year,RangeDescription,First_Measurement_Year,Last_Measurement_Year,Digitization_Scale,AdultFemaleSurvivalRate,Lambda,CalfCow,Calf survival,Pregnancy,Predator_Control,Lambda_source,AFM_source,CalfCow_source,Note
+Wittmer15_Purcells_South,15,Wittmer et al.,2007,Purcells South,1993,1998,1500000,0.55,0.82,0.121115707,NA,0.88,Unconfirmed,census,radiocollar,census,"Decided to use the 2005 instead of the corrected 2007 female survival, as this is more consistent with lamdba. For CalfCow, assume 50:50 gender ratio, as only %calf is given. So at 10% calf, the ratio is 10% to 45%. "
+Wittmer15_Nakusp,15,Wittmer et al.,2007,Nakusp,1995,2000,1500000,0.85,0.92,0.226675573,NA,NA,Unconfirmed,census,radiocollar,census,"Decided to use the 2005 instead of the corrected 2007 female survival, as this is more consistent with lamdba. For CalfCow, assume 50:50 gender ratio, as only %calf is given"
+Wittmer15_FrisbyBoulder,15,Wittmer et al.,2007,Frisby Boulder,1994,2004,1500000,0.9,0.96,0.610966057,NA,NA,Unconfirmed,census,radiocollar,census,"Decided to use the 2005 instead of the corrected 2007 female survival, as this is more consistent with lamdba. For CalfCow, assume 50:50 gender ratio, as only %calf is given"
+Wittmer15_ColumbiaSouth,15,Wittmer et al.,2007,Columbia South,1992,2004,1500000,0.85,0.96,0.33535731,NA,0.94,Unconfirmed,census,radiocollar,census,"Decided to use the 2005 instead of the corrected 2007 female survival, as this is more consistent with lamdba. For CalfCow, assume 50:50 gender ratio, as only %calf is given"
+Wittmer15_ColumbiaNorth,15,Wittmer et al.,2007,Columbia North,1992,2004,1500000,0.81,0.92,0.27014756,NA,0.88,Unconfirmed,census,radiocollar,census,"Decided to use the 2005 instead of the corrected 2007 female survival, as this is more consistent with lamdba. For CalfCow, assume 50:50 gender ratio, as only %calf is given"
+Wittmer15_Groundhog,15,Wittmer et al.,2007,Groundhog,1997,2004,1500000,0.78,0.92,0.333722287,NA,NA,Unconfirmed,census,radiocollar,census,"Decided to use the 2005 instead of the corrected 2007 female survival, as this is more consistent with lamdba. For CalfCow, assume 50:50 gender ratio, as only %calf is given"
+Wittmer15_WellsGray,15,Wittmer et al.,2007,Wells Gray,1994,2004,1500000,0.84,0.92,0.457002457,NA,0.98,Unconfirmed,census,radiocollar,census,"Decided to use the 2005 instead of the corrected 2007 female survival, as this is more consistent with lamdba. For CalfCow, assume 50:50 gender ratio, as only %calf is given"
+Wittmer15_Barkerville,15,Wittmer et al.,2007,Barkerville,1993,2004,1500000,0.88,1.03,0.351834431,NA,0.89,Unconfirmed,census,radiocollar,census,"Decided to use the 2005 instead of the corrected 2007 female survival, as this is more consistent with lamdba. For CalfCow, assume 50:50 gender ratio, as only %calf is given"
+Wittmer15_NorthCaribooMtn,15,Wittmer et al.,2007,North Cariboo Mtn,1988,1991,1500000,0.91,1,0.213123824,NA,NA,Unconfirmed,census,radiocollar,census,"Decided to use the 2005 instead of the corrected 2007 female survival, as this is more consistent with lamdba. For CalfCow, assume 50:50 gender ratio, as only %calf is given"
+Wittmer15_HartRanges,15,Wittmer et al.,2007,Hart,1988,2004,1500000,0.96,0.99,0.306539038,NA,NA,Unconfirmed,census,radiocollar,census,Measured in 1988-1991 and then 2004 - but given as one estimate
+Ellington26_NP,26,Ellington et al.,2020,Northern Peninsula,1979,2013,750000,NA,NA,NA,,,Unconfirmed,,,,
+Ellington26_LP,26,Ellington et al.,2020,La Poile,1979,2013,750000,NA,NA,NA,,,Unconfirmed,,,,
+Ellington26_MR,26,Ellington et al.,2020,Middle Ridge,1979,2013,750000,NA,NA,NA,,,Unconfirmed,,,,
+Johnson32_Quintette,32,Johnson et al.,2015,Quintette,1990,2012,600000,NA,0.9,NA,NA,NA,Unconfirmed,survey and collar,NA,NA,
+Johnson32_Narraway,32,Johnson et al.,2015,Narraway,1990,2012,600000,NA,0.913,NA,NA,NA,Unconfirmed,survey and collar,NA,NA,
+Johnson32_Bear,32,Johnson et al.,2015,Bearhole-Redwillow,1990,2012,600000,NA,0.812,NA,NA,NA,Unconfirmed,survey and collar,NA,NA,
+Johnson32_BurntPine,32,Johnson et al.,2015,Burnt Pine,1990,2012,600000,NA,0.624,NA,NA,NA,Unconfirmed,survey and collar,NA,NA,
+Johnson32_Moberly,32,Johnson et al.,2015,Moberly,1990,2012,600000,NA,0.873,NA,NA,NA,Unconfirmed,survey and collar,NA,NA,
+Walker64_PickleLake,64,Walker et al.,2021,Kinloch,2010,2013,2000000,NA,NA,NA,,0.92,Unconfirmed,NA,NA,NA,"This is the same data as Fryxel et al 2020, but with one added study area. "
+Walker64_Nakina,64,Walker et al.,2021,Nipigon,2010,2013,2000000,NA,NA,NA,,0.82,Unconfirmed,NA,NA,NA,Also has neonatal mortality and parturition rate
+Walker64_Cochrane,64,Walker et al.,2021,Kesagami,2010,2013,2000000,NA,NA,NA,,0.85,Unconfirmed,NA,NA,NA,
+Dalerum67_ESAR,67,Dalerum et al.,2007,East Side Athabasca River,1993,2001,3000000,0.88489,NA,0.202971429,NA,NA,Unconfirmed,NA,radiocollar,survey,FSR and CalfCow derived from interpretation. Note FSM and CalfCow years are not identical
+Dalerum67_RedEarth,67,Dalerum et al.,2007,Red Earth,1995,2001,3000000,0.86043,NA,0.203428571,NA,NA,Unconfirmed,NA,radiocollar,survey,FSR and CalfCow derived from interpretation. Note FSM and CalfCow years are not identical
+Dalerum67_CaribouMountains,67,Dalerum et al.,2007,Caribou Mountains,1995,2001,3000000,0.90065,NA,0.123414286,NA,NA,Unconfirmed,NA,radiocollar,survey,FSR and CalfCow derived from interpretation. Note FSM and CalfCow years are not identical
+Gullickson71_SouthNahanni,71,Gullickson and Manseau,2000,South Nahanni Yukon and NWT,1995,1998,1250000,0.889,NA,0.209,NA,0.72,Unconfirmed,NA,radiocollar,survey,"Formula presents survival rates for 1, 2 and 3 years. I calculated one year survival for years 1, 2, 3, and averaged (21/24 w/ 3 deaths, 18/21 w/ 3 deaths, 16/18  w/ 2 deaths))"
+StuartSmith79_ESAR,79,Stuart-Smith et al.,1997,Eastern Side Athabasca River,1991,1994,800000,0.907,0.92,0.159,0.219,0.857,Unconfirmed,survey and collar,radiocollar,survey,"They only partially report parameters by study area. Surivval rate is for all animals - but females died at a lower rate (5%/year vs 14%/year, with 9/65 caribou male).  Calfcow is average of two years. Lambda, pregnancy and calf-survival is for both polygons"
+StuartSmith79_WSAR,79,Stuart-Smith et al.,1997,Western Side Athabasca River,1991,1994,800000,0.849,0.92,0.2515,0.219,0.857,Unconfirmed,survey and collar,radiocollar,survey,"They only partially report parameters by study area. Surivval rate is for all animals - but females died at a lower rate (5%/year vs 14%/year, with 9/65 caribou male).   Calfcow is average of two years. Lambda, pregnancy and calf-survival is for both polygons"
+Mahoney80_LaPoile,80,Mahoney et al.,1998,Lapoile,1986,1992,2000000,NA,NA,NA,,,Unconfirmed,,,,population estimates but methods varied
+Mahoney80_GreyRiver,80,Mahoney et al.,1998,Grey River,1987,1987,2000000,NA,NA,NA,,,Unconfirmed,,,,no remeasurement. Delete?
+Mahoney80_SandyLake,80,Mahoney et al.,1998,Sandy Lake,1987,1987,2000000,NA,NA,NA,,,Unconfirmed,,,,no remeasurement. Delete?
+Mahoney80_PotHill,80,Mahoney et al.,1998,Pot Hill,1987,1987,2000000,NA,NA,NA,,,Unconfirmed,,,,no remeasurement. Delete?
+Mahoney80_MiddleRidge,80,Mahoney et al.,1998,Middle Ridge,1985,1995,2000000,NA,NA,NA,,,Unconfirmed,,,,population estimates but methods varied
+Mahoney80_Gaff,80,Mahoney et al.,1998,Gaff Topsails,1989,1989,2000000,NA,NA,NA,,,Unconfirmed,,,,no remeasurement. Delete?
+Hettinga83_UpperNI,83,Hettinga et al.,2012,Upper part of North Interlake,2004,2009,400000,0.74,0.87,NA,NA,NA,Unconfirmed,fecal-based DNA analysis,fecal-based DNA analysis,survey,lambda assumes male + female (combined + separate estimates given)
+Hettinga83_LowerNI,83,Hettinga et al.,2012,Lower part of North Interlake,2004,2009,400000,0.74,0.93,NA,NA,NA,Unconfirmed,fecal-based DNA analysis,fecal-based DNA analysis,survey,lambda assumes male + female (combined + separate estimates given)
+McLoughlin86_SK1,86,McLoughlin et al.,2019,SK1,2014,2018,1500000,0.895,1,0.195,NA,0.933,Unconfirmed,survey and collar,radiocollar,survey,
+Hervieux87_Bistcho,87,Hervieux et al,2013,Bistcho,2008,2012,NA,0.776,0.842,0.171,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,
+Hervieux87_Chinchaga,87,Hervieux et al,2013,Chinchaga BC,2002,2012,NA,0.831,0.887,0.134,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,The starting and endign years are an estimate based on fig 4 and table 2.
+Hervieux87_ColdLakeAB,87,Hervieux et al,2013,Cold Lakes Air Force - Alberta,1999,2012,NA,0.814,0.855,0.1,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,The starting and endign years are an estimate based on fig 4 and table 2.
+Hervieux87_CaribouMountains,87,Hervieux et al,2013,Caribou Mountains,1995,2012,NA,0.858,0.92,0.144,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,The starting and endign years are an estimate based on fig 4 and table 2.
+Hervieux87_ESAR,87,Hervieux et al,2013,Eastern Side Athabasca River,1994,2012,NA,0.853,0.916,0.147,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,The starting and endign years are an estimate based on fig 4 and table 2.
+Hervieux87_LittleSmoky,87,Hervieux et al,2013,Little Smoky,2000,2012,NA,0.901,0.97,0.153,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,The starting and endign years are an estimate based on fig 4 and table 2.
+Hervieux87_RedEarth,87,Hervieux et al,2013,Red Earth,1995,2012,NA,0.819,0.884,0.157,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,The starting and endign years are an estimate based on fig 4 and table 2.
+Hervieux87_Richardson,87,Hervieux et al,2013,Richardson,2009,2012,NA,0.903,0.984,0.179,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,The starting and endign years are an estimate based on fig 4 and table 2.
+Hervieux87_WSAR,87,Hervieux et al,2013,Western Side Athabasca River,1994,2012,NA,0.849,0.933,0.198,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,The starting and endign years are an estimate based on fig 4 and table 2.
+Hervieux87_Yates,87,Hervieux et al,2013,Yates,2007,2012,NA,0.907,1.001,0.206,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,The starting and endign years are an estimate based on fig 4 and table 2.
+Hervieux87_Narraway,87,Hervieux et al,2013,Narraway,2007,2012,NA,0.856,0.915,0.136,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,The starting and endign years are an estimate based on fig 4 and table 2.
+Hervieux87_ALaPeche,87,Hervieux et al,2013,A La Peche,1998,2012,NA,0.864,0.939,0.173,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,The starting and endign years are an estimate based on fig 4 and table 2.
+Hervieux87_ColdLakeSK,87,Hervieux et al,2013,Cold Lake Air Force - Saskatchewan,1998,2012,4000000,0.866,0.92,0.126,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,The starting and endign years are an estimate based on fig 4 and table 2.
+Hervieux87_RedRock,87,Hervieux et al,2013,Red Rock,1998,2012,NA,0.817,0.892,0.184,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,The starting and endign years are an estimate based on fig 4 and table 2.
+Courtois91_Manic,91,Courtois et al.,2007,Manic,1998,2001,1500000,0.75,NA,0.333,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,we can estimate lambda
+Courtois91_Manou,91,Courtois et al.,2007,Manou,1998,2001,1500000,0.87,NA,0.209,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,we can estimate lambda
+Courtois91_Pipmu,91,Courtois et al.,2007,Pipmu,1998,2001,1500000,0.82,NA,0.382,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,we can estimate lambda
+Pinard96_GrandsJardins,96,Pinard et al.,2011,Reintroduced to Grands Jardins,2004,2006,800000,NA,NA,NA,0.46,0.79,Unconfirmed,NA,radiocollar,NA,"*calving rate? Same as pregnancy rate? Also has calf survival (0.46) and of 30 female caribou, 2 died before calving period. "
+Courtois97_Manicougan,97,Courtois et al.,2008,Manicougan - unsure if this is a herd or the area,1999,2005,400000,0.848,NA,0.517688052,NA,,Unconfirmed,survey and collar,radiocollar,survey,
+Rudolph98_Nottaway,98,Rudolph et al.,2017,Nottaway Range - some dipsy doodles I ignored,2004,2013,1500000,0.854,0.968,0.226,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,table 3 is a bit bizarre. Check with Eric. Survival rate is unclear whether female or all
+Rudolph98_Assinica,98,Rudolph et al.,2017,Assinica,2004,2013,1500000,0.885,1.015,0.243,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,table 3 assinica is listed twice? With different values for survival�
+Rudolph98_Temiscamie,98,Rudolph et al.,2017,Temiscamie,2004,2013,1500000,0.854,0.949,0.1845,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,
+Mahoney101_CornerBrooks,101,Mahoney and Virgl,2003,Corner Brooks,1994,1997,200000,0.88,NA,0.24,,0.96,Unconfirmed,,,,has annual rates too
+Fryxell103_Nakima,103,Fryxell et al.,2020,Kinloch,2010,2014,1500000,0.76,NA,NA,NA,NA,No,NA,radiocollar,NA,must confirm whether 2014 is end date or 2013
+Fryxell103_PickleLake,103,Fryxell et al.,2020,Nipigon,2010,2014,1500000,0.9,NA,NA,NA,NA,No,NA,radiocollar,NA,
+Brown112_Wabowden,112,Brown et al.,2000,Wabowden,1995,1997,700000,0.9,1.19,0.65,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,
+Seip113_WellsGray,113,Seip,1992,Wells Gray,1984,1989,500000,0.92,0.754,0.29,NA,0.94,Yes,survey and collar,radiocollar,survey,Digitized liberally from figure 9. Calf cow reported in October and June and is complicated
+Seip113_Quesnel,113,Seip,1992,Quesnel Lake,1984,1989,500000,0.71,1.04,0.181,NA,0.94,Yes,survey and collar,radiocollar,survey,"Digitized from Seip 1992 Wildlife Bulletin report. Calf:cow is the sum of total column in table 1 (ie with wolves, without, and reduced wolves)"
+Rettie92_ClarkeLake,92,Rettie and Messier,1998,Clarke Lake,1993,1996,1000000,0.8,0.923,0.33,NA,0.94,Unconfirmed,survey and collar,radiocollar,survey,"earliest measurements seem to vary between 1992 (pregnancy), 1993 (survival) and 1994 (calf:cow). Ian calculated lambda - SD is very large and lambda not sig diff from 1"
+Rettie92_NemeibenLake,92,Rettie and Messier,1998,Nemeiben Lake,1994,1996,1000000,0.79,0.852,0.18,NA,0.94,Unconfirmed,survey and collar,radiocollar,survey,pregnancy should be treated as one population for all 5 Rettie
+Rettie92_MossyRiver,92,Rettie and Messier,1998,Mossy River,1994,1996,1000000,1,1.116,0.24,NA,0.94,Unconfirmed,survey and collar,radiocollar,survey,
+Rettie92_MontrealLake,92,Rettie and Messier,1998,Montreal Lake,1993,1996,1000000,0.78,0.914,0.37,NA,0.94,Unconfirmed,survey and collar,radiocollar,survey,"earliest measurements seem to vary between 1992 (pregnancy), 1993 (survival) and 1994 (calf:cow)"
+Rettie92_WeyakwinLake,92,Rettie and Messier,1998,Weyakwin Lake,1994,1996,1000000,0.87,0.98,0.31,NA,0.94,Unconfirmed,survey and collar,radiocollar,survey,
+Gustine40_BesaProphet,40,Gustine et al.,2010,Greater Besa-Prophet area of Muskwa-Kechika,2001,2002,200000,NA,NA,NA,NA,0.917,Unconfirmed,NA,NA,NA,"radiocollared caribou but demography not reported, only pregnancy. See Gustine 2006b ""Calf survival of woodland caribou in a multipredator ecosystem"""
+Culling115_Chinchaga,115,Culling and Culling,2013,Chinchaga BC,2004,2013,NA,NA,NA,0.117,NA,NA,Unconfirmed,NA,NA,survey,"this does not include Alberta portion. With Alberta, ratio is 33.3, much higher!"
+Culling115_SS,115,Culling and Culling,2013,Snake-Sahtaneh,2004,2013,NA,NA,NA,0.242,NA,NA,Unconfirmed,NA,NA,survey,2004 measurement is from separate report but yields population change
+Culling115_Calendar,115,Culling and Culling,2013,Calendar BC,2004,2013,NA,NA,NA,0.348,NA,NA,Unconfirmed,NA,NA,survey,BC only. 2004 measurement is from separate report but yields population change
+Culling115_Maxhamish,115,Culling and Culling,2013,Maxhamish,2004,2013,NA,NA,NA,0.278,NA,NA,Unconfirmed,NA,NA,survey,2004 measurement is from separate report but yields population change
+Culling115_Prophet,115,Culling and Culling,2013,Prophet BC,2004,2013,NA,NA,NA,0.192,NA,NA,Unconfirmed,NA,NA,survey,2004 measurement is from separate report but yields population change
+Culling115_Parker,115,Culling and Culling,2013,Parker,2004,2013,NA,NA,NA,0.044,NA,NA,Unconfirmed,NA,NA,survey,2004 measurement is from separate report but yields population change
+Culling115_FtNelson,115,Culling and Culling,2013,Fort Nelson,2013,2013,NA,NA,NA,0,NA,NA,Unconfirmed,NA,NA,survey,"this was deemed to be a separate range after 2004, hence no earlier data"
+Frenette116_McGerrigle,116,Frenette,2017,McGerrigle,1988,2015,250000,0.86,NA,0.3091,NA,NA,Yes,NA,survey,survey,"calf:cow is available for all 3 polys combined, but it must be interpreted from figure 2.3. Appears  to be roughly 0.3,  interannual variance seems to increase over time. "
+Frenette116_Logan,116,Frenette,2017,Logan,1999,2015,250000,0.97,NA,0.3091,NA,NA,Yes,NA,survey,survey,"calf:cow is available for all 3 polys combined, but it must be interpreted from figure 2.3. Appears  to be roughly 0.3,  interannual variance seems to increase over time. "
+Frenette116_Albert,116,Frenette,2017,Albert,1988,2001,250000,0.87,NA,0.3091,NA,NA,Yes,NA,survey,survey,"calf:cow is available for all 3 polys combined, but it must be interpreted from figure 2.3. Appears  to be roughly 0.3,  interannual variance seems to increase over time. "
+Mahoney82_Buchans,82,Mahoney and Schaefer,2002,Buchans,1996,1999,300000,0.876,1.036,0.246,,,No,survey and collar,radiocollar,survey,"from page 960 - they calcualted finite rate-of-increase for period with radiocollar tracking, 1996-1999. Lambda is from e ^( <mean rate of increase from 1996-97, 97-98, 98-99). "
+Wittmer117_KinbasketSouth,117,Wittmer et al.,2005,Kinbasket South,1997,2002,1500000,NA,0.96,0.153084293,NA,1,Unconfirmed,census,NA,census,calfcow from table 4 - assumes 50/50 sex ratio - formula is %calf/((100 - %calf) * 0.5)
+Wittmer117_PurcellsCentral,117,Wittmer et al.,2005,Purcells-Central,1995,2002,1500000,NA,0.88,0.025931929,NA,0.84,Unconfirmed,census,NA,census,calfcow from table 4 - assumes 50/50 sex ratio - formula is %calf/((100 - %calf) * 0.5)
+Wittmer117_Duncan,117,Wittmer et al.,2005,Duncan,1996,2002,1500000,NA,0.86,0.337540907,NA,1,Unconfirmed,census,NA,census,calfcow from table 4 - assumes 50/50 sex ratio - formula is %calf/((100 - %calf) * 0.5)
+Wittmer117_MonasheeSouth,117,Wittmer et al.,2005,Monashee South,1994,2002,1500000,NA,0.88,0.352941176,NA,NA,Unconfirmed,census,NA,census,calfcow from table 4 - assumes 50/50 sex ratio - formula is %calf/((100 - %calf) * 0.5)
+Wittmer117_AllanCreek,117,Wittmer et al.,2005,Allan Creek,2004,2004,1500000,NA,NA,0.378121284,NA,NA,Unconfirmed,census,NA,census,only had one census at time of study (though7 collared animals). calfcow from table 4 - assumes 50/50 sex ratio - formula is %calf/((100 - %calf) * 0.5)
+Wittmer117_GeorgeMountain,117,Wittmer et al.,2005,George Mountain,1992,2002,1500000,NA,0.82,0,NA,NA,Unconfirmed,census,NA,census,calfcow from table 4 - assumes 50/50 sex ratio - formula is %calf/((100 - %calf) * 0.5)
+Wittmer117_NarrowLake,117,Wittmer et al.,2005,Narrow Lake,1999,2002,1500000,NA,0.97,0.246433786,NA,NA,Unconfirmed,census,NA,census,calfcow from table 4 - assumes 50/50 sex ratio - formula is %calf/((100 - %calf) * 0.5)
