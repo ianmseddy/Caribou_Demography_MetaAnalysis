@@ -9,9 +9,9 @@ Wittmer15_WellsGray,15,Wittmer et al.,2007,Wells Gray,1994,2004,1500000,0.84,0.9
 Wittmer15_Barkerville,15,Wittmer et al.,2007,Barkerville,1993,2004,1500000,0.88,1.03,0.351834431,NA,0.89,Unconfirmed,census,radiocollar,census,"Decided to use the 2005 instead of the corrected 2007 female survival, as this is more consistent with lamdba. For CalfCow, assume 50:50 gender ratio, as only %calf is given"
 Wittmer15_NorthCaribooMtn,15,Wittmer et al.,2007,North Cariboo Mtn,1988,1991,1500000,0.91,1,0.213123824,NA,NA,Unconfirmed,census,radiocollar,census,"Decided to use the 2005 instead of the corrected 2007 female survival, as this is more consistent with lamdba. For CalfCow, assume 50:50 gender ratio, as only %calf is given"
 Wittmer15_HartRanges,15,Wittmer et al.,2007,Hart,1988,2004,1500000,0.96,0.99,0.306539038,NA,NA,Unconfirmed,census,radiocollar,census,Measured in 1988-1991 and then 2004 - but given as one estimate
-Ellington26_NP,26,Ellington et al.,2020,Northern Peninsula,1979,2013,750000,NA,NA,NA,,,Unconfirmed,,,,
-Ellington26_LP,26,Ellington et al.,2020,La Poile,1979,2013,750000,NA,NA,NA,,,Unconfirmed,,,,
-Ellington26_MR,26,Ellington et al.,2020,Middle Ridge,1979,2013,750000,NA,NA,NA,,,Unconfirmed,,,,
+Ellington26_NP,26,Ellington et al.,2020,Northern Peninsula,1979,2013,750000,NA,NA,NA,NA,NA,Unconfirmed,,NA,census,calfcow on dryad but unclear if all study areas are present
+Ellington26_LP,26,Ellington et al.,2020,La Poile,1979,2013,750000,NA,NA,NA,NA,NA,Unconfirmed,,NA,census,calfcow on dryad but unclear if all study areas are present
+Ellington26_MR,26,Ellington et al.,2020,Middle Ridge,1979,2013,750000,NA,NA,NA,NA,NA,Unconfirmed,,NA,census,calfcow on dryad but unclear if all study areas are present
 Johnson32_Quintette,32,Johnson et al.,2015,Quintette,1990,2012,600000,NA,0.9,NA,NA,NA,Unconfirmed,survey and collar,NA,NA,
 Johnson32_Narraway,32,Johnson et al.,2015,Narraway,1990,2012,600000,NA,0.913,NA,NA,NA,Unconfirmed,survey and collar,NA,NA,
 Johnson32_Bear,32,Johnson et al.,2015,Bearhole-Redwillow,1990,2012,600000,NA,0.812,NA,NA,NA,Unconfirmed,survey and collar,NA,NA,
@@ -27,11 +27,7 @@ Gullickson71_SouthNahanni,71,Gullickson and Manseau,2000,South Nahanni Yukon and
 StuartSmith79_ESAR,79,Stuart-Smith et al.,1997,Eastern Side Athabasca River,1991,1994,800000,0.907,0.92,0.159,0.219,0.857,Unconfirmed,survey and collar,radiocollar,survey,"They only partially report parameters by study area. Surivval rate is for all animals - but females died at a lower rate (5%/year vs 14%/year, with 9/65 caribou male).  Calfcow is average of two years. Lambda, pregnancy and calf-survival is for both polygons"
 StuartSmith79_WSAR,79,Stuart-Smith et al.,1997,Western Side Athabasca River,1991,1994,800000,0.849,0.92,0.2515,0.219,0.857,Unconfirmed,survey and collar,radiocollar,survey,"They only partially report parameters by study area. Surivval rate is for all animals - but females died at a lower rate (5%/year vs 14%/year, with 9/65 caribou male).   Calfcow is average of two years. Lambda, pregnancy and calf-survival is for both polygons"
 Mahoney80_LaPoile,80,Mahoney et al.,1998,Lapoile,1986,1992,2000000,NA,NA,NA,,,Unconfirmed,,,,population estimates but methods varied
-Mahoney80_GreyRiver,80,Mahoney et al.,1998,Grey River,1987,1987,2000000,NA,NA,NA,,,Unconfirmed,,,,no remeasurement. Delete?
-Mahoney80_SandyLake,80,Mahoney et al.,1998,Sandy Lake,1987,1987,2000000,NA,NA,NA,,,Unconfirmed,,,,no remeasurement. Delete?
-Mahoney80_PotHill,80,Mahoney et al.,1998,Pot Hill,1987,1987,2000000,NA,NA,NA,,,Unconfirmed,,,,no remeasurement. Delete?
 Mahoney80_MiddleRidge,80,Mahoney et al.,1998,Middle Ridge,1985,1995,2000000,NA,NA,NA,,,Unconfirmed,,,,population estimates but methods varied
-Mahoney80_Gaff,80,Mahoney et al.,1998,Gaff Topsails,1989,1989,2000000,NA,NA,NA,,,Unconfirmed,,,,no remeasurement. Delete?
 Hettinga83_UpperNI,83,Hettinga et al.,2012,Upper part of North Interlake,2004,2009,400000,0.74,0.87,NA,NA,NA,Unconfirmed,fecal-based DNA analysis,fecal-based DNA analysis,survey,lambda assumes male + female (combined + separate estimates given)
 Hettinga83_LowerNI,83,Hettinga et al.,2012,Lower part of North Interlake,2004,2009,400000,0.74,0.93,NA,NA,NA,Unconfirmed,fecal-based DNA analysis,fecal-based DNA analysis,survey,lambda assumes male + female (combined + separate estimates given)
 McLoughlin86_SK1,86,McLoughlin et al.,2019,SK1,2014,2018,1500000,0.895,1,0.195,NA,0.933,Unconfirmed,survey and collar,radiocollar,survey,
@@ -57,7 +53,7 @@ Courtois97_Manicougan,97,Courtois et al.,2008,Manicougan - unsure if this is a h
 Rudolph98_Nottaway,98,Rudolph et al.,2017,Nottaway Range - some dipsy doodles I ignored,2004,2013,1500000,0.854,0.968,0.226,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,table 3 is a bit bizarre. Check with Eric. Survival rate is unclear whether female or all
 Rudolph98_Assinica,98,Rudolph et al.,2017,Assinica,2004,2013,1500000,0.885,1.015,0.243,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,table 3 assinica is listed twice? With different values for survival�
 Rudolph98_Temiscamie,98,Rudolph et al.,2017,Temiscamie,2004,2013,1500000,0.854,0.949,0.1845,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,
-Mahoney101_CornerBrooks,101,Mahoney and Virgl,2003,Corner Brooks,1994,1997,200000,0.88,NA,0.24,,0.96,Unconfirmed,,,,has annual rates too
+Mahoney101_CornerBrooks,101,Mahoney and Virgl,2003,Corner Brooks,1994,1997,200000,0.88,NA,0.24,,0.96,Unconfirmed,,radiocollar,survey,has annual rates too
 Fryxell103_Nakima,103,Fryxell et al.,2020,Kinloch,2010,2014,1500000,0.76,NA,NA,NA,NA,No,NA,radiocollar,NA,must confirm whether 2014 is end date or 2013
 Fryxell103_PickleLake,103,Fryxell et al.,2020,Nipigon,2010,2014,1500000,0.9,NA,NA,NA,NA,No,NA,radiocollar,NA,
 Brown112_Wabowden,112,Brown et al.,2000,Wabowden,1995,1997,700000,0.9,1.19,0.65,NA,NA,Unconfirmed,survey and collar,radiocollar,survey,
@@ -79,7 +75,7 @@ Culling115_FtNelson,115,Culling and Culling,2013,Fort Nelson,2013,2013,NA,NA,NA,
 Frenette116_McGerrigle,116,Frenette,2017,McGerrigle,1988,2015,250000,0.86,NA,0.3091,NA,NA,Yes,NA,survey,survey,"calf:cow is available for all 3 polys combined, but it must be interpreted from figure 2.3. Appears  to be roughly 0.3,  interannual variance seems to increase over time. "
 Frenette116_Logan,116,Frenette,2017,Logan,1999,2015,250000,0.97,NA,0.3091,NA,NA,Yes,NA,survey,survey,"calf:cow is available for all 3 polys combined, but it must be interpreted from figure 2.3. Appears  to be roughly 0.3,  interannual variance seems to increase over time. "
 Frenette116_Albert,116,Frenette,2017,Albert,1988,2001,250000,0.87,NA,0.3091,NA,NA,Yes,NA,survey,survey,"calf:cow is available for all 3 polys combined, but it must be interpreted from figure 2.3. Appears  to be roughly 0.3,  interannual variance seems to increase over time. "
-Mahoney82_Buchans,82,Mahoney and Schaefer,2002,Buchans,1996,1999,300000,0.876,1.036,0.246,,,No,survey and collar,radiocollar,survey,"from page 960 - they calcualted finite rate-of-increase for period with radiocollar tracking, 1996-1999. Lambda is from e ^( <mean rate of increase from 1996-97, 97-98, 98-99). "
+Mahoney82_Buchans,82,Mahoney and Schaefer,2002,Buchans,1996,1999,300000,0.876,1.036,0.246,NA,NA,No,survey and collar,radiocollar,survey,"from page 960 - they calcualted finite rate-of-increase for period with radiocollar tracking, 1996-1999. Lambda is from e ^( <mean rate of increase from 1996-97, 97-98, 98-99). "
 Wittmer117_KinbasketSouth,117,Wittmer et al.,2005,Kinbasket South,1997,2002,1500000,NA,0.96,0.153084293,NA,1,Unconfirmed,census,NA,census,calfcow from table 4 - assumes 50/50 sex ratio - formula is %calf/((100 - %calf) * 0.5)
 Wittmer117_PurcellsCentral,117,Wittmer et al.,2005,Purcells-Central,1995,2002,1500000,NA,0.88,0.025931929,NA,0.84,Unconfirmed,census,NA,census,calfcow from table 4 - assumes 50/50 sex ratio - formula is %calf/((100 - %calf) * 0.5)
 Wittmer117_Duncan,117,Wittmer et al.,2005,Duncan,1996,2002,1500000,NA,0.86,0.337540907,NA,1,Unconfirmed,census,NA,census,calfcow from table 4 - assumes 50/50 sex ratio - formula is %calf/((100 - %calf) * 0.5)
