@@ -19,13 +19,13 @@ writeVector(rsShape, "outputs/corrected_Alberta_Polygons/OrbView_Extent.shp", ov
 
 #2) crop linear features to each
 rangePolys <- vect("GIS/Digitized_Caribou_StudyAreas.shp")
-polyIDs <- c("StuartSmith79_WSAR", "StuartSmith79_ESAR", 
+polygonIDs <- c("StuartSmith79_WSAR", "StuartSmith79_ESAR", 
              "Dalerum67_ESAR", "Dalerum67_RedEarth", "Dalerum67_CaribouMountains")
-# rangePolys <- rangePolys[rangePolys$PolygonID %in% polyIDs]
+# rangePolys <- rangePolys[rangePolys$PolygonID %in% polygonIDs]
 # rangePolyArea <- expanse(rangePolys)
 
 #crop the linear features to the extent of the OrbView3 imagery for faster digitization 
-sapply(polyIDs, FUN = function(x){
+sapply(polygonIDs[5], FUN = function(x){
   origLines <- vect(paste0("outputs/linear_features/", x, "_linear_features.shp"))
   cropped <- postProcess(origLines, cropTo = rsShape, maskTo = rsShape)
   #use postProcess as terra::mask does not crack features
@@ -41,7 +41,7 @@ sapply(polyIDs, FUN = function(x){
 #first, project OrvView3 extents to Range polygons
 # #then mask them to the relevant polygon - only StuartSmith_WSAR is covered at the moment
 rsShape <- project(rsShape, rangePolys)
-areaCovered <- lapply(polyIDs, function(x, OrbView = rsShape){
+areaCovered <- lapply(polygonIDs, function(x, OrbView = rsShape){
   studyArea <- rangePolys[rangePolys$PolygonID == x,]
   OrbView <- postProcess(OrbView, cropTo = studyArea, maskTo = studyArea)
   areaCovered <- sum(expanse(OrbView, transform = TRUE))
@@ -51,7 +51,7 @@ areaCovered <- lapply(polyIDs, function(x, OrbView = rsShape){
 areaCovered <- rbindlist(areaCovered)
 
 #calculate the new and original lines
-correctedLinearFootprint <- function(x){
+correctLinearFootprint <- function(x){
   originalLines <- vect(paste0("outputs/corrected_Alberta_Polygons/", 
                                x, "_linear_features_past.shp"))
   correctedLines <- vect(paste0("outputs/corrected_Alberta_Polygons/",
@@ -65,3 +65,7 @@ correctedLinearFootprint <- function(x){
                     measureYear = unique(correctedLines$MeasureYear)))
   
 }
+
+footprints <- rbindlist(lapply(polygonIDs, correctLinearFootprint))
+footprints <- footprints[areaCovered, on = "PolygonID"]
+footprints[, linearOffset := newLength/oldLength]
