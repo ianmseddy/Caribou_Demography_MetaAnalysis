@@ -77,6 +77,9 @@ BCPolygonIDs <- unique(RangePolygons[RangePolygons$Province == "BC",]$PolygonID)
 # lapply(BCPolygonIDs, consolidateLines, patternsToDrop = c("pulse", "NRN", "all"))
 ABPolygonIDs <- unique(RangePolygons[RangePolygons$Province == "AB"]$PolygonID)
 lapply(ABPolygonIDs, consolidateLines, patternsToDrop = "pulse")
+
+SKPolygonIDs <- unique(RangePolygons[RangePolygons$Province == "SK"]$PolygonID)
+SKPolygonIDs <- SKPolygonIDs[!SKPolygonIDs %in% ]
 # 'all' is the road file unfiltered by construction date
 #this may be faster to do with the cropped polygon... v. slow 
 
@@ -131,8 +134,27 @@ LengthToArea <- function(PolygonID, lcc = LCC, RangePoly = RangePolygons, outDir
 
 BCLineDf <- rbindlist(lapply(BCPolygonIDs, LengthToArea))
 ABLineDf <- rbindlist(lapply(ABPolygonIDs, LengthToArea))
+#SK1 is done seperately from other SK 
+MBLineDf <- rbindlist(lapply(MBPolygonIDs, LengthToArea))
+
+
 fwrite(ABLineDF, "outputs/linear_feature_stats/AB_LengthArea.csv")
 #LineDfs are scaled by area and can be plotted (or merged - possibly write them to disk?)
 BCLineDf <- rbindlist(BClineDF)
 
+temp <- rbind(BCLineDf, ABLineDf)
 
+
+#join with demographic data#
+
+
+
+
+###SCRIBBLES####
+demography <- fread("data/Range_Polygon_Data.csv")
+demography[, Note := NULL]
+temp <- demography[temp, on = c("PolygonID")]
+
+tempSum <- temp[, .(mPerKm2 = sum(mPerKm2)), .(PolygonID, Last_Measurement_Year, Lambda, CalfCow, AdultFemaleSurvivalRate)]
+ggplot(temp, aes(x = PolygonID, y = mPerKm2, fill = class)) + geom_bar(position = "stack", stat = "identity") + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5))

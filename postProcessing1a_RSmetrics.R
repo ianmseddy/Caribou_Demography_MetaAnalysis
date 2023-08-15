@@ -6,8 +6,11 @@ library(purrr)
 library(devtools)
 library(reproducible) #run the above line if this fails
 
-#location of LandTrendR result directory
 
+drive_auth("ianmseddy@gmail.com") #figure this out
+
+#TODO: fix this to use the google drive
+#location of LandTrendR result directory
 resultsDir <- "outputs"
 resultFile <- file.path(resultsDir, "Caribou_LandTrendR_Results")
 
@@ -22,10 +25,11 @@ if (!dir.exists(resultFile)) {
 
 #caribou range polygons digitized from literature
 RangePolys <- prepInputs(url = "https://drive.google.com/file/d/18gFYdnALVJIaJAmQlNnHQENqARWlfEYG/view?usp=sharing", 
+                         targetFile = "Digitized_Caribou_StudyAreas.shp",
                          destinationPath = "GIS",
                          fun = "terra::vect")
 
-#table with demographic data for each range
+#caribou demographic data - included in GitHub Repo
 caribouDF <- fread("data/Range_Polygon_Data.csv")
 
 
@@ -162,6 +166,5 @@ names(LandTrendR) <- PolygonIDs
 #I had some memory issues reprojecting (100+ GB RAM used!) so this approach was safest
 results <- rbindlist(lapply(PolygonIDs, summarizeData, 
                    LandTrendR = LandTrendR, SA = RangePolys, harvest = harvest, fire = fire))
-
+#TODO: check results
 write.csv(results, "outputs/Caribou_Range_Disturbance_Summary.csv")
-results

@@ -15,7 +15,7 @@ rsShape <- lapply(rsShape, st_read) %>%
   st_union(by_feature = FALSE) %>%
   vect()
 
-writeVector(rsShape, "outputs/corrected_Alberta_Polygons/OrbView_Extent.shp", overwrite = TRUE)
+# writeVector(rsShape, "outputs/corrected_Alberta_Polygons/OrbView_Extent.shp", overwrite = TRUE)
 
 #2) crop linear features to each
 rangePolys <- vect("GIS/Digitized_Caribou_StudyAreas.shp")
@@ -69,3 +69,6 @@ correctLinearFootprint <- function(x){
 footprints <- rbindlist(lapply(polygonIDs, correctLinearFootprint))
 footprints <- footprints[areaCovered, on = "PolygonID"]
 footprints[, linearOffset := newLength/oldLength]
+fwrite(footprints, "outputs/corrected_Alberta_Polygons/OrbView_Linear_offset.csv")
+
+
