@@ -140,7 +140,7 @@ LengthToArea <- function(PolygonID, lcc = LCC, RangePoly = RangePolygons, outDir
   
   whitebox::wbt_euclidean_distance(input = LineRasFile, 
                                    output = outFile)
-  fwrite(LineDF, file.path(outDir, paste0(PolygonID, "_linear_stats.csv")))
+  fwrite(LineDF, file.path("linear_feature_stats", paste0(PolygonID, "_linear_stats.csv")))
   
   return(LineDF)
 }
@@ -155,12 +155,10 @@ SKLineDf <- rbindlist(lapply(SKPolygonIDs, LengthToArea))
 MBLineDf <- rbindlist(lapply(MBPolygonIDs, LengthToArea))
 
 
-fwrite(ABLineDF, "outputs/linear_feature_stats/AB_LengthArea.csv")
 #LineDfs are scaled by area and can be plotted (or merged - possibly write them to disk?)
 BCLineDf <- rbindlist(BClineDF)
 
 temp <- rbind(BCLineDf, ABLineDf)
-
 
 #join with demographic data#
 
