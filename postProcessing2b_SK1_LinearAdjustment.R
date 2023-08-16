@@ -6,8 +6,7 @@ SK1 <- vect("GIS/Digitized_Caribou_StudyAreas.shp")
 
 SK1 <- SK1[grep("SK1", x = SK1$PolygonID),]
 
-#to ensure buffers dont overlap, rasterize SK1 with 5000m pixels
-
+#to ensure buffers do not overlap, rasterize SK1 with 5000m pixels
 # templateSK <- buffer()
 # template <- rast(ext(SK1), res = c(10000), crs = crs(SK1))
 # 
@@ -24,7 +23,8 @@ SK1 <- SK1[grep("SK1", x = SK1$PolygonID),]
 # points <- buffer(points, 5000)
 # plot(points)
 # writeVector(points, "outputs/corrected_SK1_Polygons/SK1_random_5000m_buffer.shp")
-#these do not change
+# these random circles were imported to Google Earth where linear features were digitized August 9-11 2023
+#seismic lines narrower than 4 metres were ignored, to achieve a fair comparison
 
 #merge the polygons
 digitized <- list.files("outputs/corrected_SK1_Polygons/digitized_random_samples", 
