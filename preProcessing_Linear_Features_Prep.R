@@ -7,7 +7,8 @@ library(sf)
 #this is GIS preparation for the study areas that require some digitizing
 RangePolygons <- vect("GIS/Digitized_Caribou_StudyAreas.shp")
 ####building one NRN vector representing 2001:2021
-
+#these NRN files were ultimately not used for anything but were helpful for 
+# digitizing roads and confirming their existence at particular times
 if (!file.exists("GIS/Linear_Features/CA/NRN/combinedNRN.shp")) {
   
   recrop <- function(NRN, rp = RangePolygons, year){
@@ -51,6 +52,10 @@ NRN_cmnlines <- vect("GIS/Linear_Features/CA/canvec_50K_CA_Res_MGT_shp/canvec_50
 #load pulse seismic lines
 seismicLines <- vect("GIS/Linear_Features/CA/PULSE_2D_WEB/PULSE_2D_WEB.shp")
 
+#harvest year
+harvestYear <- rast("GIS/CA_harvest_year_1985_2015.tif")
+terra::NAflag(harvestYear) <- 0
+
 #utility function to crop and write 
 prepOutputs <- function(infile, cropFile, outputName){
   if (class(infile) %in% "SpatVector"){
@@ -67,9 +72,7 @@ prepOutputs <- function(infile, cropFile, outputName){
   }
 }
 
-#harvest year
-harvestYear <- rast("GIS/CA_harvest_year_1985_2015.tif")
-terra::NAflag(harvestYear) <- 0
+
 
 #####Manitoba####
 MB <- RangePolygons[RangePolygons$Province == "MB",]
@@ -301,9 +304,41 @@ sapply(unique(AB$PolygonID), ABGISprep)
 rm(ABMI_powerlines, ABMI_rail, ABMIdata, ABMI_roads, ABMI_seismic)
 gc()
 
-
-
 library(googledrive)
+####Quebec####
+QC <- RangePolygons[RangePolygons$Province == "QC",]
+#there are no railways, highways, or cycle tracks (route verte) through the QC study areas
+QCroads <- vect("GIS/Linear_Features/QC/AQreseauPlus_SHP/ESRI(SHP)/Reseau_routier.shp")
+  
+QuebecGISprep <- function(PolyID, RangeSA = RangePolygons, roads = QCroads, NRNroads = NRNall, 
+                                power = NRN_powerlines, pipe = NRN_pipelines, communication = NRN_cmnlines, 
+                                seismic = seismicLines){
+  outDir <- file.path("GIS/Linear_Features/RangeSA_Digitization", PolyID)
+  if (!dir.exists(outDir)){
+    dir.create(outDir)
+  }
+  RangeSA <- RangeSA[RangeSA$PolygonID == PolyID]
+  prepOutputs(NRNroads, RangeSA, file.path(outDir, paste0(PolyID, "_NRNroads.shp")))
+  prepOutputs(roads, RangeSA, file.path(outDir, paste0(PolyID, "_QCroads_AQreseau.shp")))
+  prepOutputs(power, RangeSA, outputName = file.path(outDir, paste0(PolyID, "_powerlines.shp")))
+  prepOutputs(pipe, RangeSA, file.path(outDir, paste0(PolyID, "_pipelines.shp")))
+  prepOutputs(NRN_cmnlines,RangeSA, file.path(outDir, paste0(PolyID, "_commlines.shp")))
+  prepOutputs(seismic, RangeSA, file.path(outDir, paste0(PolyID, "_pulse_seismic.shp")))
+  
+  temp <- rast(paste0("outputs/Caribou_LandTrendR_Results/", PolyID,".tif"))
+  temp <- temp$yod
+  temp[temp == 0] <- NA
+  prepOutputs(temp, RangeSA, file.path(outDir, paste0(PolyID,"_LandTrendR_yod.tif")))  
+  prepOutputs(harvestYear, RangeSA, file.path(outDir, paste0(PolyID, "_harvestYear.tif")))
+  
+}
+
+
+sapply(unique(QC$PolygonID), QuebecGISprep)
+rm(QCroads)
+gc()
+
+
 ####source digitized files ####
 #linear features in SK and MB study areas were digtiized by Brooke Bourbeau
 #these get added to the folder above so they can be consolidated into one layer

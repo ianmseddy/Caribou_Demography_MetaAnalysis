@@ -22,13 +22,21 @@ SK1 <- SK1[grep("SK1", x = SK1$PolygonID),]
 # 
 # points <- buffer(points, 5000)
 # plot(points)
-# writeVector(points, "outputs/corrected_SK1_Polygons/SK1_random_5000m_buffer.shp")
+# writeVector(points, "outputs/corrected_SK_LinearFeatures/SK1_random_5000m_buffer.shp")
 # these random circles were imported to Google Earth where linear features were digitized August 9-11 2023
 #seismic lines narrower than 4 metres were ignored, to achieve a fair comparison
 
 #merge the polygons
-digitized <- list.files("outputs/corrected_SK1_Polygons/digitized_random_samples", 
+digitized_SK1_LinearFeatures <- list.files("outputs/corrected_SK_LinearFeatures/digitized_random_samples", 
                         pattern = ".shp$", full.names = TRUE) |>
   lapply(vect)
-digitized <- do.call(rbind, digitized)
-plot(digitized)
+digitized_SK1_LinearFeatures <- do.call(rbind, digitized_SK1_LinearFeatures)
+#calulate area
+digitized_SK1_LinearFeatures$length <- perim(digitized_SK1_LinearFeatures)
+#calculate area of the circles
+SK1_LinearFeatures_sampleArea <- vect("outputs/corrected_SK_LinearFeatures/SK1_random_5000m_buffer.shp")
+SK1_LinearFeatures_sampleArea$area <- expanse(SK1_LinearFeatures_sampleArea, unit = "km")
+SK1_LinearFeatures_sampleArea$area
+SK1_linear_density_mPerKm2 <- sum(digitized_SK1_LinearFeatures$length)/sum(SK1_LinearFeatures_sampleArea$area)
+#SK linear feature density is 55.55 m/km2 - 26/30 polygons had no linear feaures at all
+

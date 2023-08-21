@@ -96,6 +96,13 @@ SKPolygonIDs <- unique(RangePolygons[RangePolygons$Province == "SK"]$PolygonID)
 SKPolygonIDs <- SKPolygonIDs[!SKPolygonIDs %in% c("McLoughlin86_SK1", "Hervieux87_ColdLake"]
 lapply(SKPolygonIDs, consolidateLines, patternsToDrop = c("osm", "NRN"))
 
+MBPolygonIDs <- unique(RangePolygons[RangePolygons$Province == "MB"]$PolygonID)
+lapply(MBPolygonIDs, consolidateLines, patternsToDrop = c("osm", "NRN"))
+
+ONPolygonIDs <- unique(RangePolygons[RangePolygons$Province == "ON"]$PolygonID)
+lapply(ONPolygonIDs, consolidateLines, patternsToDrop = c("mnrf_roads_all", "ONroads_all", "NRN"))
+
+
 #calculate length/area
 #terra::distance and terra::expanse after correcting landcover
 #return a data.table with PolygonID, area of polygons, and class area
@@ -151,12 +158,11 @@ BCLineDf <- rbindlist(lapply(BCPolygonIDs, LengthToArea))
 ABLineDf <- rbindlist(lapply(ABPolygonIDs, LengthToArea))
 #SK1 is done seperately from other SK 
 SKLineDf <- rbindlist(lapply(SKPolygonIDs, LengthToArea))
-
 MBLineDf <- rbindlist(lapply(MBPolygonIDs, LengthToArea))
-
+ONLineDf <- rbindlist(lapply(ONPolygonIDs, LengthToArea))
 
 #LineDfs are scaled by area and can be plotted (or merged - possibly write them to disk?)
-BCLineDf <- rbindlist(BClineDF)
+
 
 temp <- rbind(BCLineDf, ABLineDf)
 

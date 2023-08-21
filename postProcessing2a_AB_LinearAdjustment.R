@@ -15,7 +15,7 @@ rsShape <- lapply(rsShape, st_read) %>%
   st_union(by_feature = FALSE) %>%
   vect()
 
-# writeVector(rsShape, "outputs/corrected_Alberta_Polygons/OrbView_Extent.shp", overwrite = TRUE)
+# writeVector(rsShape, "outputs/corrected_AB_LinearFeatures/OrbView_Extent.shp", overwrite = TRUE)
 
 #2) crop linear features to each
 rangePolys <- vect("GIS/Digitized_Caribou_StudyAreas.shp")
@@ -30,7 +30,7 @@ sapply(polygonIDs[5], FUN = function(x){
   cropped <- postProcess(origLines, cropTo = rsShape, maskTo = rsShape)
   #use postProcess as terra::mask does not crack features
   if (nrow(cropped) != 0){
-    writeVector(cropped, paste0("outputs/corrected_Alberta_Polygons/", x, "_linear_features_past.shp"),
+    writeVector(cropped, paste0("outputs/corrected_AB_LinearFeatures/", x, "_linear_features_past.shp"),
                 overwrite = TRUE)
   }
 })
@@ -52,9 +52,9 @@ areaCovered <- rbindlist(areaCovered)
 
 #calculate the new and original lines
 correctLinearFootprint <- function(x){
-  originalLines <- vect(paste0("outputs/corrected_Alberta_Polygons/", 
+  originalLines <- vect(paste0("outputs/corrected_AB_LinearFeatures/", 
                                x, "_linear_features_past.shp"))
-  correctedLines <- vect(paste0("outputs/corrected_Alberta_Polygons/",
+  correctedLines <- vect(paste0("outputs/corrected_AB_LinearFeatures/",
                                 x, "_linear_features_corrected.shp"))
   correctedLines$length <- terra::perim(correctedLines)
   originalLines$length <- terra::perim(originalLines)
@@ -69,6 +69,6 @@ correctLinearFootprint <- function(x){
 footprints <- rbindlist(lapply(polygonIDs, correctLinearFootprint))
 footprints <- footprints[areaCovered, on = "PolygonID"]
 footprints[, linearOffset := newLength/oldLength]
-fwrite(footprints, "outputs/corrected_Alberta_Polygons/OrbView_Linear_offset.csv")
+fwrite(footprints, "outputs/corrected_AB_LinearFeatures/OrbView_Linear_offset.csv")
 
 
