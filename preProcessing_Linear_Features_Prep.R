@@ -59,7 +59,7 @@ terra::NAflag(harvestYear) <- 0
 #utility function to crop and write 
 prepOutputs <- function(infile, cropFile, outputName){
   if (class(infile) %in% "SpatVector"){
-    out <- postProcess(infile, cropTo = cropFile, projectTo = cropFile)
+    out <- postProcess(infile, cropTo = cropFile, projectTo = cropFile, maskTo = cropFile)
     if (nrow(out) > 0){
       writeVector(out, filename = outputName, overwrite = TRUE)
     }
@@ -193,22 +193,10 @@ OntarioGISprep <- function(PolyID, RangeSA = RangePolygons, roads = ONroads,
   
 }
 
-sapply(c("Walker64_Nakina", "Walker64_PickleLake"), OntarioGISprep)
+sapply(unique(ON$PolygonID), OntarioGISprep)
 rm(ONroads, ONmnrf)
 gc()
 
-#the Ontario MNRF roads and the ORN are often (but not always) counting the same road. 
-# will try to buffer the ORN by 30 metres and take the difference with MNRF
-sapply(unique(ON$PolygonID), function(PolyID, RangeSA = RangePolygons){
-  outDir <- file.path("GIS/Linear_Features/RangeSA_Digitization", PolyID)
-  RangeSA <- RangeSA[RangeSA$PolygonID == PolyID]
-  forestRoads_subset <- vect(file.path(outDir, paste0(PolyID, "_mnrf_roads_subset.shp")))
-  roads_subset <- vect(file.path(outDir, paste0(PolyID, "_ONroads_subset.shp")))
-  roads_subset <- terra::buffer(roads_subset, width = 30, joinstyle = "bevel", capstyle = "flat")
-  forestRoads_crop <- erase(forestRoads_subset, roads_subset)
-  writeVector(forestRoads_crop, file.path(outDir, paste0(PolyID, "_mnrf_roads_subset.shp")), 
-              overwrite = TRUE)
-})
 
 ####British Columbia ####
 BC <- RangePolygons[RangePolygons$Province == "BC",]
