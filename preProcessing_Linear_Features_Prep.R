@@ -321,10 +321,75 @@ QuebecGISprep <- function(PolyID, RangeSA = RangePolygons, roads = QCroads, NRNr
   
 }
 
-
 sapply(unique(QC$PolygonID), QuebecGISprep)
 rm(QCroads)
 gc()
+
+# For removing roads that were built after measurement year.
+# Pixels harvested after the measurement year are separated and buffered to ensure they overlap the road.
+# The buffered pixels defer to the original classification for pixels harvested in or before the measurement year.
+# Harvest year values of road segments are extracted, and the proportion of each class is determined
+# (not harvested, harvested prior, harvested after). Segments with a 'Harvested after' value exceeding the threshold
+# are then removed, under the assumption these roads were built later. 
+QCroadAdjustment <- function(PolygonID, RangeSA = RangePolygons, threshold = .5, buffDist = 90) {
+  gc()
+  inDir <- file.path("GIS/Linear_Features/RangeSA_Digitization", PolygonID)
+  RangeSA <- RangeSA[RangeSA$PolygonID == PolygonID]
+  msYr <- unique(RangeSA$Meas_Years) #unique because of multipolygons
+  harvestRas <- file.path(inDir, paste0(PolygonID, "_harvestYear.tif"))
+  if (!file.exists(harvestRas)){
+    message("no harvest in ", PolygonID)
+    return(NULL)
+  }
+  harvestRas <- rast(file.path(inDir, paste0(PolygonID, "_harvestYear.tif")))
+  roads <- vect(file.path(inDir, paste0(PolygonID, "_QCroads_AQreseau.shp")))
+  
+  postMsHarvest <- harvestRas
+  postMsHarvest[postMsHarvest + 1900 <= msYr] <- NA
+  postMsHarvestBuff <- buffer(postMsHarvest, buffDist)
+  
+  
+  #
+  harvestDT <- data.table(pixelID = 1:ncell(postMsHarvest), origVal = harvestRas[], 
+                          bufferVal = postMsHarvestBuff[])
+  setnames(harvestDT, new = c("pixelID", "origVal", "buffer"))
+  
+  #0 = no harvest, 1 = harvested prior, 2 = harvested after
+  harvestDT[, newVal := 0]
+  harvestDT[origVal + 1900 <= msYr, newVal := 1]
+  harvestDT[newVal != 1 & buffer == TRUE, newVal := 2]
+  
+  postMsHarvestBuff <- setValues(postMsHarvestBuff, harvestDT$newVal)
+  
+  #extract the values of road segments
+  out <- terra::extract(postMsHarvestBuff, roads, fun = 'table', bind = TRUE)
+  outMat <- as.matrix(out[2])
+
+  linePixels <- rowSums(outMat)
+  lineProp <- outMat/linePixels
+  lineProp <- as.data.table(lineProp)
+  
+  if (ncol(lineProp) != 3) {
+    #possible there is no harvest, only harvest after, or only harvest before... 
+    #important to know if it is because harvest after or before msYr
+    message("review harvest data in ", PolygonID)
+    #write the vector as a subset file anyway to save headaches later
+    terra::writeVector(roads, filename = paste0(inDir, "/", PolygonID, "_QCroad_subset.shp"),
+                       overwrite = TRUE)
+  } else {
+    setnames(lineProp, new = c("no data", "preMs", "postMs"))
+    lineProp[, id := out$ID]
+    
+    fwrite(lineProp, file.path(inDir, "road_subset_stats.csv"))
+    #assign weight and subset
+    roads$postMsYrHarvestWeight <- lineProp$postMs
+    roads <- roads[roads$postMsYrHarvestWeight < threshold]
+    terra::writeVector(roads, filename = paste0(inDir, "/", PolygonID, "_QCroad_subset.shp"),
+                       overwrite = TRUE)
+  }
+}
+
+sapply(unique(QC$PolygonID), QCroadAdjustment)
 
 
 ####source digitized files ####
