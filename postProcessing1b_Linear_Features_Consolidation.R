@@ -8,7 +8,7 @@ setDTthreads(2)
 
 LCC <- rast("GIS/CA_forest_VLCE_2015.tif")
 RangePolygons <- vect("GIS/Digitized_Caribou_StudyAreas.shp")
-outputPath <- "outputs/linear_features"
+outputPath <- "outputs"
 if (!dir.exists(outputPath)){dir.create(outputPath)}
 
 #helper function to assign some  consistent class attributes  - unsure if useful
@@ -77,7 +77,8 @@ consolidateLines <- function(polygonID, outputDir = outputPath,
     lineFile <- project(lineFile, "+proj=longlat +datum=WGS84")
     
     lineFile$length <- perim(lineFile)
-    outputFilename <- paste0(outputDir, "/", polygonID, "_linear_features.shp")
+    outputFilename <- file.path(outputDir, "linear_features", 
+                                paste0(polygonID, "_linear_features.shp"))
     writeVector(lineFile, filename = outputFilename, overwrite = TRUE)
   } else {
     message("no line files for ", polygonID)
@@ -102,6 +103,14 @@ lapply(MBPolygonIDs, consolidateLines, patternsToDrop = c("osm", "NRN"))
 ONPolygonIDs <- unique(RangePolygons[RangePolygons$Province == "ON"]$PolygonID)
 lapply(ONPolygonIDs, consolidateLines, patternsToDrop = c("mnrf_roads_all", "ONroads_all", "NRN"))
 
+#do QC frenette differently than others, as it had no subset roads
+QCPolygonIDs <- unique(RangePolygons[RangePolygons$Province == "QC"]$PolygonID)
+QC1 <- QCPolygonIDs[grep("Frenette", QCPolygonIDs)]
+QC2 <- QCPolygonIDs[!QCPolygonIDs %in% QC1]
+lapply(QC1, consolidateLines, patternsToDrop = c("NRN", "subset"))
+#the subset AQreseau roads were named "QCroad_subset"
+lapply(QC2, consolidateLines, patternsToDrop = c("NRN", "AQreseau"))
+
 
 #calculate length/area
 #terra::distance and terra::expanse after correcting landcover
@@ -111,7 +120,7 @@ LengthToArea <- function(PolygonID, lcc = LCC, RangePoly = RangePolygons, outDir
   RangePoly <- RangePoly[RangePoly$PolygonID == PolygonID,]
   RangePolyTemp <- project(RangePoly, crs(lcc))
   
-  lccFile <- file.path(outDir, paste0(PolygonID, "_lcc.tif"))
+  lccFile <- file.path(outDir, "linear_features", paste0(PolygonID, "_lcc.tif"))
   lcc <- crop(lcc, RangePolyTemp)
   lcc <- project(lcc, y = crs(RangePoly), res = c(30, 30), method = "near") 
   lcc <- mask(lcc, mask = RangePoly) |>
@@ -119,7 +128,7 @@ LengthToArea <- function(PolygonID, lcc = LCC, RangePoly = RangePolygons, outDir
   lcc <- subst(lcc, from = c(20, 31, 32), to = NA)
   writeRaster(lcc, lccFile, overwrite = TRUE)
   
-  LineFile <- file.path(outDir, paste0(PolygonID, "_linear_features.shp"))
+  LineFile <- file.path(outDir, "linear_features", paste0(PolygonID, "_linear_features.shp"))
   if (!file.exists(LineFile)){
     LineDF <- data.table(PolygonID = PolygonID, 
                          mPerKm2 = 0)
@@ -143,11 +152,11 @@ LengthToArea <- function(PolygonID, lcc = LCC, RangePoly = RangePolygons, outDir
   LineRas[is.na(LineRas) & !is.na(lcc)] <- 0
   writeRaster(LineRas, LineRasFile, overwrite = TRUE)
   
-  outFile <- file.path(outDir, paste0(PolygonID, "_linear_distance.tif"))
+  outFile <- file.path(outDir, "linear_features", paste0(PolygonID, "_linear_distance.tif"))
   
   whitebox::wbt_euclidean_distance(input = LineRasFile, 
                                    output = outFile)
-  fwrite(LineDF, file.path("linear_feature_stats", paste0(PolygonID, "_linear_stats.csv")))
+  fwrite(LineDF, file.path(outDir, "linear_feature_stats", paste0(PolygonID, "_linear_stats.csv")))
   
   return(LineDF)
 }
@@ -160,7 +169,7 @@ ABLineDf <- rbindlist(lapply(ABPolygonIDs, LengthToArea))
 SKLineDf <- rbindlist(lapply(SKPolygonIDs, LengthToArea))
 MBLineDf <- rbindlist(lapply(MBPolygonIDs, LengthToArea))
 ONLineDf <- rbindlist(lapply(ONPolygonIDs, LengthToArea))
-
+QCLineDf <- rbindlist(lapply(QCPolygonIDs, LengthToArea))
 #LineDfs are scaled by area and can be plotted (or merged - possibly write them to disk?)
 
 
