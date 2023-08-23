@@ -331,7 +331,7 @@ gc()
 # Harvest year values of road segments are extracted, and the proportion of each class is determined
 # (not harvested, harvested prior, harvested after). Segments with a 'Harvested after' value exceeding the threshold
 # are then removed, under the assumption these roads were built later. 
-QCroadAdjustment <- function(PolygonID, RangeSA = RangePolygons, threshold = .5, buffDist = 90) {
+QCroadAdjustment <- function(PolygonID, RangeSA = RangePolygons, threshold = .7, buffDist = 90) {
   gc()
   inDir <- file.path("GIS/Linear_Features/RangeSA_Digitization", PolygonID)
   RangeSA <- RangeSA[RangeSA$PolygonID == PolygonID]
@@ -346,17 +346,21 @@ QCroadAdjustment <- function(PolygonID, RangeSA = RangePolygons, threshold = .5,
   
   postMsHarvest <- harvestRas
   postMsHarvest[postMsHarvest + 1900 <= msYr] <- NA
+  preMsHarvest <- harvestRas
+  preMsHarvest[preMsHarvest + 1900 > msYr] <- NA
   postMsHarvestBuff <- buffer(postMsHarvest, buffDist)
+  preMsHarvestBuff <- buffer(preMsHarvest, buffDist)
   
-  
-  #
-  harvestDT <- data.table(pixelID = 1:ncell(postMsHarvest), origVal = harvestRas[], 
+  # #respect the older 'pre' value in the buffer- as the roads are constructed prior to harvest
+  #many instances of roads being built first, the AQreseau file partially overlaying, and then
+  #harvest following
+  harvestDT <- data.table(pixelID = 1:ncell(postMsHarvest), origVal = preMsHarvestBuff[], 
                           bufferVal = postMsHarvestBuff[])
   setnames(harvestDT, new = c("pixelID", "origVal", "buffer"))
   
   #0 = no harvest, 1 = harvested prior, 2 = harvested after
   harvestDT[, newVal := 0]
-  harvestDT[origVal + 1900 <= msYr, newVal := 1]
+  harvestDT[origVal == TRUE, newVal := 1]
   harvestDT[newVal != 1 & buffer == TRUE, newVal := 2]
   
   postMsHarvestBuff <- setValues(postMsHarvestBuff, harvestDT$newVal)
@@ -383,6 +387,7 @@ QCroadAdjustment <- function(PolygonID, RangeSA = RangePolygons, threshold = .5,
     fwrite(lineProp, file.path(inDir, "road_subset_stats.csv"))
     #assign weight and subset
     roads$postMsYrHarvestWeight <- lineProp$postMs
+    roads$premsYrHarvestWeight <- lineProp$preMs
     roads <- roads[roads$postMsYrHarvestWeight < threshold]
     terra::writeVector(roads, filename = paste0(inDir, "/", PolygonID, "_QCroad_subset.shp"),
                        overwrite = TRUE)
