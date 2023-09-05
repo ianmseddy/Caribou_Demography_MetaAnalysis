@@ -2,6 +2,7 @@ library(terra)
 library(data.table)
 library(sf)
 library(whitebox)
+library(ggplot2)
 whitebox::wbt_init(exe_path = "../WhiteboxTools_win_amd64/WBT/whitebox_tools.exe")
 setDTthreads(2)
 
@@ -173,18 +174,9 @@ QCLineDf <- rbindlist(lapply(QCPolygonIDs, LengthToArea))
 #LineDfs are scaled by area and can be plotted (or merged - possibly write them to disk?)
 
 
-temp <- rbind(BCLineDf, ABLineDf)
+lnFootprints <- list.files("outputs/linear_feature_stats/", full.names = TRUE) |> 
+  lapply(fread) |>
+  rbindlist()
+lnFootprints <- lnFootprints[, .(mPerKm2 = sum(mPerKm2)), .(PolygonID)]
+fwrite(lnFootprints, "outputs/Caribou_Range_LinearDisturbance_Summary.csv")
 
-#join with demographic data#
-
-
-
-
-###SCRIBBLES####
-demography <- fread("data/Range_Polygon_Data.csv")
-demography[, Note := NULL]
-temp <- demography[temp, on = c("PolygonID")]
-
-tempSum <- temp[, .(mPerKm2 = sum(mPerKm2)), .(PolygonID, Last_Measurement_Year, Lambda, CalfCow, AdultFemaleSurvivalRate)]
-ggplot(temp, aes(x = PolygonID, y = mPerKm2, fill = class)) + geom_bar(position = "stack", stat = "identity") + 
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5))

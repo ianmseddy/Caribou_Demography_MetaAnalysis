@@ -27,16 +27,35 @@ SK1 <- SK1[grep("SK1", x = SK1$PolygonID),]
 #seismic lines narrower than 4 metres were ignored, to achieve a fair comparison
 
 #merge the polygons
-digitized_SK1_LinearFeatures <- list.files("outputs/corrected_SK_LinearFeatures/digitized_random_samples", 
+digitized_SK1_Lines <- list.files("outputs/corrected_SK_LinearFeatures/SK1/digitized_random_samples", 
                         pattern = ".shp$", full.names = TRUE) |>
   lapply(vect)
-digitized_SK1_LinearFeatures <- do.call(rbind, digitized_SK1_LinearFeatures)
+digitized_SK1_Lines <- do.call(rbind, digitized_SK1_Lines)
 #calulate area
-digitized_SK1_LinearFeatures$length <- perim(digitized_SK1_LinearFeatures)
+digitized_SK1_Lines$length <- perim(digitized_SK1_Lines)
 #calculate area of the circles
-SK1_LinearFeatures_sampleArea <- vect("outputs/corrected_SK_LinearFeatures/SK1_random_5000m_buffer.shp")
-SK1_LinearFeatures_sampleArea$area <- expanse(SK1_LinearFeatures_sampleArea, unit = "km")
-SK1_LinearFeatures_sampleArea$area
-SK1_linear_density_mPerKm2 <- sum(digitized_SK1_LinearFeatures$length)/sum(SK1_LinearFeatures_sampleArea$area)
-#SK linear feature density is 55.55 m/km2 - 26/30 polygons had no linear feaures at all
+SK1_Lines_sampleArea <- vect("outputs/corrected_SK_LinearFeatures/SK1/SK1_random_5000m_buffer.shp")
+#I don't think it is necesssary to transform to lat long but just in case
+SK1_Lines_sampleArea <- project(SK1_Lines_sampleArea, crs(digitized_SK1_Lines))
+SK1_Lines_sampleArea$area <- expanse(SK1_Lines_sampleArea, unit = "km", transform = TRUE)
+SK1_Lines_sampleArea$area
+SK1_linear_density_mPerKm2 <- sum(digitized_SK1_Lines$length)/sum(SK1_Lines_sampleArea$area)
+#SK linear feature density is 55.55 m/km2 - 26/30 polygons had no linear features at all
+# class,length,PolygonID,mPerKm2
+#length is meaningless in this case
+out <- data.table(class = "unknown", length = NA, PolygonID = SK1$PolygonID, mPerKm2 = SK1_linear_density_mPerKm2)
+fwrite(out, "outputs/linear_feature_stats/McLoughlin86_SK1_linear_stats.csv")
 
+####ColdlakesSK were also sampled as there were considerable  linear features here not included in the existing datasets
+# and the area was too large to digitize (in addition to the insufficient satellite imagery)
+digitized_CLSK_Lines <- vect("outputs/corrected_SK_LinearFeatures/ColdLakeSK/CldLkeSK_lines.shp")
+CLSK_sampleArea <- vect("outputs/corrected_SK_LinearFeatures/ColdLakeSK/CldLkeSK_randomPoints.shp")
+digitized_CLSK_Lines <- project(digitized_CLSK_Lines, crs(CLSK_sampleArea))
+digitized_CLSK_Lines$length <- perim(digitized_CLSK_Lines)
+CLSK_sampleArea <- project(CLSK_sampleArea, crs(digitized_CLSK_Lines))
+CLSK_sampleArea$area <- expanse(CLSK_sampleArea, unit = "km")
+CLSK_linear_density_mPerKm2 <- sum(digitized_CLSK_Lines$length)/sum(CLSK_sampleArea$area)
+CLSK_linear_density_mPerKm2
+out <- data.table(class = "unknown", length = NA, PolygonID = "Hervieux87_ColdLakeSK", 
+                  mPerKm2 = CLSK_linear_density_mPerKm2)
+fwrite(out, "outputs/linear_feature_stats/Hervieux87_ColdLakeSK_linear_stats.csv")
