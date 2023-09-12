@@ -336,18 +336,21 @@ QCroadAdjustment <- function(PolygonID, RangeSA = RangePolygons, threshold = .7,
   inDir <- file.path("GIS/Linear_Features/RangeSA_Digitization", PolygonID)
   RangeSA <- RangeSA[RangeSA$PolygonID == PolygonID]
   msYr <- unique(RangeSA$Meas_Years) #unique because of multipolygons
-  harvestRas <- file.path(inDir, paste0(PolygonID, "_harvestYear.tif"))
+  #the 2016-2020 period was added as of 2023
+  harvestRas <- file.path("outputs/QC_accuracy_assessment", 
+                          paste0(PolygonID, "_harvest1985_2020.tif"))
   if (!file.exists(harvestRas)){
     message("no harvest in ", PolygonID)
     return(NULL)
   }
-  harvestRas <- rast(file.path(inDir, paste0(PolygonID, "_harvestYear.tif")))
+  harvestRas <- rast(harvestRas)
+  NAflag(harvestRas) <- 0
   roads <- vect(file.path(inDir, paste0(PolygonID, "_QCroads_AQreseau.shp")))
-  
+  roads <- project(roads, harvestRas)
   postMsHarvest <- harvestRas
-  postMsHarvest[postMsHarvest + 1900 <= msYr] <- NA
+  postMsHarvest[postMsHarvest <= msYr] <- NA
   preMsHarvest <- harvestRas
-  preMsHarvest[preMsHarvest + 1900 > msYr] <- NA
+  preMsHarvest[preMsHarvest > msYr] <- NA
   postMsHarvestBuff <- buffer(postMsHarvest, buffDist)
   preMsHarvestBuff <- buffer(preMsHarvest, buffDist)
   
@@ -366,6 +369,7 @@ QCroadAdjustment <- function(PolygonID, RangeSA = RangePolygons, threshold = .7,
   postMsHarvestBuff <- setValues(postMsHarvestBuff, harvestDT$newVal)
   
   #extract the values of road segments
+  #note that if x and y are different crs, this function does not error but returns nothing
   out <- terra::extract(postMsHarvestBuff, roads, fun = 'table', bind = TRUE)
   outMat <- as.matrix(out[2])
 

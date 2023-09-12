@@ -177,6 +177,6 @@ QCLineDf <- rbindlist(lapply(QCPolygonIDs, LengthToArea))
 lnFootprints <- list.files("outputs/linear_feature_stats/", full.names = TRUE) |> 
   lapply(fread) |>
   rbindlist()
-lnFootprints <- lnFootprints[, .(mPerKm2 = sum(mPerKm2)), .(PolygonID)]
+lnFootprints <- lnFootprints[, .(mPerKm2 = round(sum(mPerKm2), digits = 3)), .(PolygonID)]
 fwrite(lnFootprints, "outputs/Caribou_Range_LinearDisturbance_Summary.csv")
-
+lnFootprints
