@@ -82,7 +82,12 @@ consolidateLines <- function(polygonID, outputDir = outputPath,
                                 paste0(polygonID, "_linear_features.shp"))
     writeVector(lineFile, filename = outputFilename, overwrite = TRUE)
   } else {
-    message("no line files for ", polygonID)
+    message("no line files for ", polygonID) #so far only Monashee
+    #this is clunky but basically it is easier to write the csv with 0 length 
+    #then to make an empty shapefile with 0 lines - however this is not where it should be written..
+    #but since only MonasheeSouth has no linear features - its just an edge case
+    temp <- data.table(class = "unknown", length = 0, PolygonID = polygonID, mPerKm2 = 0)
+    fwrite(temp, file.path("outputs/linear_feature_stats", paste0(polygonID, "_linear_stats.csv")))
   }
 }
 

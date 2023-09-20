@@ -18,7 +18,11 @@ Canada <- st_crop(Canada, y = st_bbox(st_buffer(RangePolygons, 30000)))
 landscapeStats <- fread("outputs/Caribou_Range_Disturbance_Summary.csv")
 landscapeStats[, V1 := NULL]
 
+lnFootprints <- fread("outputs/Caribou_Range_LinearDisturbance_Summary.csv")
+
 RangePolygons <- dplyr::left_join(RangePolygons, landscapeStats, "PolygonID")
+RangePolygons <- dplyr::left_join(RangePolygons, lnFootprints, "PolygonID")
+
 demographicData <- fread("data/Range_Polygon_Data.csv")
 demographicData[, Note := NULL]
 demographicData[CalfCow > 1.5, CalfCow := CalfCow/100]
@@ -45,10 +49,10 @@ makeMapGG <- function(df = RangePolygons, CA = Canada, stat, adjustCol = NULL,
   
   mygg <- ggplot(df) + 
     geom_sf(data = CA, show.legend = FALSE) +
-    geom_sf(data = df, aes(fill = statOfInterest), alpha = 0.7) + 
+    geom_sf(data = df, aes(fill = statOfInterest)) + 
     scale_fill_continuous(type = "viridis") + 
     labs(fill = fillLab) + 
-    guides(colour = guide_legend(override.aes = list(alpha = 1))) + 
+    # guides(colour = guide_legend(override.aes = list(alpha = 1))) + 
     theme_bw() + 
     theme(legend.text=element_text(size=rel(1.2)), 
           legend.title=element_text(size=rel(1.2)))
@@ -61,13 +65,10 @@ makeMapGG(stat = "pctHarvestYr", adjustCol = "pctVeg",
           fillLab = "harvest rate \n(%/year) \n1985 - study period",
           outputFilename = "figures/pctHarvestYrAdj_gg.png")
 
-makeMapGG(stat = "pctDisturbedYr", adjustCol = "pctVeg", 
-          fillLab = "disturbance rate \n(% /year) \n1985 - study period",
-          outputFilename = "figures/pctDistYrAdj_gg.png")
-
 makeMapGG(stat = "pctBrnYr", adjustCol = "pctVeg", 
           fillLab = "burn rate \n(%/year) \n1985 - study period",
           outputFilename = "figures/pctBrnAdj_gg.png")
+
 #demographic 
 makeMapGG(stat = "Lambda", fillLab = "λ",
           outputFilename = "figures/Lambda_gg.png")
@@ -82,6 +83,8 @@ makeMapGG(stat = "AdultFemaleSurvivalRate",
 makeMapGG(stat = "Pregnancy", fillLab = "Pregnacy rate", 
           outputFilename = "figures/Pregnancy_gg.png")
 
+makeMapGG(stat = "mPerKm2", fillLab = "Linear dist. (m/km2)", 
+          outputFilename = "figures/linearDist_gg.png")
 
 
 outputTable <- as.data.table(RangePolygons) 
