@@ -43,7 +43,10 @@ vennData <- list("Lambda" = demographicData[!is.na(Lambda),]$PolygonID,
 ggVenn <- ggVennDiagram(vennData, label_alpha = 0.1) + scale_fill_distiller(direction = 1)
 ggsave(plot = ggVenn, device = "png", path = "figures", filename = "demographicVenn_gg.png", 
        height = 6, width = 15)
-#maps
+rm(vennData, ggVenn)
+
+#####maps and histograms #####
+
 makeMapGG <- function(df = RangePolygons, CA = Canada, stat, adjustCol = NULL,
                       fillLab, outputFilename) {
   df$statOfInterest <- df[stat][[1]]
@@ -58,20 +61,43 @@ makeMapGG <- function(df = RangePolygons, CA = Canada, stat, adjustCol = NULL,
     labs(fill = fillLab) + 
     # guides(colour = guide_legend(override.aes = list(alpha = 1))) + 
     theme_bw() + 
-    theme(legend.text=element_text(size=rel(1.2)), 
-          legend.title=element_text(size=rel(1.2)))
-  ggsave(mygg, filename = outputFilename, device = "png", height = 6, width = 15)
+    theme(legend.text=element_text(size=rel(1.2), angle = 45, vjust = 0.1), 
+          legend.title=element_text(size=rel(1.2)), 
+          legend.position = "bottom", legend.key.size = unit(1, "cm"))
+  ggsave(mygg, filename = outputFilename, device = "png", height = 7, width = 14)
 }
 
+makeHistGG <- function(df = RangePolygons, stat, adjustCol = NULL, xLab, outputFilename) {
+  df <- copy(data.table(df))
+  df[, geometry := NULL]
+  df <- unique(df) #drop the multipolygon attributes
+  df$statOfInterest <- df[[stat]]
+  if (!is.null(adjustCol)){
+    df$statOfInterest <- df$statOfInterest/df[[adjustCol]] * 100
+  }
+  
+  mygg <- ggplot(data = df, aes(statOfInterest)) + 
+    geom_histogram() + 
+    theme_bw() + 
+    labs(x = xLab)
+  ggsave(mygg, filename = outputFilename, device = "png", height = 6, width = 6)
+}
 
-###harvest rate
+#the adjustCol arg is scaling the percentages to the vegetated pixels
+# (ie ignoring rock/water/ice in determining percent)
+
 makeMapGG(stat = "pctHarvestYr", adjustCol = "pctVeg", 
-          fillLab = "harvest rate \n(%/year) \n1985 - study period",
+          fillLab = "harvest rate (%/year)",
           outputFilename = "figures/pctHarvestYrAdj_gg.png")
+makeHistGG(stat = "pctHarvestYr", adjustCol = "pctVeg", xLab = "harvest rate (%/year)", 
+           outputFilename = "figures/pctHarvest_hist_gg.png")
 
-makeMapGG(stat = "pctBrnYr", adjustCol = "pctVeg", 
-          fillLab = "burn rate \n(%/year) \n1985 - study period",
-          outputFilename = "figures/pctBrnAdj_gg.png")
+makeMapGG(stat = "pctBrnYr",  
+          fillLab = "burn rate (%/year)",
+          outputFilename = "figures/pctBurnYrAdj_gg.png")
+makeHistGG(stat = "pctBrnYr", xLab = "burn rate (%/year)",
+           adjustCol = "pctVeg",
+           outputFilename = "figures/pctBurn_hist_gg.png")
 
 #demographic 
 makeMapGG(stat = "Lambda", fillLab = "λ",
@@ -89,13 +115,16 @@ makeMapGG(stat = "Pregnancy", fillLab = "Pregnacy rate",
 
 makeMapGG(stat = "mPerKm2", fillLab = "Linear dist. (m/km2)", 
           outputFilename = "figures/linearDist_gg.png")
+makeHistGG(stat = "mPerKm2", xLab = "Linear disturbance (m/km2)", 
+           outputFilename = "figures/linearDist_hist_gg.png")
 
 makeMapGG(stat = "forestB", fillLab = "ABG (Mg/ha)",
           outputFilename = "figures/Biomass_gg.png")
+makeHistGG(stat = "forestB", xLab = "mean aboveground forest biomass (Mg/ha)", 
+           outputFilename = "figures/Biomass_hist_gg.png")
 
 makeMapGG(stat = "landscapeB", fillLab = "all land ABG (Mg/ha)",
           outputFilename = "figures/landscapeBiomass_gg.png")
-
 
 #treat Stuart-Smith79 as one study area when modelling lambda
 #treat Rettie92 pregnancy as one polygon
