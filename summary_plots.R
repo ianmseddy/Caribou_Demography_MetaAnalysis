@@ -35,7 +35,14 @@ demographicData[, c("DocID", "Author") := NULL] #some authors were mismatched du
 
 RangePolygons <- dplyr::left_join(RangePolygons, demographicData, c("PolygonID"))
 
-
+#demographic variable Venn diagram
+vennData <- list("Lambda" = demographicData[!is.na(Lambda),]$PolygonID,
+                 "Calf:Cow" = demographicData[!is.na(CalfCow),]$PolygonID,
+                 "Adult Female Survival" = demographicData[!is.na(AdultFemaleSurvivalRate)]$PolygonID,
+                 "Pregnancy" = demographicData[!is.na(Pregnancy)]$PolygonID)
+ggVenn <- ggVennDiagram(vennData, label_alpha = 0.1) + scale_fill_distiller(direction = 1)
+ggsave(plot = ggVenn, device = "png", path = "figures", filename = "demographicVenn_gg.png", 
+       height = 6, width = 15)
 #maps
 makeMapGG <- function(df = RangePolygons, CA = Canada, stat, adjustCol = NULL,
                       fillLab, outputFilename) {
