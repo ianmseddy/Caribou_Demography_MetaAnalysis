@@ -5,6 +5,7 @@ library(ggplot2)
 library(data.table)
 library(quickPlot)
 library(RColorBrewer)
+library(ggVennDiagram)
 #curious 
 
 lnFootprints <- fread("outputs/Caribou_Range_LinearDisturbance_Summary.csv")
@@ -39,14 +40,16 @@ demography <- demography[provOrder, on = "Province"]
 setkey(demography, order, DocID)
 demography$foo <- 1:nrow(demography)
 
-ggplot(data = demography) + 
+lineTimeSeries <- ggplot(data = demography) + 
   geom_segment(aes(x = First_Measurement_Year, 
                    xend = Last_Measurement_Year, 
                    y = foo, yend = foo, col = Province), 
                size = 1.2) + 
-  theme_bw() + 
+  theme_bw(base_size = 14) + 
   labs(x = "Study Period", y = "Count of study areas") + 
   scale_colour_brewer(palette = "Set2")
+ggsave(lineTimeSeries, device = "png", path = "figures", 
+       filename = "RangePolygon_TimeSeries.png")
 
 dev()
 #variables of interest

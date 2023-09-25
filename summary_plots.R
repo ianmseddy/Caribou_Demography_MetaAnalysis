@@ -2,6 +2,11 @@ library(data.table)
 library(sf)
 library(ggplot2)
 library(reproducible)
+library(quickPlot)
+library(RColorBrewer)
+library(ggVennDiagram)
+
+setDTthreads(2) #YMMV
 
 RangePolygons <- st_read("gis/Digitized_Caribou_StudyAreas.shp")
 RangePolygons <- st_make_valid(RangePolygons) #Mahoney80_MiddleRinge is invalid..?
@@ -30,14 +35,6 @@ demographicData[, c("DocID", "Author") := NULL] #some authors were mismatched du
 
 RangePolygons <- dplyr::left_join(RangePolygons, demographicData, c("PolygonID"))
 
-##NOTE: none of the disturbance rates are adjusted for habitat area yet
-# so harvest rates are lower in BC due to presence of non-forest
-
-#TODO: pctVeg and pctForest are still proportions..
-if (max(RangePolygons$pctForest) < 50){
-  RangePolygons$pctForest <- RangePolygons$pctForest * 100
-  RangePolygons$pctVeg <- RangePolygons$pctVeg * 100
-}
 
 #maps
 makeMapGG <- function(df = RangePolygons, CA = Canada, stat, adjustCol = NULL,
@@ -86,32 +83,59 @@ makeMapGG(stat = "Pregnancy", fillLab = "Pregnacy rate",
 makeMapGG(stat = "mPerKm2", fillLab = "Linear dist. (m/km2)", 
           outputFilename = "figures/linearDist_gg.png")
 
+makeMapGG(stat = "forestB", fillLab = "ABG (Mg/ha)",
+          outputFilename = "figures/Biomass_gg.png")
 
-outputTable <- as.data.table(RangePolygons) 
-outputTable <- outputTable[, .(DocID, PolygonID, Province, 
-                               `First Measurement Year`, `Last Measurement Year`,
-                               Lambda, AdultFemaleSurvivalRate, CalfCow, Pregnancy,
-                               pctDisturbedYr, pctHarvestYr, pctBrnYr, meanMag,
-                               propForest, propVeg, `Predator Control`)]
+makeMapGG(stat = "landscapeB", fillLab = "all land ABG (Mg/ha)",
+          outputFilename = "figures/landscapeBiomass_gg.png")
 
-#so far this is only for illustrative purposes, hence rounding
-toRound <- c("pctDisturbedYr", "propForest", "propVeg", "meanMag", "pctHarvestYr", "pctBrnYr")
-outputTable <- unique(outputTable) #unique b/c of multipolygons
-outputTable[, (toRound) := lapply(.SD, round, digits = 3), .SDcol = toRound]
-outputTable[, meanMag := round(meanMag, digits = 0)]
-setnames(outputTable, 
-         old = c("AdultFemaleSurvivalRate",
-                 "First Measurement Year",
-                 "Last Measurement Year", 
-                 "Pregnancy", "CalfCow",
-                 "meanMag", "pctDisturbedYr", "pctBrnYr",
-                 "pctHarvestYr", "propForest", "propVeg",
-                 "Predator Control"),
-         new = c("adult female surv. rate",
-                 "first msr. year",
-                 "last msr. year",
-                 "preg.", "Calf to Cow",
-                 "mean mag", "prop. dist.", "prop. burn",
-                 "prop. harv.", "prop. for.", "prop. veg.",
-                 "pred. ctrl"))
-write.csv(outputTable, "outputs/summary_table_all_info.csv", row.names = FALSE)
+
+#treat Stuart-Smith79 as one study area when modelling lambda
+#treat Rettie92 pregnancy as one polygon
+
+
+#curious 
+rm(list = ls())
+#### I made these figures in a separate script originally 
+### hence reading in all the data again
+#TODO: clean this up 
+
+lnFootprints <- fread("outputs/Caribou_Range_LinearDisturbance_Summary.csv")
+demography <- fread("data/Range_Polygon_Data.csv")
+demography[, Note := NULL]
+lnFootprints <- demography[lnFootprints, on = c("PolygonID")]
+rsFootprints <- fread("outputs/Caribou_Range_Disturbance_Summary.csv")
+setnames(rsFootprints, "lastYear", "Last_Measurement_Year")
+
+#Province is bizarre not in any of these outputs..
+prov <- sf::st_read("GIS/Digitized_Caribou_StudyAreas.shp") |>
+  as.data.table()
+prov <- unique(prov[, .(PolygonID, Province)])
+rsFootprints <- rsFootprints[, .(PolygonID, Npixels, pctBrnYr, pctHarvestYr, pctForest, 
+                                 forestB, landscapeB)]
+
+caribouDF <- lnFootprints[rsFootprints, on = c("PolygonID")]
+caribouDF <- prov[caribouDF, on = "PolygonID"]
+
+setnames(caribouDF, "mPerKm2", "linearDist")
+
+caribouDF[, .N, (Province)]
+demography <- prov[demography, on = "PolygonID"]
+
+provOrder <- data.table(Province = c("BC", "YK", "AB", "SK", "MB", "ON", "QC", "NF"),
+                        order = 1:8)
+demography <- demography[provOrder, on = "Province"]
+setkey(demography, order, DocID)
+demography$foo <- 1:nrow(demography)
+demography$Province <- factor(demography$Province)
+demography$Province <- reorder(demography$Province, demography$order)
+lineTimeSeries <- ggplot(data = demography) + 
+  geom_segment(aes(x = First_Measurement_Year, 
+                   xend = Last_Measurement_Year,
+                   y = foo, yend = foo, col = Province), 
+               size = 1.2) + 
+  theme_bw(base_size = 14) + 
+  labs(x = "Study Period", y = "Count of study areas") + 
+  scale_colour_brewer(palette = "Set2")
+ggsave(lineTimeSeries, device = "png", path = "figures", 
+       filename = "RangePolygon_TimeSeries.png")
