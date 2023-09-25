@@ -53,7 +53,7 @@ NRN_cmnlines <- vect("GIS/Linear_Features/CA/canvec_50K_CA_Res_MGT_shp/canvec_50
 seismicLines <- vect("GIS/Linear_Features/CA/PULSE_2D_WEB/PULSE_2D_WEB.shp")
 
 #harvest year
-harvestYear <- rast("GIS/CA_harvest_year_1985_2015.tif")
+harvestYear <- rast("GIS/CA_Forest_Harvest_1985-2020.tif")
 terra::NAflag(harvestYear) <- 0
 
 #utility function to crop and write 
@@ -399,6 +399,50 @@ QCroadAdjustment <- function(PolygonID, RangeSA = RangePolygons, threshold = .7,
 }
 
 sapply(unique(QC$PolygonID), QCroadAdjustment)
+
+
+####Yukon####
+####Yukon####
+YK <- RangePolygons[RangePolygons$Province == "YK",]
+YKroads <- vect("GIS/Linear_Features/YK/Yukon_Road_Network.shp/Yukon_Road_Network.shp")
+YKtemp <- vect("C:/Ian/Data/Canada/lpr_000b16a_e/lpr_000b16a_e.shp")
+YKtemp <- YKtemp[YKtemp$PRENAME == "Yukon",]
+YKtemp <- project(YKtemp, NRNall)
+NRNallYK <- crop(NRNall, YKtemp)
+YKosmroad <- vect("GIS/Linear_features/YK/Yukon-latest-free.shp/gis_osm_roads_free_1.shp")
+YKosmrail <- vect("GIS/Linear_features/YK/Yukon-latest-free.shp/gis_osm_railways_free_1.shp")
+#get GIS files for each polygon
+#crop the NRN roads because the file is huge
+YukonGISprep <- function(PolyID, RangeSA = RangePolygons, roads = YKroads, NRNroads = NRNallYK, 
+                            osmroad = YKosmroad, osmrail = YKosmrail, power = NRN_powerlines, 
+                            pipe = NRN_pipelines, communication = NRN_cmnlines, 
+                            seismic = seismicLines){
+  outDir <- file.path("GIS/Linear_Features/RangeSA_Digitization", PolyID)
+  if (!dir.exists(outDir)){
+    dir.create(outDir)
+  }
+  RangeSA <- RangeSA[RangeSA$PolygonID == PolyID]
+  RangeTemplate <- rast(crs = crs(RangeSA), res = c(30, 30), extent = ext(RangeSA))
+  
+  prepOutputs(NRNroads, RangeSA, file.path(outDir, paste0(PolyID, "_NRNroads.shp")))
+  prepOutputs(roads, RangeSA, file.path(outDir, paste0(PolyID, "_YKroads_2010.shp")))
+  prepOutputs(power, RangeSA, outputName = file.path(outDir, paste0(PolyID, "_powerlines.shp")))
+  prepOutputs(pipe, RangeSA, file.path(outDir, paste0(PolyID, "_pipelines.shp")))
+  prepOutputs(NRN_cmnlines,RangeSA, file.path(outDir, paste0(PolyID, "_commlines.shp")))
+  prepOutputs(seismic, RangeSA, file.path(outDir, paste0(PolyID, "_pulse_seismic.shp")))
+  prepOutputs(osmroad, RangeSA, file.path(outDir, paste0(PolyID, "_osm_roads.shp")))
+  prepOutputs(osmrail, RangeSA, file.path(outDir, paste0(PolyID, "_osm_rail.shp")))
+  
+  temp <- rast(paste0("outputs/Caribou_LandTrendR_Results/", PolyID,".tif"))
+  temp <- temp$yod
+  temp[temp == 0] <- NA
+  prepOutputs(temp, RangeSA, file.path(outDir, paste0(PolyID,"_LandTrendR_yod.tif")))  
+  prepOutputs(harvestYear, RangeSA, file.path(outDir, paste0(PolyID, "_harvestYear.tif")))
+  
+}
+sapply(unique(YK$PolygonID), YukonGISprep)
+rm(YK, YKosmrail, YKosmroad, YKroads, YKtemp, NRNallYK)
+
 
 
 ####source digitized files ####

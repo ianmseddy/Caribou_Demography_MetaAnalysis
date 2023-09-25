@@ -118,6 +118,10 @@ lapply(QC1, consolidateLines, patternsToDrop = c("NRN", "subset"))
 lapply(QC2, consolidateLines, patternsToDrop = c("NRN", "AQreseau"))
 
 
+YKPolygonIDs <- unique(RangePolygons[RangePolygons$Province == "YK"]$PolygonID)
+#the OSM roads is the best dataset -
+lapply(YKPolygonIDs, consolidateLines, patternsToDrop = c("YKroads", "NRN"))
+
 #calculate length/area
 #terra::distance and terra::expanse after correcting landcover
 #return a data.table with PolygonID, area of polygons, and class area
@@ -176,6 +180,7 @@ SKLineDf <- rbindlist(lapply(SKPolygonIDs, LengthToArea))
 MBLineDf <- rbindlist(lapply(MBPolygonIDs, LengthToArea))
 ONLineDf <- rbindlist(lapply(ONPolygonIDs, LengthToArea))
 QCLineDf <- rbindlist(lapply(QCPolygonIDs, LengthToArea))
+YKLineDf <- rbindlist(lapply(YKPolygonIDs, LengthToArea))
 #LineDfs are scaled by area and can be plotted (or merged - possibly write them to disk?)
 
 
