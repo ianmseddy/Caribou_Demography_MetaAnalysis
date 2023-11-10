@@ -88,10 +88,17 @@ summarizeData <- function(SAname, SA, harvest, fire, biomass, lcc = LCC) {
   
   lccVal <- data.table(lcc = lcc[], biomass = biomass[])
   names(lccVal) <- c("lcc", "biomass") #these kept inherting layer names
-  
-  forestPix <- lccVal[lcc %in% c(210, 220, 230), .N]
   disturbablePix <- lccVal[lcc %in% c(210, 220, 230, 33, 40, 50, 80, 81, 100), .N]
   N <- lccVal[!is.na(lcc), .N]
+
+  #assumes wetland is non-forest (as they wouldn't harvest here)
+  forestPix <- lccVal[lcc %in% c(210, 220, 230), .N]
+  coniferous <- lccVal[lcc %in% 210, .N]/N * 100
+  decid <- lccVal[lcc %in% 220, .N]/N * 100
+  mixed <- lccVal[lcc %in% 230, .N]/N * 100
+  treedWetland <- lccVal[lcc %in% 81, .N]/N * 100 #non-treed wetland
+  nonTreedWetland <- lccVal[lcc %in% 80, .N]/N * 100 #I assume this is only non-treed
+  
   
   meanForestBiomass <- mean(lccVal[lcc %in% c(210, 220, 230),]$biomass, na.rm = TRUE)
   meanLandscapeBiomass <- mean(lccVal[lcc %in%  c(210, 220, 230, 33, 40, 50, 80, 81, 100)]$biomass,
@@ -101,7 +108,8 @@ summarizeData <- function(SAname, SA, harvest, fire, biomass, lcc = LCC) {
   rm(lccVal, disturbablePix, forestPix)
   outputDT[, c("Npixels", "pctForest", "pctVeg", "forestB", "landscapeB") := 
              .(N, pctForest, pctVeg, meanForestBiomass, meanLandscapeBiomass)]
-  
+  outputDT[, c("pctCon", "pctDec", "pctMix", "pctTrWet", "pctWet") :=
+             .(coniferous, decid, mixed, treedWetland, nonTreedWetland)]
 
   ####summarize the C2C harvest #####
   harvest <- postProcess(harvest, projectTo = lcc, cropTo = lcc, maskTo = SAcrop)
